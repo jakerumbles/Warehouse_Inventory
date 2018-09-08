@@ -1,0 +1,24 @@
+{
+  "name": "warehouse_inventory",
+  "version": "1.0.0",
+  "description": "A basic, 3-layer architecture web app for managing the inventory in a warehouse.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakerumbles/Warehouse_Inventory.git"
+  },
+  "author": "Jake Edwards and John Carvajall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakerumbles/Warehouse_Inventory/issues"
+  },
+  "homepage": "https://github.com/jakerumbles/Warehouse_Inventory#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "faker": "^4.1.0",
+    "mysql": "^2.16.0"
+  }
+}
