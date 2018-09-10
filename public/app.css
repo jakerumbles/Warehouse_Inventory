@@ -1,3 +1,75 @@
 body {
-  background-color: red;
+  background: #136a8a;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #267871, #136a8a);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #267871, #136a8a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.navbar {
+  background: white;
+  height: 50px;
+  width: auto;
+  margin: 0;
+}
+
+.content {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  background-image: url(assets/background.jpg);
+  background-size: contain;
+}
+
+#text_button {
+  wdith: 400px;
+  background: orange;
+}
+
+table {  
+    color: white; /* Lighten up font color */
+    font-family: Helvetica, Arial, sans-serif; /* Nicer font */
+    width: 1400px; 
+    border-collapse: 
+    collapse; border-spacing: 0; 
+}
+
+td, th { border: 1px solid #CCC; height: 30px; } /* Make cells a bit taller */
+
+th {  
+    background: #444343; /* Light grey background */
+    font-weight: bold; /* Make sure they're bold */
+}
+
+td {  
+    background: #565353; /* Lighter grey background */
+    text-align: center; /* Center our text */
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    height: 50px;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+li a:hover {
+    background-color: #111;
 }

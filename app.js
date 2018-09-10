@@ -52,7 +52,6 @@ app.get('/inventory', function(req, res) {
   });  
 });
 
-
 //The server
 app.listen(3000, function() {
   console.log("The server has started");
