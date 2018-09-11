@@ -6,15 +6,18 @@ Project:
 Team: TeamIDK
 */
 
-var express = require('express');
-var mysql   = require('mysql');
-var faker   = require('faker');
+var express    = require('express');
+var mysql      = require('mysql');
+var faker      = require('faker');
+var bodyParser = require('body-parser');
 
 var app = express();
 
 //Setup
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Connect to MySQL database with the correct user info and which database is to be used
 var connection = mysql.createConnection({
@@ -35,15 +38,25 @@ app.get('/', function(req, res) {
 });
 
 //Query page
-app.get('/query', function(req, res) {
-  res.render("query");
-  console.log("you visited the query page");
+app.get('/inventory/new', function(req, res) {
+  res.render("newItem");
+  console.log("you visited the new item page");
 });
+
+app.post('/inventory', function(req, res) {
+  var item = req.body.item;
+  console.log("inventory post route...now redirecting");
+  console.log(req.body.item);
+  res.redirect("/inventory?description=" + item.description + "&");
+});
+
 
 //The inventory page where the database will be shown
 app.get('/inventory', function(req, res) {
+  var passedStuff = req.params.description;
+  console.log(passedStuff);
   //Query to get the data
-  var q = 'SELECT * FROM inventory LIMIT 100';
+  var q = 'SELECT * FROM inventory LIMIT 1000';
   connection.query(q, function(err, results) {
     if(err) throw err;
     

@@ -8,68 +8,14 @@ body {
   margin-bottom: 0px;
 }
 
-.navbar {
-  background: white;
-  height: 50px;
-  width: auto;
-  margin: 0;
+.nav {
+  background-color: grey;
 }
 
-.content {
-  margin: 0;
-  width: 1920px;
-  height: 1080px;
-  background-image: url(assets/background.jpg);
-  background-size: contain;
+.jumbotron {
+  margin-top: 2rem;
 }
 
-#text_button {
-  wdith: 400px;
-  background: orange;
-}
-
-table {  
-    color: white; /* Lighten up font color */
-    font-family: Helvetica, Arial, sans-serif; /* Nicer font */
-    width: 1400px; 
-    border-collapse: 
-    collapse; border-spacing: 0; 
-}
-
-td, th { border: 1px solid #CCC; height: 30px; } /* Make cells a bit taller */
-
-th {  
-    background: #444343; /* Light grey background */
-    font-weight: bold; /* Make sure they're bold */
-}
-
-td {  
-    background: #565353; /* Lighter grey background */
-    text-align: center; /* Center our text */
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    height: 50px;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-li a:hover {
-    background-color: #111;
+h2 {
+  margin-top: 2rem;
 }

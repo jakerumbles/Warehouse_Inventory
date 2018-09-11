@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jakerumbles/Warehouse_Inventory#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "faker": "^4.1.0",
