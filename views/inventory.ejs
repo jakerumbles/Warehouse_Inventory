@@ -22,7 +22,7 @@
             <td><%= items[i].storage_location %></td>
             
             <!-- PRESENT -->
-            <td><% if(items[i].present == 0) { %>
+            <td><% if(items[i].present === 'no') { %>
                     <input type="checkbox">
                 <% } else { %>
                     <input type="checkbox" checked>
@@ -30,7 +30,7 @@
             </td>
             
             <!-- RESERVED -->
-            <td><% if(items[i].reserved == 0) { %>
+            <td><% if(items[i].reserved === 'no') { %>
                     <input type="checkbox">
                 <% } else { %>
                     <input type="checkbox" checked>

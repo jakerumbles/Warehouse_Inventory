@@ -37,26 +37,31 @@ app.get('/', function(req, res) {
   console.log("you visited the home page");
 });
 
-//Query page
+//New Item page
 app.get('/inventory/new', function(req, res) {
   res.render("newItem");
   console.log("you visited the new item page");
 });
 
+//Add new item to DB
 app.post('/inventory', function(req, res) {
   var item = req.body.item;
-  console.log("inventory post route...now redirecting");
-  console.log(req.body.item);
-  res.redirect("/inventory?description=" + item.description + "&");
+  console.log("inventory post route...now adding new item to DB");
+  var q = insertQuery(item);
+  console.log(q);
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+  });  
+  res.redirect("/inventory");
 });
 
 
 //The inventory page where the database will be shown
 app.get('/inventory', function(req, res) {
   var passedStuff = req.params.description;
-  console.log(passedStuff);
+  //console.log(passedStuff);
   //Query to get the data
-  var q = 'SELECT * FROM inventory LIMIT 1000';
+  var q = 'SELECT * FROM inventory LIMIT 100';
   connection.query(q, function(err, results) {
     if(err) throw err;
     
@@ -70,7 +75,30 @@ app.listen(3000, function() {
   console.log("The server has started");
 });
 
-
+//Query generator functions
+//Generates a query for inserting a new item
+function insertQuery(item) {
+  var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
+          'VALUES(';
+  q += '"' + item.description + '", ';
+  q += '"' + item.category + '", ';
+  q += 'NOW(), ';
+  q += item.storage_location + ', ';
+  
+  if(item.present === 'on') {
+    q += '"yes", ';
+  } else {
+    q += '"no", ';
+  }  
+  
+  if(item.reserved === 'on') {
+    q += '"yes");';
+  } else {
+    q += '"no");';
+  }
+  
+  return q;
+}
 
 
 
