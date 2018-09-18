@@ -40,6 +40,14 @@ const connection = new Client({
 
 connection.connect();
 
+connection.query('CREATE TABLE inventory', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});
+
 //ROUTES
 //Home
 app.get('/', function(req, res) {
