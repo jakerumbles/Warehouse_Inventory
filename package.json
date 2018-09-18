@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/jakerumbles/Warehouse_Inventory.git"
   },
+  "scripts": {
+  "start": "node index.js"
+  },
   "author": "Jake Edwards and John Carvajall",
   "license": "ISC",
   "bugs": {
