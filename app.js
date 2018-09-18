@@ -71,7 +71,12 @@ app.get('/inventory', function(req, res) {
 });
 
 //The server
-app.listen(process.env.PORT || port)
+app.set('port', (process.env.PORT || 5000));
+
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 
 //Query generator functions
 //Generates a query for inserting a new item
