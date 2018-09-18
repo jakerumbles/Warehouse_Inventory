@@ -20,7 +20,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Connect to MySQL database with the correct user info and which database is to be used
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
   host      : 'localhost',
   user      : 'root',
   password  : 'jakejohn',
@@ -28,6 +28,16 @@ var connection = mysql.createConnection({
 });
 
 //Connect to warehouse_inventory DB
+connection.connect();
+*/
+
+const { Client } = require('pg');
+
+const connection = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
 connection.connect();
 
 //ROUTES
