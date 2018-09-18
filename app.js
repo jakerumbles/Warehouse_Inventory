@@ -71,6 +71,9 @@ app.get('/inventory', function(req, res) {
 });
 
 //The server
+server.connection({
+    port: (process.env.PORT || 1643)
+});
 
 //Query generator functions
 //Generates a query for inserting a new item
