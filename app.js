@@ -2,7 +2,7 @@
 Authors: Jake Edwards & John Carvajal
 Class: CSC 425-001
 Professor: Dr. Sawadpong
-Project: 
+Project:
 Team: TeamIDK
 */
 
@@ -70,7 +70,7 @@ app.post('/inventory', function(req, res) {
   console.log(q);
   connection.query(q, function(err, results) {
     if(err) throw err;
-  });  
+  });
   res.redirect("/inventory");
 });
 
@@ -83,10 +83,11 @@ app.get('/inventory', function(req, res) {
   var q = 'SELECT * FROM inventory LIMIT 100';
   connection.query(q, function(err, results) {
     if(err) throw err;
-    
+
     //Send the rendered page
+    console.log(results);
     res.render("inventory", {items: results});
-  });  
+  });
 });
 
 //The server
@@ -106,19 +107,19 @@ function insertQuery(item) {
   q += '\'' + item.category + '\', ';
   q += 'NOW(), ';
   q += item.storage_location + ', ';
-  
+
   if(item.present === 'on') {
     q += '\'yes\', ';
   } else {
     q += '\'no\', ';
-  }  
-  
+  }
+
   if(item.reserved === 'on') {
     q += '\'yes\');';
   } else {
     q += '\'no\');';
   }
-  
+
   return q;
 }
 
@@ -157,5 +158,3 @@ function insertQuery(item) {
 
 //Close the DB connection
 //connection.end();
-
-
