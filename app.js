@@ -85,7 +85,7 @@ app.get('/inventory', function(req, res) {
     if(err) throw err;
 
     //Send the rendered page
-    console.log(results);
+    //console.log(results);
     res.render("inventory", {items: results});
   });
 });

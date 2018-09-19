@@ -13,8 +13,8 @@
         <th>Present</th>
         <th>Reserved</th>
       </tr>
-      <% console.log(items) %>
-      <% for(var i = 0; i < items.length; i++) { %>
+      <% console.log(items.Result.rows) %>
+      <% for(var i = 0; i < Results.rowCount; i++) { %>
           <tr>
             <td><%= items[i].item_id %></td>
             <td><%= items[i].description %></td>
