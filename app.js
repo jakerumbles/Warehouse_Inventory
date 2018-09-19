@@ -102,21 +102,21 @@ app.listen(app.get('port'), function() {
 function insertQuery(item) {
   var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
           'VALUES(';
-  q += ''' + item.description + '', ';
-  q += ''' + item.category + '', ';
+  q += '\'' + item.description + '\', ';
+  q += '\'' + item.category + '\', ';
   q += 'NOW(), ';
   q += item.storage_location + ', ';
   
   if(item.present === 'on') {
-    q += ''yes', ';
+    q += '\'yes\', ';
   } else {
-    q += ''no', ';
+    q += '\'no\', ';
   }  
   
   if(item.reserved === 'on') {
-    q += '"yes");';
+    q += '\'yes\');';
   } else {
-    q += '"no");';
+    q += '\'no\');';
   }
   
   return q;
