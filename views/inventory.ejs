@@ -13,36 +13,7 @@
         <th>Present</th>
         <th>Reserved</th>
       </tr>
-      <% console.log(items.rowCount) %>
-      <!--
-      <% for(var i = 0; i < 3; i++) { %>
-          <tr>
-            <td><%= items[i].item_id %></td>
-            <td><%= items[i].description %></td>
-            <td><%= items[i].category %></td>
-            <td><%= items[i].date_recieved %></td>
-            <td><%= items[i].storage_location %></td>
-
-          --><!-- PRESENT -->
-          <!--
-            <td><% if(items[i].present === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
-
-          --><!-- RESERVED -->
-          <!--
-            <td><% if(items[i].reserved === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
-          </tr>
-      <% } %>
-    -->
+      <% console.log(items[Result]) %>
     </table>
 
 <% include partials/footer %>
