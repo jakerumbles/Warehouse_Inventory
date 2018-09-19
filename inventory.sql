@@ -1,5 +1,5 @@
 CREATE TABLE inventory(
-  item_id INT NOT NULL AUTO_INCREMENT,
+  inv_id SERIAL,
   description VARCHAR(100) NOT NULL,
   category VARCHAR(25) DEFAULT 'unknown',
   date_recieved TIMESTAMP DEFAULT NOW(),
