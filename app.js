@@ -20,8 +20,34 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Connect to MySQL database with the correct user info and which database is to be used
-var pgp = require('pg-promise');
-var db = pgp(process.env.DATABASE_URL);
+/*var connection = mysql.createConnection({
+  host      : 'localhost',
+  user      : 'root',
+  password  : 'jakejohn',
+  database  : 'warehouse_inventory'
+});
+
+//Connect to warehouse_inventory DB
+connection.connect();
+*/
+
+const { Client } = require('pg');
+
+const connection = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+connection.connect();
+
+/*connection.query('CREATE TABLE inventory', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  connection.end();
+});
+*/
 
 //ROUTES
 //Home
@@ -42,7 +68,7 @@ app.post('/inventory', function(req, res) {
   console.log("inventory post route...now adding new item to DB");
   var q = insertQuery(item);
   console.log(q);
-  db.query(q, function(err, results) {
+  connection.query(q, function(err, results) {
     if(err) throw err;
   });  
   res.redirect("/inventory");
@@ -55,13 +81,12 @@ app.get('/inventory', function(req, res) {
   //console.log(passedStuff);
   //Query to get the data
   var q = 'SELECT * FROM inventory LIMIT 100';
-  db.one(q)
-	.then(function(data){
-	console.log('DATA:', data.value)
-	})
-	.catch(function(error){
-	console.log('ERROR:', error)
-	})
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+    
+    //Send the rendered page
+    res.render("inventory", {items: results});
+  });  
 });
 
 //The server
