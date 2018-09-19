@@ -4,14 +4,11 @@
   "description": "A basic, 3-layer architecture web app for managing the inventory in a warehouse.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jakerumbles/Warehouse_Inventory.git"
-  },
-  "scripts": {
-  "start": "node app.js"
   },
   "author": "Jake Edwards and John Carvajall",
   "license": "ISC",
