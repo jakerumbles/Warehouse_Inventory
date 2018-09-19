@@ -1,15 +1,4 @@
 CREATE TABLE inventory(
-  inv_id INT NOT NULL AUTO_INCREMENT,
-  inv_items INT NOT NULL REFERENCES item(item_id),
-  description VARCHAR(100) NOT NULL,
-  category VARCHAR(25) DEFAULT 'unknown',
-  date_recieved TIMESTAMP DEFAULT NOW(),
-  storage_location VARCHAR(4) NOT NULL,
-  present VARCHAR(5) NOT NULL,
-  reserved VARCHAR(5) DEFAULT 'false',
-  PRIMARY KEY(inv_id)
-);
-CREATE TABLE inventory(
   inv_id SERIAL,
   description VARCHAR(100) NOT NULL,
   category VARCHAR(25) DEFAULT 'unknown',
