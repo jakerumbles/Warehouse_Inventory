@@ -2,7 +2,7 @@
 Authors: Jake Edwards & John Carvajal
 Class: CSC 425-001
 Professor: Dr. Sawadpong
-Project: 
+Project:
 Team: TeamIDK
 */
 
@@ -20,7 +20,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Connect to MySQL database with the correct user info and which database is to be used
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
   host      : 'localhost',
   user      : 'root',
   password  : 'jakejohn',
@@ -29,6 +29,25 @@ var connection = mysql.createConnection({
 
 //Connect to warehouse_inventory DB
 connection.connect();
+*/
+
+const { Client } = require('pg');
+
+const connection = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+connection.connect();
+
+/*connection.query('CREATE TABLE inventory', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  connection.end();
+});
+*/
 
 //ROUTES
 //Home
@@ -51,7 +70,7 @@ app.post('/inventory', function(req, res) {
   console.log(q);
   connection.query(q, function(err, results) {
     if(err) throw err;
-  });  
+  });
   res.redirect("/inventory");
 });
 
@@ -64,15 +83,19 @@ app.get('/inventory', function(req, res) {
   var q = 'SELECT * FROM inventory LIMIT 100';
   connection.query(q, function(err, results) {
     if(err) throw err;
-    
+
     //Send the rendered page
+    //console.log(results);
     res.render("inventory", {items: results});
-  });  
+  });
 });
 
 //The server
-app.listen(3000, function() {
-  console.log("The server has started");
+app.set('port', (process.env.PORT || 5000));
+
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
 
 //Query generator functions
@@ -80,23 +103,23 @@ app.listen(3000, function() {
 function insertQuery(item) {
   var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
           'VALUES(';
-  q += '"' + item.description + '", ';
-  q += '"' + item.category + '", ';
+  q += '\'' + item.description + '\', ';
+  q += '\'' + item.category + '\', ';
   q += 'NOW(), ';
   q += item.storage_location + ', ';
-  
+
   if(item.present === 'on') {
-    q += '"yes", ';
+    q += '\'yes\', ';
   } else {
-    q += '"no", ';
-  }  
-  
-  if(item.reserved === 'on') {
-    q += '"yes");';
-  } else {
-    q += '"no");';
+    q += '\'no\', ';
   }
-  
+
+  if(item.reserved === 'on') {
+    q += '\'yes\');';
+  } else {
+    q += '\'no\');';
+  }
+
   return q;
 }
 
@@ -135,5 +158,3 @@ function insertQuery(item) {
 
 //Close the DB connection
 //connection.end();
-
-
