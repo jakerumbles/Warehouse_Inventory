@@ -15,7 +15,7 @@ CREATE TABLE item(
   date_recieved TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(item_id)
 );
-CREATE TABLE user(
+CREATE TABLE user_account(
   user_id SERIAL,
   user_name VARCHAR(100) NOT NULL,
   user_mobile VARCHAR(100) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE project(
   project_id SERIAL,
   description VARCHAR(100) NOT NULL,
   project_items INT NOT NULL REFERENCES item(item_id),
-  manager INT NOT NULL REFERENCES user(user_id),
+  manager INT NOT NULL REFERENCES user_account(user_id),
   date_started TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(project_id)
 );
