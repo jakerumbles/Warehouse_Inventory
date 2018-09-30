@@ -21,7 +21,6 @@ CREATE TABLE user_account(
   user_mobile VARCHAR(100) NOT NULL,
   user_email VARCHAR(100) NOT NULL,
   user_address VARCHAR(100) NOT NULL,
-  manages_project INT NOT NULL REFERENCES project(project_id),
   date_started TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(user_id)
 );
@@ -32,4 +31,7 @@ CREATE TABLE project(
   manager INT NOT NULL REFERENCES user_account(user_id),
   date_started TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(project_id)
+);
+ALTER TABLE user_account(
+  manages_project INT NOT NULL REFERENCES project(project_id)
 );
