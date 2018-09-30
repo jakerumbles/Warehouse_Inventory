@@ -32,6 +32,4 @@ CREATE TABLE project(
   date_started TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(project_id)
 );
-ALTER TABLE user_account(
-  ADD COLUMN manages_project INT NOT NULL REFERENCES project(project_id)
-);
+ALTER TABLE user_account ADD COLUMN manages_project INT NOT NULL REFERENCES project(project_id);
