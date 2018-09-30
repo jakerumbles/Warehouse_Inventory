@@ -1,5 +1,5 @@
 CREATE TABLE inventory(
-  inv_id INT NOT NULL AUTO_INCREMENT,
+  inv_id INT NOT NULL SERIAL,
   inv_items INT NOT NULL REFERENCES item(item_id),
   description VARCHAR(100) NOT NULL,
   category VARCHAR(25) DEFAULT 'unknown',
@@ -20,14 +20,14 @@ CREATE TABLE inventory(
   PRIMARY KEY(inv_id)
 );
 CREATE TABLE item(
-  item_id INT NOT NULL AUTO_INCREMENT,
+  item_id INT NOT NULL SERIAL,
   description VARCHAR(100) NOT NULL,
   category VARCHAR(25) DEFAULT 'unknown',
   date_recieved TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY(item_id)
 );
 CREATE TABLE user(
-  user_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL SERIAL,
   user_name VARCHAR(100) NOT NULL,
   user_mobile VARCHAR(100) NOT NULL,
   user_email VARCHAR(100) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE user(
   PRIMARY KEY(user_id)
 );
 CREATE TABLE project(
-  project_id INT NOT NULL AUTO_INCREMENT,
+  project_id INT NOT NULL SERIAL,
   description VARCHAR(100) NOT NULL,
   project_items INT NOT NULL REFERENCES item(item_id),
   manager INT NOT NULL REFERENCES user(user_id),
