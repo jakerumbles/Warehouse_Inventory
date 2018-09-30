@@ -90,6 +90,20 @@ app.get('/inventory', function(req, res) {
   });
 });
 
+app.get('/user_accounts', function(req, res) {
+  var passedStuff = req.params.description;
+  //console.log(passedStuff);
+  //Query to get the data
+  var q = 'SELECT * FROM user_account LIMIT 100';
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+
+    //Send the rendered page
+    //console.log(results);
+    res.render("user_accounts", {items: results});
+  });
+});
+
 //The server
 app.set('port', (process.env.PORT || 5000));
 
