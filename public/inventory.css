@@ -8,19 +8,28 @@ body {
   margin-bottom: 0px;
 }
 
-#home-button{
-  background-image: url(/assets/logo.jpg);
-
-}
-
 .nav {
   background-color: fefefe;
-  background-size: contain;
-
 }
 
 .jumbotron {
   margin-top: 2rem;
+}
+
+#newItemButton {
+  background:#fdfdfd;
+  color: #000000;
+  /*border-radius:50%;*/
+  border:0;
+
+  position: absolute;
+
+  top:60%; /* if circle bulb in image is at 60% set at 60% */
+  left:50%;
+  /*width:  100px;
+  height: 100px;*/
+  margin-top:  -50px;
+  margin-left: -50px;
 }
 
 h2 {
