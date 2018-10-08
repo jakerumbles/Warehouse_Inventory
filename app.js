@@ -10,6 +10,8 @@ var express    = require('express');
 var mysql      = require('mysql');
 var faker      = require('faker');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+require('./login.js');
 
 var app = express();
 
@@ -74,6 +76,21 @@ app.post('/inventory', function(req, res) {
   res.redirect("/inventory");
 });
 
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+);
+
+//eventually a login page
+app.get('/login', function(req, res){
+  res.render("login");
+});
+
+//eventually a signup page
+app.get('/signup', function(req, res){
+  res.render("signup");
+});
 
 //The inventory page where the database will be shown
 app.get('/inventory', function(req, res) {
@@ -87,6 +104,48 @@ app.get('/inventory', function(req, res) {
     //Send the rendered page
     //console.log(results);
     res.render("inventory", {items: results});
+  });
+});
+
+app.get('/user_accounts', function(req, res) {
+  var passedStuff = req.params.description;
+  //console.log(passedStuff);
+  //Query to get the data
+  var q = 'SELECT * FROM user_account ORDER BY user_id';
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+
+    //Send the rendered page
+    //console.log(results);
+    res.render("user_accounts", {items: results});
+  });
+});
+
+app.get('/items', function(req, res) {
+  var passedStuff = req.params.description;
+  //console.log(passedStuff);
+  //Query to get the data
+  var q = 'SELECT * FROM item ORDER BY item_id';
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+
+    //Send the rendered page
+    //console.log(results);
+    res.render("items", {items: results});
+  });
+});
+
+app.get('/projects', function(req, res) {
+  var passedStuff = req.params.description;
+  //console.log(passedStuff);
+  //Query to get the data
+  var q = 'SELECT * FROM project ORDER BY project_id';
+  connection.query(q, function(err, results) {
+    if(err) throw err;
+
+    //Send the rendered page
+    //console.log(results);
+    res.render("projects", {items: results});
   });
 });
 
