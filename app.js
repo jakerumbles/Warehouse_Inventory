@@ -1,5 +1,5 @@
 /*
-Authors: Jake Edwards & John Carvajal
+Authors: Jake Edwards & David Hamilton & John Carvajal
 Class: CSC 425-001
 Professor: Dr. Sawadpong
 Project:
@@ -8,10 +8,11 @@ Team: TeamIDK
 
 var express    = require('express');
 var mysql      = require('mysql');
-var faker      = require('faker');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-require('./login.js');
+const LocalStrategy = require('passport-local').Strategy;
+const pg = require('pg');
+const parseDbUrl = require('parse-database-url');
 
 var app = express();
 
@@ -20,6 +21,13 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+const session = require(‘express-session’);
+app.use(expressSession({secret: ‘mySecretKey’}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(session({secret: ‘keyboard cat’}))
+
 
 //Connect to MySQL database with the correct user info and which database is to be used
 /*var connection = mysql.createConnection({
