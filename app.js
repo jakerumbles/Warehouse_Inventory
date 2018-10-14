@@ -7,7 +7,6 @@ Team: TeamIDK
 */
 
 var express    = require('express');
-//var mysql      = require('mysql');
 var app = express();
 var passport = require('passport');
 var request = require('request');
@@ -41,17 +40,18 @@ const session = require('express-session');
 //app.use(require('cookie-parser')());
 app.use(cookieParser('keyboard cat'));
 //app.use(session({secret: 'mySecretKey'}));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true,
   cookie: {
-    secure: true,
+    //secure: true,
     maxAge: 3600000
   }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -101,7 +101,7 @@ app.post('/inventory', function(req, res) {
 
 app.get('/login', function(req, res, next){
   if(req.isAuthenticated()){
-    res.redirect('/users');
+    res.redirect('/');
   }
   else{
     res.render('login', {title: "Log In", userData: req.user});
@@ -150,8 +150,9 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 		try{
 			await client.query('BEGIN')
 			var currentAccountsData = await JSON.stringify(client.query('SELECT id, "firstName", "email", "password" FROM "users" WHERE "email"=$1', [username], function(err, result) {
-
+        //console.log(result);
 				if(err) {
+          console.log('error with client query');
 					return done(err)
 				}
 				if(result.rows[0] == null){
@@ -164,9 +165,10 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 							return done();
 						}
 						else if (check){
-							return done(null, [{email: result.rows[0].email, firstName: result.rows[0].firstName}]);
+							return done(null, [{id: result.rows[0].id}]);
 						}
 						else{
+              console.log('null false')
 							return done(null, false);
 						}
 					});
@@ -218,7 +220,8 @@ app.post('/signup', async function(req, res){
 });
 
 //The inventory page where the database will be shown
-app.get('/inventory', passport.authenticate('local', {failureRedirect: '/signup'}),function(req, res, next){
+
+app.get('/inventory', passport.authenticate('local', {failureRedirect: '/'}),function(req, res, next){
   var passedStuff = req.params.description;
   var q = 'SELECT * FROM inventory LIMIT 100';
   connection.query(q, function(err,results){
@@ -239,9 +242,9 @@ app.get('/inventory', function(req, res) {
   } else {
     res.redirect('/');
   }
-});
-*/
+});*/
 
+/*
 app.get('/user_accounts', function(req, res) {
 
   if(req.isAuthenticated()){
@@ -258,6 +261,20 @@ app.get('/user_accounts', function(req, res) {
   } else {
     res.redirect('/');
   }
+});*/
+
+app.get('/user_accounts',
+  passport.authenticate('local', {failureRedirect: '/'}),
+    function(req, res) {
+    var passedStuff = req.params.description;
+    //Query to get the data
+    var q = 'SELECT * FROM user_account ORDER BY user_id';
+    connection.query(q, function(err, results) {
+      if(err) throw err;
+      //Send the rendered page
+      //console.log(results);
+      res.render("user_accounts", {items: results});
+    });
 });
 
 app.get('/items', function(req, res) {
@@ -322,13 +339,19 @@ function insertQuery(item) {
 }
 
 passport.serializeUser(function(user, done) {
-  console.log('Called SerializeUser function')
-	done(null, user);
+  console.log('Called SerializeUser function ', user)
+	done(null, user[0].id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('Called deserializeUser function')
-	done(null, user);
+  //console.log('Called deserializeUser function ', id)
+  var q = 'SELECT "id" FROM "users" WHERE "id"=$1';
+
+  connection.query(q, [id], function(err, results) {
+    //console.log(results);
+    if(err) throw err;
+  });
+	done(null, id);
 });
 
 
