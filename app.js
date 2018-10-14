@@ -75,8 +75,20 @@ connection.connect();
 //ROUTES
 //Home
 app.get('/', function(req, res) {
-  res.render("home");
+  if(req.isAuthenticated()){
+    res.render("auth/home");
+  } else {
+    res.render("home");
+  }
   console.log("you visited the home page");
+});
+
+app.get('/logout', function(req, res) {
+  //
+  req.session.destroy(function() {
+    res.redirect('/');
+  });
+  console.log("User Logs Out");
 });
 
 //New Item page
