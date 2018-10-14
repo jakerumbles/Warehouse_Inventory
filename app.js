@@ -139,6 +139,7 @@ function checkAuth(req, res, next){
 }
 */
 
+//passport.authenticate works here for some reason but not others
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/user_accounts',
   failureRedirect: '/login',
@@ -207,7 +208,7 @@ app.post('/signup', async function(req, res){
     await JSON.stringify(dbclient.query('SELECT id FROM "users" WHERE "email"=$1',
   [req.body.username], function(err, result){
     if(result.rows[0]){
-      res.redirect('/register');
+      res.redirect('/signup');
     }
     else{
       dbclient.query('INSERT INTO users (id, "firstName", "lastName", email, password) VALUES ($1, $2, $3, $4, $5)',
@@ -218,7 +219,7 @@ app.post('/signup', async function(req, res){
     }
     else{
       dbclient.query('COMMIT')
-      console.log(result)
+      //console.log(result)
       res.redirect('/login');
       return;
     }
@@ -232,7 +233,7 @@ app.post('/signup', async function(req, res){
 });
 
 //The inventory page where the database will be shown
-
+/*
 app.get('/inventory', passport.authenticate('local', {failureRedirect: '/'}),function(req, res, next){
   var passedStuff = req.params.description;
   var q = 'SELECT * FROM inventory LIMIT 100';
@@ -240,8 +241,8 @@ app.get('/inventory', passport.authenticate('local', {failureRedirect: '/'}),fun
     if(err) throw err;
     res.render("inventory", {items: results});
   });
-});
-/*
+});*/
+
 app.get('/inventory', function(req, res) {
   if(req.isAuthenticated()){
     var passedStuff = req.params.description;
@@ -249,32 +250,33 @@ app.get('/inventory', function(req, res) {
 
     connection.query(q, function(err, results) {
       if(err) throw err;
-      res.render("inventory", {items: results});
+      res.render("auth/inventory", {items: results});
     });
   } else {
     res.redirect('/');
   }
-});*/
+});
 
-/*
+
 app.get('/user_accounts', function(req, res) {
 
   if(req.isAuthenticated()){
     var passedStuff = req.params.description;
     //Query to get the data
-    var q = 'SELECT * FROM user_account ORDER BY user_id';
+    var q = 'SELECT * FROM users ORDER BY id';
     connection.query(q, function(err, results) {
       if(err) throw err;
 
       //Send the rendered page
       //console.log(results);
-      res.render("user_accounts", {items: results});
+      res.render("auth/user_accounts", {items: results});
     });
   } else {
     res.redirect('/');
   }
-});*/
+});
 
+/*
 app.get('/user_accounts',
   passport.authenticate('local', {failureRedirect: '/'}),
     function(req, res) {
@@ -287,7 +289,7 @@ app.get('/user_accounts',
       //console.log(results);
       res.render("user_accounts", {items: results});
     });
-});
+});*/
 
 app.get('/items', function(req, res) {
   var passedStuff = req.params.description;
