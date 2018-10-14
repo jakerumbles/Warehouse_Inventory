@@ -1,0 +1,27 @@
+<% include ../partials/auth/authheader %>
+
+    <h1>Warehouse Inventory</h1>
+
+    <table border="1">
+      <!-- Header row -->
+      <tr>
+        <th>UUID</th>
+        <th>User Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Access</th>
+        <th>Password Hash</th>
+      </tr>
+      <% for(var i = 0; i < items.rowCount; i++) { %>
+          <tr>
+            <td><%= items.rows[i].id %></td>
+            <td><%= items.rows[i].email %></td>
+            <td><%= items.rows[i].firstName %></td>
+            <td><%= items.rows[i].lastName %></td>
+            <td><%= items.rows[i].access %></td>
+            <td><%= items.rows[i].password %></td>
+          </tr>
+      <% } %>
+    </table>
+
+<% include ../partials/footer %>

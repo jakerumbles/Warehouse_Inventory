@@ -1,0 +1,47 @@
+<% include ../partials/auth/authheader %>
+
+  <link rel="stylesheet" href="/inventory.css">
+
+    <h1>Warehouse Inventory</h1>
+
+    <table border="1">
+      <!-- Header row -->
+      <tr>
+        <th>Item ID</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Date Recieved</th>
+        <th>Storage Location</th>
+        <th>Present</th>
+        <th>Reserved</th>
+      </tr>
+      <% for(var i = 0; i < items.rowCount; i++) { %>
+          <tr>
+            <td><%= items.rows[i].inv_id %></td>
+            <td><%= items.rows[i].description %></td>
+            <td><%= items.rows[i].category %></td>
+            <td><%= items.rows[i].date_recieved %></td>
+            <td><%= items.rows[i].storage_location %></td>
+
+            <!-- PRESENT -->
+            <td><% if(items.rows[i].present === 'no') { %>
+                    <input type="checkbox">
+                <% } else { %>
+                    <input type="checkbox" checked>
+                <% } %>
+            </td>
+
+            <!-- RESERVED -->
+            <td><% if(items.rows[i].reserved === 'no') { %>
+                    <input type="checkbox">
+                <% } else { %>
+                    <input type="checkbox" checked>
+                <% } %>
+            </td>
+          </tr>
+      <% } %>
+    </table>
+
+    <a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
+
+<% include ../partials/footer %>
