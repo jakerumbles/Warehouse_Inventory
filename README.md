@@ -7,15 +7,15 @@ Project Details:
   
 Habitat for Humanity needs a computer system to improve the utilization of the items in the warehouse. The system
 shall support the following features at a minimum.
-
-• When items are received at the warehouse, their descriptions, quantity, and storage location within the
+<ul>
+<li> When items are received at the warehouse, their descriptions, quantity, and storage location within the
 warehouse will be entered into the inventory records, along with the date.
-• When items are removed from the warehouse, the inventory records will be marked to indicate this fact, along
+<li> When items are removed from the warehouse, the inventory records will be marked to indicate this fact, along
 with the date. The system will maintain a history of items.
-• When planning a project, a project leader can use the system to reserve materials that are currently in the
+<li> When planning a project, a project leader can use the system to reserve materials that are currently in the
 warehouse. The system shall prevent conflicting reservations.
-• The system shall generate inventory reports for project leaders and the organization’s management.
-
+<li> The system shall generate inventory reports for project leaders and the organization’s management.
+</ul>
 Your team is responsible for implementing the hypothetical database
 application described on page 2. This project addresses only a subset of a real
 system's requirements.
