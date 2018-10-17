@@ -17,11 +17,11 @@ warehouse. The system shall prevent conflicting reservations.
 <li> The system shall generate inventory reports for project leaders and the organization’s management.
 </ul>
 Your team is responsible for implementing the hypothetical database
-application described on page 2. This project addresses only a subset of a real
+application. This project addresses only a subset of a real
 system's requirements.
 The database system will be implemented in any DBMS and conventional
 programming language of your choice.
-
+<br>
 Purpose: The purpose of the project is to provide students the opportunity to combine
 previous knowledge and skills with the knowledge and skills learned in this
 course and apply them to a real-world application. 
