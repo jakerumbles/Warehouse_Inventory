@@ -3,6 +3,8 @@ const passport = require('passport');
 const connection = require('./dbconnection').connection;
 const pool = require('./dbconnection').pool;
 const app = express.Router();
+const bcrypt = require('bcrypt');
+const uuidv4 = require('uuid/v4');
 
 //ROUTES
 //Home
