@@ -27,7 +27,7 @@ app.get('/logout', function(req, res) {
 
 //New Item page
 app.get('/inventory/new', function(req, res) {
-  res.render("newItem");
+  res.render("auth/newItem");
   console.log("you visited the new item page");
 });
 
@@ -210,5 +210,30 @@ app.get('/projects', function(req, res) {
     res.render("projects", {items: results});
   });
 });
+
+//Query generator functions
+//Generates a query for inserting a new item
+function insertQuery(item) {
+  var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
+          'VALUES(';
+  q += '\'' + item.description + '\', ';
+  q += '\'' + item.category + '\', ';
+  q += 'NOW(), ';
+  q += item.storage_location + ', ';
+
+  if(item.present === 'on') {
+    q += '\'yes\', ';
+  } else {
+    q += '\'no\', ';
+  }
+
+  if(item.reserved === 'on') {
+    q += '\'yes\');';
+  } else {
+    q += '\'no\');';
+  }
+
+  return q;
+}
 
 module.exports = app;
