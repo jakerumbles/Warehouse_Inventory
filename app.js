@@ -80,29 +80,6 @@ app.listen(app.get('port'), function() {
 });
 
 //Query generator functions
-//Generates a query for inserting a new item
-function insertQuery(item) {
-  var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
-          'VALUES(';
-  q += '\'' + item.description + '\', ';
-  q += '\'' + item.category + '\', ';
-  q += 'NOW(), ';
-  q += item.storage_location + ', ';
-
-  if(item.present === 'on') {
-    q += '\'yes\', ';
-  } else {
-    q += '\'no\', ';
-  }
-
-  if(item.reserved === 'on') {
-    q += '\'yes\');';
-  } else {
-    q += '\'no\');';
-  }
-
-  return q;
-}
 
 //Generate fake data
 // var fake_data = [];
