@@ -22,6 +22,15 @@ const pool = dbconnection.pool;
 
 //app Setup
 config.init(app, express,passport);
+app.use(function(req, res, next){
+
+	res.locals.currentUser = req.user;
+	if(req.user)
+	res.locals.username = req.user.username;
+
+	next();
+
+});
 
 //routes setup
 const routeConfig = require('./routes');
@@ -56,7 +65,7 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 							return done();
 						}
 						else if (check){
-							return done(null, [{id: result.rows[0].id}]);
+							return done(null, [{id: result.rows[0].id, username: result.rows[0].email}]);
 						}
 						else{
               console.log('null false')

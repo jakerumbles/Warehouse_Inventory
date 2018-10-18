@@ -10,7 +10,7 @@ const uuidv4 = require('uuid/v4');
 //Home
 app.get('/', function(req, res) {
   if(req.isAuthenticated()){
-    res.render("auth/home");
+    res.render("auth/home", {currentUser: req.user});
   } else {
     res.render("home");
   }
@@ -27,7 +27,11 @@ app.get('/logout', function(req, res) {
 
 //New Item page
 app.get('/inventory/new', function(req, res) {
-  res.render("auth/newItem");
+  if(req.isAuthenticated()){
+    res.render("auth/newItem");
+  } else {
+    res.render("home");
+  }
   console.log("you visited the new item page");
 });
 
@@ -43,8 +47,7 @@ app.post('/inventory', function(req, res) {
   res.redirect("/inventory");
 });
 
-//eventually a login page
-
+//Login page
 app.get('/login', function(req, res, next){
   if(req.isAuthenticated()){
     res.redirect('/');
@@ -74,6 +77,7 @@ function checkAuth(req, res, next){
 */
 
 //passport.authenticate works here for some reason but not others
+//Submit Login Page
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/user_accounts',
   failureRedirect: '/login',
@@ -87,7 +91,7 @@ app.post('/login', passport.authenticate('local', {
     }
 );
 
-
+//Users Table. TODO: take at least some data out of production
 app.get('/user_accounts', function(req, res) {
 
   if(req.isAuthenticated()){
@@ -106,9 +110,26 @@ app.get('/user_accounts', function(req, res) {
   }
 });
 
-//eventually a signup page
+//signup page
 app.get('/signup', function(req, res, next){
-  res.render("signup", {title: "Register", userData: req.user});
+  if(req.isAuthenticated()){
+    res.redirect('/account');
+  } else {
+    res.render("signup", {title: "Register", userData: req.user});
+  }
+});
+
+app.get('/account', function(req, res, next){
+  if(req.isAuthenticated()){
+    var q = 'SELECT * FROM users WHERE "id"=$1';
+    connection.query(q, [req.user.id], function(err, results) {
+      console.log("q", [req.user.id], q);
+      console.log("results", results);
+      res.render("auth/account", {info: results});
+    });
+  } else {
+    res.redirect('/signup');
+  }
 });
 
 app.post('/signup', async function(req, res){

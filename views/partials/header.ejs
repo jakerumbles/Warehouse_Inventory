@@ -15,4 +15,16 @@
         <li class="nav-item">
           <a id="home-button" class="nav-link active" href="/"><i class="fas fa-home"></i></a>
         </li>
+        <% if(currentUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/inventory">Inventory</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user_accounts">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out</a>
+        </li>
+        <li><a href="#">Signed In As <%= username %></a></li>
+        <% } %>
       </ul>
