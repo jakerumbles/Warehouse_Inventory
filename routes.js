@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const connection = require('./dbconnection').connection;
+const pool = require('./dbconnection').pool;
 const app = express.Router();
 
 //ROUTES
