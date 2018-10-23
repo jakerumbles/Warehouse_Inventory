@@ -1,61 +1,84 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Home</title>
 
     <link rel="stylesheet" href="/app.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="container">
-      <!-- <ul class="nav nav-pills">
+        <!-- <ul class="nav nav-pills">
         <li class="nav-item">
-          <a id="home-button" class="nav-link active" href="/"><i class="fas fa-home"></i></a>
-        </li>
-        <% if(currentUser) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/inventory">Inventory</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/user_accounts">Users</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Log Out</a>
-            </li>
-            <li><a href="#">Signed In As <%= currentUser.username %></a></li>
-        <% } %>
-      </ul> -->
+        <a id="home-button" class="nav-link active" href="/"><i class="fas fa-home"></i></a>
+    </li>
+    <% if(currentUser) { %>
+    <li class="nav-item">
+    <a class="nav-link" href="/inventory">Inventory</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/user_accounts">Users</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/logout">Log Out</a>
+</li>
+<li><a href="#">Signed In As <%= currentUser.username %></a></li>
+<% } %>
+</ul> -->
 
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-   <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-     <span class="navbar-toggler-icon"></span>
-   </button>
-   <div class="collapse navbar-collapse" id="navbarNav">
-     <ul class="navbar-nav">
-       <li class="nav-item active">
-         <a class="nav-link" href="/inventory">Inventory <span class="sr-only">(current)</span></a>
-       </li>
-       <li class="nav-item">
-         <a class="nav-link" href="/account">User Account</a>
-       </li>
-       <li class="nav-item">
-         <a class="nav-link" href="#">Pricing</a>
-       </li>
-     </ul>
-     <ul class="nav navbar-nav navbar-right">
-       <% if(!currentUser) { %>
-            <li class="nav-items"><a href="/login">Login</a></li>
-            <li><a href="/register">Sign Up</a></li>
-       <% } else { %>
-            <li><a href="#">Signed In As <%= currentUser.username %></a></li>
-            <li><a href="/logout">Logout</a></li>
-       <% } %>
-    </ul>
-   </div>
- </nav>
+    <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/inventory">Inventory <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/account">User Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <% if(!currentUser) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account">Signed In As <%= currentUser.username %></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <script type="text/javascript">
+
+    var sPath = window.location.pathname;
+    var navContainer = document.getElementById("navbarNav");
+    var navItems = navContainer.getElementsByClassName("nav-item");
+
+    for(var i = 0; i < navItems.length; i++){
+        var thisPath = navItems[i].children[0].pathname
+        if(thisPath === sPath){
+            navItems[i].className += ' active';
+        }
+    }
+
+    </script>

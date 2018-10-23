@@ -127,15 +127,15 @@ app.get('/signup', function(req, res, next){
   if(req.isAuthenticated()){
     res.redirect('/account');
   } else {
-    res.render("signup", {title: "Register", userData: req.user});
+    res.render("users/signup", {title: "Register", userData: req.user});
   }
 });
 
-app.get('/account', function(req, res, next){
+app.get('/account', checkAuth, function(req, res, next){
     var q = 'SELECT * FROM users WHERE "id"=$1';
     connection.query(q, [req.user.id], function(err, results) {
-        console.log("q", [req.user.id], q);
-        console.log("results", results);
+        //console.log("q", [req.user.id], q);
+        //console.log("results", results);
         res.render("users/account", {info: results});
     });
 });
