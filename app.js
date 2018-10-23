@@ -22,14 +22,12 @@ const pool = dbconnection.pool;
 
 //app Setup
 config.init(app, express,passport);
+//Make currentUser avaliable in every page so I don't have to pass it in the render function for every single route
 app.use(function(req, res, next){
-
 	res.locals.currentUser = req.user;
 	if(req.user)
-	res.locals.username = req.user.username;
-
+		res.locals.username = req.user.username;
 	next();
-
 });
 
 //routes setup

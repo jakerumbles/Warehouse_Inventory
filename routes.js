@@ -47,6 +47,10 @@ app.post('/inventory', function(req, res) {
   res.redirect("/inventory");
 });
 
+
+// --------------
+// AUTH routes
+// --------------
 //Login page
 app.get('/login', function(req, res, next){
   if(req.isAuthenticated()){
@@ -56,6 +60,10 @@ app.get('/login', function(req, res, next){
     res.render('login', {title: "Log In", userData: req.user});
   }
 });
+
+//Check login credentials
+app.post('/login', )
+
 /*
 app.get('/login', passport.authenticate('local', {failureRedirect: '/login'}),function(req, res, next){
   res.redirect('/');
@@ -81,7 +89,7 @@ function checkAuth(req, res, next){
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/user_accounts',
   failureRedirect: '/login',
-  }),function(req, res){
+  }), function(req, res){
     if(req.body.remember){
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
     } else {
