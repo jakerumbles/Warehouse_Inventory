@@ -9,34 +9,42 @@ const uuidv4 = require('uuid/v4');
 //ROUTES
 //Home
 app.get('/', function(req, res) {
-  if(req.isAuthenticated()){
-    res.render("auth/home", {currentUser: req.user});
-  } else {
     res.render("home");
-  }
-  console.log("you visited the home page");
+    console.log("you visited the home page");
 });
 
-app.get('/logout', function(req, res) {
-  //
-  req.session.destroy(function() {
-    res.redirect('/');
-  });
-  console.log("User Logs Out");
+// Logout
+app.get('/logout', checkAuth, function(req, res) {
+    console.log(req.user.username + " Logs Out");
+    req.session.destroy(function() {
+        res.redirect('/');
+    });
+
+});
+
+// ----------------
+// INVENTORY routes
+// ----------------
+
+//Inventory Page
+app.get('/inventory', checkAuth, function(req, res) {
+    var passedStuff = req.params.description;
+    var q = 'SELECT * FROM inventory LIMIT 100';
+
+    connection.query(q, function(err, results) {
+      if(err) throw err;
+      res.render("inventory/inventory", {items: results});
+    });
 });
 
 //New Item page
-app.get('/inventory/new', function(req, res) {
-  if(req.isAuthenticated()){
-    res.render("auth/newItem");
-  } else {
-    res.render("home");
-  }
-  console.log("you visited the new item page");
+app.get('/inventory/new', checkAuth, function(req, res) {
+    res.render("inventory/newItem");
+    console.log("you visited the new item page");
 });
 
 //Add new item to DB
-app.post('/inventory', function(req, res) {
+app.post('/inventory', checkAuth, function(req, res) {
   var item = req.body.item;
   console.log("inventory post route...now adding new item to DB");
   var q = insertQuery(item);
@@ -44,7 +52,7 @@ app.post('/inventory', function(req, res) {
   connection.query(q, function(err, results) {
     if(err) throw err;
   });
-  res.redirect("/inventory");
+  res.redirect("inventory/inventory");
 });
 
 
@@ -53,16 +61,13 @@ app.post('/inventory', function(req, res) {
 // --------------
 //Login page
 app.get('/login', function(req, res, next){
-  if(req.isAuthenticated()){
-    res.redirect('/');
-  }
-  else{
-    res.render('login', {title: "Log In", userData: req.user});
-  }
+    //Special Case: If user is already logged in, redirect to the home page.
+      if(req.isAuthenticated()){
+        res.redirect('/');
+      } else {
+        res.render('users/login');
+      }
 });
-
-//Check login credentials
-app.post('/login', )
 
 /*
 app.get('/login', passport.authenticate('local', {failureRedirect: '/login'}),function(req, res, next){
@@ -74,6 +79,7 @@ app.get('/login', passport.authenticate('local', {failureRedirect: '/login'}),fu
 app.get('/login', checkAuth,function(req, res, next){
   res.redirect('/');
 });
+*/
 
 function checkAuth(req, res, next){
   if(req.isAuthenticated()){
@@ -82,22 +88,20 @@ function checkAuth(req, res, next){
     res.redirect('/login');
   }
 }
-*/
+
 
 //passport.authenticate works here for some reason but not others
 //Submit Login Page
+// app.post('/login', passport.authenticate('local', {
+//   successRedirect: 'users/account',
+//   failureRedirect: '/login',
+//   });
+// });
+
 app.post('/login', passport.authenticate('local', {
-  successRedirect: '/user_accounts',
-  failureRedirect: '/login',
-  }), function(req, res){
-    if(req.body.remember){
-      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
-    } else {
-      rea.session.cookie.expires = false;
-    }
-    res.redirect('/');
-    }
-);
+    successRedirect: '/account',
+    failureRedirect: '/login'
+}));
 
 //Users Table. TODO: take at least some data out of production
 app.get('/user_accounts', function(req, res) {
@@ -128,16 +132,12 @@ app.get('/signup', function(req, res, next){
 });
 
 app.get('/account', function(req, res, next){
-  if(req.isAuthenticated()){
     var q = 'SELECT * FROM users WHERE "id"=$1';
     connection.query(q, [req.user.id], function(err, results) {
-      console.log("q", [req.user.id], q);
-      console.log("results", results);
-      res.render("auth/account", {info: results});
+        console.log("q", [req.user.id], q);
+        console.log("results", results);
+        res.render("users/account", {info: results});
     });
-  } else {
-    res.redirect('/signup');
-  }
 });
 
 app.post('/signup', async function(req, res){
@@ -183,19 +183,7 @@ app.get('/inventory', passport.authenticate('local', {failureRedirect: '/'}),fun
   });
 });*/
 
-app.get('/inventory', function(req, res) {
-  if(req.isAuthenticated()){
-    var passedStuff = req.params.description;
-    var q = 'SELECT * FROM inventory LIMIT 100';
 
-    connection.query(q, function(err, results) {
-      if(err) throw err;
-      res.render("auth/inventory", {items: results});
-    });
-  } else {
-    res.redirect('/');
-  }
-});
 
 /*
 app.get('/user_accounts',
