@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <title>Home</title>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="/app.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -56,29 +59,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
-            <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/account">Signed In As <%= currentUser.username %></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-                <% } %>
-            </ul>
-        </div>
-    </nav>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Signed In As <%= currentUser.username %></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-    var sPath = window.location.pathname;
-    var navContainer = document.getElementById("navbarNav");
-    var navItems = navContainer.getElementsByClassName("nav-item");
+        var sPath = window.location.pathname;
+        var navContainer = document.getElementById("navbarNav");
+        var navItems = navContainer.getElementsByClassName("nav-item");
 
-    for(var i = 0; i < navItems.length; i++){
-        var thisPath = navItems[i].children[0].pathname
-        if(thisPath === sPath){
-            navItems[i].className += ' active';
+        for(var i = 0; i < navItems.length; i++){
+            var thisPath = navItems[i].children[0].pathname
+            if(thisPath === sPath){
+                navItems[i].className += ' active';
+            }
         }
-    }
 
-    </script>
+        </script>
