@@ -1,16 +1,76 @@
 <% include ./partials/header %>
 
-    <div class="jumbotron">
-      <h1 class="display-4">Welcome to idkDB</h1>
-      <p class="lead">This is a simple web app for keeping track of the items in your warehouse or storage area.</p>
-      <hr class="my-4">
-      <% if(!currentUser) { %>
-      <p>Log in or make an account to get started.</p>
-      <a class="btn btn-primary btn-lg" href="/login" role="button">Log In</a>
-      <a class="btn btn-outline-secondary btn-lg" href="/signup" role="button">Sign Up!</a>
-      <% } %>
+<div class="modal fade right" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-right" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Log In</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="loginModalForm" action="/login" method="POST">
+                <div>
+                    <label>Username:</label>
+                    <input type="text" name="username"/>
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" name="password"/>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary btn-success" type="submit" name="submit" form="loginModalForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade right" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-right" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="signupModalForm" action="/signup" method="POST">
+                <div>
+                    <label>First Name:</label>
+                    <input type="text" name="firstName"/>
+                </div>
+                <div>
+                    <label>Last Name:</label>
+                    <input type="text" name="lastName"/>
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="text" name="username"/>
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" name="password"/>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary btn-success" type="submit" name="submit" form="signupModalForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to idkDB</h1>
+    <p class="lead">This is a simple web app for keeping track of the items in your warehouse or storage area.</p>
+    <hr class="my-4">
+    <% if(!currentUser) { %>
+        <p>Log in or make an account to get started.</p>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">Log In</button>
+        <button class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#signupModal">Sign Up</button>
+        <% } %>
     </div>
 
-
-
-<% include ./partials/footer %>
+    <% include ./partials/footer %>
