@@ -1,12 +1,12 @@
 <% include ../partials/header %>
 
-  <link rel="stylesheet" href="/inventory.css">
+<link rel="stylesheet" href="/inventory.css">
 
-    <h1>Warehouse Inventory</h1>
+<h1>Warehouse Inventory</h1>
 
-    <table border="1">
-      <!-- Header row -->
-      <tr>
+<table border="1">
+    <!-- Header row -->
+    <tr>
         <th>Item ID</th>
         <th>Description</th>
         <th>Category</th>
@@ -14,34 +14,77 @@
         <th>Storage Location</th>
         <th>Present</th>
         <th>Reserved</th>
-      </tr>
-      <% for(var i = 0; i < items.rowCount; i++) { %>
-          <tr>
-            <td><%= items.rows[i].inv_id %></td>
-            <td><%= items.rows[i].description %></td>
-            <td><%= items.rows[i].category %></td>
-            <td><%= items.rows[i].date_recieved %></td>
-            <td><%= items.rows[i].storage_location %></td>
+        <th>Edit</th>
+    </tr>
+    <% for(var i = 0; i < items.rowCount; i++) { %>
+    <tr>
+        <td><%= items.rows[i].inv_id %></td>
+        <td><%= items.rows[i].description %></td>
+        <td><%= items.rows[i].category %></td>
+        <td><%= items.rows[i].date_recieved %></td>
+        <td><%= items.rows[i].storage_location %></td>
 
-            <!-- PRESENT -->
-            <td><% if(items.rows[i].present === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
+        <!-- PRESENT -->
+        <td><% if(items.rows[i].present === 'no') { %>
+            <input type="checkbox">
+            <% } else { %>
+            <input type="checkbox" checked>
+            <% } %>
+        </td>
 
             <!-- RESERVED -->
-            <td><% if(items.rows[i].reserved === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
-          </tr>
-      <% } %>
-    </table>
+        <td><% if(items.rows[i].reserved === 'no') { %>
+            <input type="checkbox">
+            <% } else { %>
+            <input type="checkbox" checked>
+            <% } %>
+        </td>
+        <td><button class="showbtn" data-toggle="modal" data-target="#viewItem" data-id=<%=items.rows[i].inv_id%>>Edit</button></td>
+    </tr>
+    <% } %>
+</table>
 
-    <a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
+<div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
+                <h3>Item Details</h3>
+            </div>
+            <div class="modal-body">
+                <p>Item Details Body</p>
+                <input type="hidden" name="hiddenvalue" id="hiddenvalue" value=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+
+            var data_id = '';
+
+            if (typeof $(this).data('id') !== 'undefined') {
+
+                data_id = $(this).data('id');
+            }
+
+            $('#hiddenvalue').val(data_id);
+
+            
+
+        })
+    });
+
+</script>
 
 <% include ../partials/footer %>

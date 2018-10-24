@@ -23,7 +23,7 @@ CREATE TABLE inventory_history(
     inv_id INTEGER NOT NULL,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(25) NOT NULL,
-    date_recieved DATE DEFAULT NOW(),
+    date_modified DATE DEFAULT NOW(),
     storage_location VARCHAR(4) NOT NULL,
     history VARCHAR(100),
     PRIMARY KEY(hist_id)
