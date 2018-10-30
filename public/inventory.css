@@ -1,22 +1,6 @@
-body {
-  background: #ffffff;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #267871, #136a8a);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #267871, #136a8a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.nav {
-  background-color: fefefe;
-}
-
-.inv-page {
-    display: table;
-    height: 100vh;
-    justify-content: space-between;
+h1 {
     position: relative;
+    text-align: center;
 }
 
 .btn-container{
@@ -28,42 +12,14 @@ body {
     left: 50%;
 }
 
-.jumbotron {
-  margin-top: 2rem;
+.inv-container {
+    font-size: small;
+    text-align: center;
+    line-height: 1;
 }
 
-#newItemButton {
-  background:#fdfdfd;
-  color: #000000;
-  /*border-radius:50%;*/
-  border:0;
-
-  position: absolute;
-
-  top:60%; /* if circle bulb in image is at 60% set at 60% */
-  left:50%;
-  /*width:  100px;
-  height: 100px;*/
-  margin-top:  -50px;
-  margin-left: -50px;
-}
-
-#newItemButton:hover {
-    background:#f0f0f0;
-    color: #000000;
-    /*border-radius:50%;*/
-    border:0;
-
-    position: absolute;
-
-    top:60%; /* if circle bulb in image is at 60% set at 60% */
-    left:50%;
-    /*width:  100px;
-    height: 100px;*/
-    margin-top:  -50px;
-    margin-left: -50px;
-}
-
-h2 {
-  margin-top: 2rem;
+@media (min-width: 1200px){
+    .col-xl-auto {
+        max-width: 85vw;
+    }
 }
