@@ -4,45 +4,52 @@
 
 <h1>Warehouse Inventory</h1>
 
-<table border="1">
-    <!-- Header row -->
-    <tr>
-        <th>Item ID</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Date Recieved</th>
-        <th>Storage Location</th>
-        <th>Present</th>
-        <th>Reserved</th>
-        <th>Edit</th>
-    </tr>
-    <% for(var i = 0; i < items.rowCount; i++) { %>
-    <tr>
-        <td><%= items.rows[i].inv_id %></td>
-        <td><%= items.rows[i].description %></td>
-        <td><%= items.rows[i].category %></td>
-        <td><%= items.rows[i].date_recieved %></td>
-        <td><%= items.rows[i].storage_location %></td>
+<div class="inv-page">
+    <div class="inv-table">
+        <table border="1">
+            <!-- Header row -->
+            <tr>
+                <th>Item ID</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Date Recieved</th>
+                <th>Storage Location</th>
+                <th>Present</th>
+                <th>Reserved</th>
+                <th>Edit</th>
+            </tr>
+            <% for(var i = 0; i < items.rowCount; i++) { %>
+                <tr>
+                    <td><%= items.rows[i].inv_id %></td>
+                    <td><%= items.rows[i].description %></td>
+                    <td><%= items.rows[i].category %></td>
+                    <td><%= items.rows[i].date_recieved %></td>
+                    <td><%= items.rows[i].storage_location %></td>
 
-        <!-- PRESENT -->
-        <td><% if(items.rows[i].present === 'no') { %>
-            <input type="checkbox">
-            <% } else { %>
-            <input type="checkbox" checked>
-            <% } %>
-        </td>
+                    <!-- PRESENT -->
+                    <td><% if(items.rows[i].present === 'no') { %>
+                        <input type="checkbox">
+                        <% } else { %>
+                            <input type="checkbox" checked>
+                            <% } %>
+                        </td>
 
-            <!-- RESERVED -->
-        <td><% if(items.rows[i].reserved === 'no') { %>
-            <input type="checkbox">
-            <% } else { %>
-            <input type="checkbox" checked>
-            <% } %>
-        </td>
-        <td><button class="showbtn" data-toggle="modal" data-target="#viewItem" data-id=<%=items.rows[i].inv_id%>>Edit</button></td>
-    </tr>
-    <% } %>
-</table>
+                        <!-- RESERVED -->
+                        <td><% if(items.rows[i].reserved === 'no') { %>
+                            <input type="checkbox">
+                            <% } else { %>
+                                <input type="checkbox" checked>
+                                <% } %>
+                            </td>
+                            <td><button class="showbtn" data-toggle="modal" data-target="#viewItem" data-id=<%=items.rows[i].inv_id%>>Edit</button></td>
+                        </tr>
+                        <% } %>
+                    </table>
+    </div>
+    <div class="btn-container">
+        <a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
+    </div>
+</div>
 
 <div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
     <div class="modal-dialog" role="dialog">
@@ -63,34 +70,33 @@
     </div>
 </div>
 
-<a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
 
 <script type="text/javascript">
 
-    const myFun = () => {
-        fetch('/inventory').then(response =>{
-            console.log(response);
-        });
-    }
+                const myFun = () => {
+                    fetch('/inventory').then(response =>{
+                        console.log(response);
+                    });
+                }
 
-    $(document).ready(function() {
+                $(document).ready(function() {
 
-        $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+                    $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
 
-            var data_id = '';
+                        var data_id = '';
 
-            if (typeof $(this).data('id') !== 'undefined') {
+                        if (typeof $(this).data('id') !== 'undefined') {
 
-                data_id = $(this).data('id');
-            }
+                            data_id = $(this).data('id');
+                        }
 
-            $('#hiddenvalue').val(data_id);
+                        $('#hiddenvalue').val(data_id);
 
 
 
-        })
-    });
+                    })
+                });
 
-</script>
+            </script>
 
-<% include ../partials/footer %>
+            <% include ../partials/footer %>
