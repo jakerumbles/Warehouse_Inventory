@@ -4,12 +4,14 @@ h1 {
 }
 
 .btn-container{
-    position: absolute;
-    margin-left: auto;
-    width: 100px;
-    bottom: -80px;
-    top: 105%;
     left: 50%;
+}
+
+.row.jumbotron {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
 .inv-container {
