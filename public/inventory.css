@@ -12,6 +12,22 @@ body {
   background-color: fefefe;
 }
 
+.inv-page {
+    display: table;
+    height: 100vh;
+    justify-content: space-between;
+    position: relative;
+}
+
+.btn-container{
+    position: absolute;
+    margin-left: auto;
+    width: 100px;
+    bottom: -80px;
+    top: 105%;
+    left: 50%;
+}
+
 .jumbotron {
   margin-top: 2rem;
 }
@@ -30,6 +46,22 @@ body {
   height: 100px;*/
   margin-top:  -50px;
   margin-left: -50px;
+}
+
+#newItemButton:hover {
+    background:#f0f0f0;
+    color: #000000;
+    /*border-radius:50%;*/
+    border:0;
+
+    position: absolute;
+
+    top:60%; /* if circle bulb in image is at 60% set at 60% */
+    left:50%;
+    /*width:  100px;
+    height: 100px;*/
+    margin-top:  -50px;
+    margin-left: -50px;
 }
 
 h2 {
