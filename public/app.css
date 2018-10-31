@@ -2,6 +2,7 @@ body {
   background: #ffffff;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #267871, #136a8a);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #267871, #136a8a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: #f7f7f7; */
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 0px;
@@ -10,13 +11,17 @@ body {
 
 #home-button{
   background-image: url(/assets/logo.jpg);
+}
+
+.navbar {
+  /* background-color: #0099cc; */
+  background-size: contain;
 
 }
 
-.nav {
-  background-color: fefefe;
-  background-size: contain;
-
+.btn.btn-primary{
+    /* background: #c4d600; */
+    /* border-color: #c4d600; */
 }
 
 .jumbotron {

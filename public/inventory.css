@@ -8,6 +8,8 @@ h1 {
 }
 
 .row.jumbotron {
+    /* background-color: #0099cc; */
+    color:black!important;
     padding-bottom: 10px;
     padding-top: 10px;
     padding-right: 2px;
