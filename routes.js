@@ -38,6 +38,19 @@ app.get('/inventory', checkAuth, function(req, res) {
     });
 });
 
+// testing really don't know if this will work.
+app.get('/inv-items/:id', checkAuth, function(req, res) {
+    var itemId = req.params.id;
+    // var q = 'SELECT * FROM inventory_history LIMIT 100';
+    var q = `SELECT * FROM inventory_history WHERE "inv_id"=${itemId}`
+
+    connection.query(q, function(err, results) {
+        if(err) throw err;
+        res.send({items: results});
+    });
+});
+
+
 //New Item page
 app.get('/inventory/new', checkAuth, function(req, res) {
     res.render("inventory/newItem");

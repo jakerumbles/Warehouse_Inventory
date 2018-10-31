@@ -63,15 +63,13 @@
 </div>
 
 <div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
-    <div class="modal-dialog" role="dialog">
-        <div class="modal-content">
+    <div class="modal-dialog col-sm-3 col-md-6 col-lg-9 col-xl-auto" role="dialog">
+        <div class="modal-content inv-container">
             <div class="modal-header">
                 <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
                 <h3>Item Details</h3>
             </div>
             <div class="modal-body">
-                <p>Item Details Body</p>
-                <input type="hidden" name="hiddenvalue" id="hiddenvalue" value=""/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
@@ -84,30 +82,69 @@
 
 <script type="text/javascript">
 
-                const myFun = () => {
-                    fetch('/inventory').then(response =>{
-                        console.log(response);
-                    });
-                }
+var getData = async function(id){
+    const url = `/inv-items/${id}`;
+    const resp = await fetch(url)
+    const data = await resp.json()
+    if (data.items.rowCount < 1){
+        document.querySelector('#hiddenvalue').value = "No Item History."
+    }else {
+        const rows = data.items.rows
+        let tbl = document.querySelector('.inv-his-table')
+        if(tbl) tbl.remove();
 
-                $(document).ready(function() {
+        tbl = document.createElement('TABLE');
+        tbl.classList.add('inv-his-table')
+        tbl.classList.add('table')
+        tbl.classList.add('table-condensed')
+        tbl.classList.add('table-responsive')
+        tbl.border = '5px';
+        var thead = document.createElement('THEAD')
+        tbl.appendChild(thead)
+        var tabTr = document.createElement('TR')
+        thead.appendChild(tabTr)
+        for (var key in rows[0]){
+            var tabTh = document.createElement('TH')
+            tabTh.textContent = key;
+            tabTr.appendChild(tabTh)
+        }
+        var tabBod = document.createElement('tbody')
+        tbl.appendChild(tabBod)
 
-                    $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+        rows.forEach(row => {
+            var tabTr = document.createElement('TR');
+            tabBod.appendChild(tabTr);
+            for(var key in row){
+                var tabTh = document.createElement('TH')
+                tabTh.textContent = row[key]
+                tabTr.appendChild(tabTh)
+                // document.querySelector('#hiddenvalue').value += key;
+                // document.querySelector('#hiddenvalue').value += ": " + row[key];
+            }
+        })
+        var modalBod = document.querySelector('.modal-body')
+        modalBod.appendChild(tbl)
+    }
+}
 
-                        var data_id = '';
+$(document).ready(function() {
 
-                        if (typeof $(this).data('id') !== 'undefined') {
+    $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
 
-                            data_id = $(this).data('id');
-                        }
+        var data_id = '';
+        var data_desc = '';
 
-                        $('#hiddenvalue').val(data_id);
+        if (typeof $(this).data('id') !== 'undefined') {
+            data_id = $(this).data('id');
+        }
 
+        if (typeof $(this).data('description') !== 'undefined') {
+            data_desc = $(this).data('description');
+        }
+        getData(data_id);
+    })
+});
 
-
-                    })
-                });
-
-            </script>
+</script>
 
 <% include ../partials/footer %>
