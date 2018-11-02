@@ -12,7 +12,7 @@ var app = express();
 var passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const config = require('./config');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
 
 //database connection

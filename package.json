@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jakerumbles/Warehouse_Inventory#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.1.0",

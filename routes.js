@@ -4,7 +4,7 @@ const connection = require('./dbconnection').connection;
 const pool = require('./dbconnection').pool;
 const itemHistoryInsert = require('./dbconnection').itemHistoryInsert;
 const app = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
 
 //ROUTES
@@ -160,28 +160,29 @@ app.post('/signup', async function(req, res){
     try{
         const dbclient = await pool.connect()
         await dbclient.query('BEGIN')
-        var pwd = await bcrypt.hash(req.body.password, 5);
-        await JSON.stringify(dbclient.query('SELECT id FROM "users" WHERE "email"=$1',
-        [req.body.username], function(err, result){
-            if(result.rows[0]){
-                res.redirect('/signup');
-            }
-            else{
-                dbclient.query('INSERT INTO users (id, "firstName", "lastName", email, password) VALUES ($1, $2, $3, $4, $5)',
-                [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd],
-                function(err, result){
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        dbclient.query('COMMIT')
-                        //console.log(result)
-                        res.redirect('/login');
-                        return;
-                    }
-                });
-            }
-        }));
+        await bcrypt.hash(req.body.password, null, null, async function(err,hash){
+            await JSON.stringify(dbclient.query('SELECT id FROM "users" WHERE "email"=$1',
+            [req.body.username], function(err, result){
+                if(result.rows[0]){
+                    res.redirect('/signup');
+                }
+                else{
+                    dbclient.query('INSERT INTO users (id, "firstName", "lastName", email, password) VALUES ($1, $2, $3, $4, $5)',
+                    [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, hash],
+                    function(err, result){
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            dbclient.query('COMMIT')
+                            //console.log(result)
+                            res.redirect('/login');
+                            return;
+                        }
+                    });
+                }
+            }));
+        });
         dbclient.release();
 
     }
