@@ -17,9 +17,8 @@ app.get('/', function(req, res) {
 // Logout
 app.get('/logout', checkAuth, function(req, res) {
     console.log(req.user.username + " Logs Out");
-    req.session.destroy(function() {
-        res.redirect('/');
-    });
+    req.session = null;
+    res.redirect("/");
 
 });
 

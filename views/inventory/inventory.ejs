@@ -5,7 +5,7 @@
 <div class="container">
     <h1>Warehouse Inventory</h1>
     <div class="row jumbotron text-white">
-        <div class="inv-container col-sm col-md col-lg col-xl">
+        <div class="inv-container col-sm col-md-8 col-lg-12 col-xl-12">
             <p>
                 <table class="table table-condensed table-responsive">
                     <!-- <caption>Condensed Table Layout</caption> -->
@@ -48,7 +48,7 @@
                                 <% } %>
                             </td>
                             <td>
-                                <button class="showbtn" data-toggle="modal" data-target="#viewItem" data-id=<%=items.rows[i].inv_id%>>Edit</button>
+                                <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=items.rows[i].inv_id%>>Edit</button>
                             </td>
                         </tr>
                         <% } %>

@@ -1,7 +1,8 @@
 <% include ./partials/header %>
 
+<!-- Login Modal -->
 <div class="modal fade right" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-full-height modal-right" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-full-height modal-right" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="loginModalLabel">Log In</h5>
@@ -9,16 +10,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="loginModalForm" action="/login" method="POST">
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username"/>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="loginModalForm" action="/login" method="POST">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="usernameInput">Username</label>
+                                <input type="email" class="form-control col-md-12" id="usernameInput" placeholder="Enter username" name="username" aria-describedby="usernameHelp"/>
+                                <small id="usernameHelp" class="form-text text-muted">Your username may be your email</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="passwordInput">Password</label>
+                                <input type="password" class="form-control col-md-12" id="passwordInput" placeholder="Enter password" name="password"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password"/>
-                </div>
-            </form>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button class="btn btn-primary btn-success" type="submit" name="submit" form="loginModalForm">Submit</button>
@@ -27,6 +37,7 @@
     </div>
 </div>
 
+<!-- Signup Modal -->
 <div class="modal fade right" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-full-height modal-right" role="document">
         <div class="modal-content">
@@ -36,24 +47,36 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="signupModalForm" action="/signup" method="POST">
-                <div>
-                    <label>First Name:</label>
-                    <input type="text" name="firstName"/>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="signupModalForm" action="/login" method="POST">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="firstInput">First Name</label>
+                                <input type="text" class="form-control col-md-12" id="firstInput" placeholder="John" name="firstName"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="lastInput">Last Name</label>
+                                <input type="text" class="form-control col-md-12" id="lastInput" placeholder="Doe" name="lastName"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="emailInput">Email</label>
+                                <input type="email" class="form-control col-md-12" id="emailInput" placeholder="JohnDoe@asuh.com" name="username"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="passwordInput">Password</label>
+                                <input type="password" class="form-control col-md-12" id="passwordInput" placeholder="suh" name="password"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input type="text" name="lastName"/>
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="text" name="username"/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password"/>
-                </div>
-            </form>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button class="btn btn-primary btn-success" type="submit" name="submit" form="signupModalForm">Submit</button>
@@ -65,33 +88,33 @@
 <div class="jumbotron">
 
     <h1 class="display-4">Welcome to idkDB</h1>
-    
+
     <p class="lead">Created by David Hamilton, Jake Edwards, and John Carvajal</p>
-    
+
     <p class="lead">The code for this open source project can be viewed at:</p>
-    
+
     <a href="https://github.com/jakerumbles/Warehouse_Inventory">https://github.com/jakerumbles/Warehouse_Inventory</a>
-    
+
     <h2> This website is an implementation of what is needed in the following scenario</h2>
-    
+
     <p>Habitat for Humanity is a charitable organization that builds homes for poor families. Materials are
-    donated by businesses and individuals in the community; and labor is contributed by volunteers. 
-    Habitat for Humanity is staffed by volunteers who have a wide range of technical skill levels. 
+    donated by businesses and individuals in the community; and labor is contributed by volunteers.
+    Habitat for Humanity is staffed by volunteers who have a wide range of technical skill levels.
     Habitat for Humanity has a warehouse for storage of building materials and home furnishings that
     will be used in their projects. Currently, there are no written records of what is in the warehouse.
     When planning a project, a project leader walks around the warehouse looking for useful items.
     These items are either gathered together in one place or tagged for later pickup.</p>
 
     <p>Habitat for Humanity needs a computer system to improve the utilization of the items in the warehouse.</p>
-  
+
     <p>This website is designed to be used by Habitat for humanity to improve the utilization of the items in a warehouse.</p>
- 
+
     <p>When items are received at the warehouse, their descriptions, quantity, and storage location within
     the warehouse will be entered into the inventory records, along with the date.></p>
 
-    <p>When items are removed from the warehouse, the inventory records will be marked to indicate this 
+    <p>When items are removed from the warehouse, the inventory records will be marked to indicate this
     fact, along with the date. The system will maintain a history of items.</p>
-  
+
     <p>When planning a project, a project leader can use the system to reserve materials that are
     currently in the warehouse. The system shall prevent conflicting reservations.</p>
 
