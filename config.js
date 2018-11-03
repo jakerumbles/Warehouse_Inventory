@@ -3,11 +3,9 @@
   //main dependencies
   var passport = require('passport');
   var request = require('request');
-  //const { Pool, Client } = require('pg');
   var bodyParser = require('body-parser');
   var cookieParser = require('cookie-parser');
-  //const pg = require('pg');
-  const session = require('express-session');
+  const session = require('cookie-session');
   const parseDbUrl = require('parse-database-url'); //is this needed?
 
   config.init = function(app,express, passport){

@@ -84,7 +84,7 @@
 
 var getData = async function(id){
     const url = `/inv-items/${id}`;
-    const resp = await fetch(url)
+    const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     if (data.items.rowCount < 1){
         document.querySelector('#hiddenvalue').value = "No Item History."
