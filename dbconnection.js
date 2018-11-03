@@ -41,14 +41,14 @@ module.exports.itemHistoryInsert = function(item, username){
             connection.query(histq, function(err, results){
                 if(err){
                     console.log(err);
-                    next();
+                    //next();
                 } else {
                     console.log("inventory post route... now adding new item history to DB");
                 }
             });
         } else {
             console.log(err);
-            next();
+            //next();
         }
     });
 }
