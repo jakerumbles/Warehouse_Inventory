@@ -1,6 +1,14 @@
 h1 {
     position: relative;
-    text-align: center;
+    text-align: left;
+}
+
+#homeBody {
+    padding-top: 20px;
+}
+
+.navbar {
+    border-radius: 0px 0px .3rem .3rem
 }
 
 .btn-container{
@@ -26,4 +34,14 @@ h1 {
     .col-xl-auto {
         max-width: 85vw;
     }
+}
+
+.footerBody {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+#footer {
+    margin-bottom: 0px;
+    border-radius: .3rem .3rem 0px 0px;
 }

@@ -85,16 +85,24 @@
     </div>
 </div>
 
+
+<!-- MAIN CONTENT -->
 <div class="jumbotron">
 
     <h1 class="display-4">Welcome to idkDB</h1>
 
     <p class="lead">Created by David Hamilton, Jake Edwards, and John Carvajal</p>
+    <p>This is a simple web app for keeping track of the items in your warehouse or storage area.</p>
 
-    <p class="lead">The code for this open source project can be viewed at:</p>
+    <hr class="my-4">
+    <% if(!currentUser) { %>
+        <p>Log in or make an account to get started.</p>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">Log In</button>
+        <button class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#signupModal">Sign Up</button>
+        <% } %>
+</div>
 
-    <a href="https://github.com/jakerumbles/Warehouse_Inventory">https://github.com/jakerumbles/Warehouse_Inventory</a>
-
+<div class="jumbotron" id="homeBody">
     <h2> This website is an implementation of what is needed in the following scenario</h2>
 
     <p>Habitat for Humanity is a charitable organization that builds homes for poor families. Materials are
@@ -121,13 +129,18 @@
     <p>The system shall generate inventory reports for project leaders and the organization’s management.</p>
 
     <h1 class="display-4">Give it a try!</h1>
+</div>
 
-    <hr class="my-4">
-    <% if(!currentUser) { %>
-        <p>Log in or make an account to get started.</p>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">Log In</button>
-        <button class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#signupModal">Sign Up</button>
-        <% } %>
+<!-- Footer -->
+<div class="bg-dark" id="footer">
+    <div class="container">
+        <div class="footerBody">
+            <p class="text-light" id="footer">The code for this open source project can be viewed at:
+                <a href="https://github.com/jakerumbles/Warehouse_Inventory">https://github.com/jakerumbles/Warehouse_Inventory</a>
+            </p>
+        </div>
     </div>
+</div>
+<!-- Footer -->
 
-    <% include ./partials/footer %>
+<% include ./partials/footer %>
