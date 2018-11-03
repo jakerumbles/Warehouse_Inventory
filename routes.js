@@ -6,6 +6,7 @@ const itemHistoryInsert = require('./dbconnection').itemHistoryInsert;
 const app = express.Router();
 const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
+var format = require('pg-format');
 
 //ROUTES
 //Home
@@ -61,12 +62,12 @@ app.get('/inventory/new', checkAuth, function(req, res) {
 app.post('/inventory', checkAuth, function(req, res) {
     var item = req.body.item;
     console.log("inventory post route...now adding new item to DB");
-    var q = insertQuery(item);
-    //console.log(q);
     itemHistoryInsert(item, req.user.username);
-    connection.query(q, function(err, results) {
-        if(err) throw err;
-    });
+    insertQuery(item);
+    //console.log(q);
+    // connection.query(q, function(err, results) {
+    //     if(err) throw err;
+    // });
 
     res.redirect("/inventory");
 });
@@ -248,26 +249,19 @@ app.get('/projects', function(req, res) {
 //Query generator functions
 //Generates a query for inserting a new item
 function insertQuery(item) {
-    var q = 'INSERT INTO inventory(description, category, date_recieved, storage_location, present, reserved)' +
-    'VALUES(';
-    q += '\'' + item.description + '\', ';
-    q += '\'' + item.category + '\', ';
-    q += 'NOW(), ';
-    q += item.storage_location + ', ';
+    present = (item.present === 'on') ? 'yes' : 'no';
+    reserved = (item.reserved === 'on') ? 'yes' : 'no';
+    const qvalues = [item.description, item.category, 'NOW()',
+    item.storage_location,present,reserved];
 
-    if(item.present === 'on') {
-        q += '\'yes\', ';
-    } else {
-        q += '\'no\', ';
-    }
-
-    if(item.reserved === 'on') {
-        q += '\'yes\');';
-    } else {
-        q += '\'no\');';
-    }
-
-    return q;
+    const q = 'INSERT INTO inventory(description,category,date_recieved,'
+    +'storage_location,present,reserved) VALUES (%L) RETURNING *';
+    const sqlStatement = format(q, qvalues);
+    connection.query(sqlStatement,(err,res) =>{
+        if(err){
+            console.log(err)
+        }
+    })
 }
 
 module.exports = app;
