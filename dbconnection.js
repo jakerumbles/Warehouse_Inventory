@@ -1,6 +1,17 @@
 const {Pool, Client} = require('pg');
 const pg = require('pg');
 
+// SQL Query builder library for ease of searching
+var knex = require('knex')({
+  client: 'pg',
+  connection: {
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PW,
+    database : process.env.DB_DATABASE
+  }
+});
+
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -55,5 +66,8 @@ module.exports.itemHistoryInsert = function(item, username){
 
 connection.connect();
 
+
+
 module.exports.connection = connection;
+module.exports.knex = knex;
 module.exports.pool = pool;

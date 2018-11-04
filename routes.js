@@ -7,6 +7,9 @@ const app = express.Router();
 const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
 var format = require('pg-format');
+const knex = require('./dbconnection').knex;
+
+
 
 //ROUTES
 //Home
@@ -74,16 +77,29 @@ app.post('/inventory', checkAuth, function(req, res) {
 // SEARCH routes
 // --------------
 // Show search form
-app.get('/search', checkAuth, function(req, res) {
+app.get('/search/new', checkAuth, function(req, res) {
     res.render('search');
-})
+});
 
 // Query the database
 app.post('/search', checkAuth, function(req, res) {
     var query = req.body.query;
     console.log(query);
-    var q = searchDB(query.description);
-    res.redirect('/search');
+    var q = knex('inventory').where('description', 'like', `%${query.description}%`).select().toString();
+    connection.query(q, function(err, results) {
+        if(err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            //console.log(results);
+            res.render('inventory/inventory', {items:results});
+        }
+    })
+});
+
+// Show results of query
+app.get('/search', function(req, res) {
+    res.send(results);
 });
 
 
@@ -263,12 +279,6 @@ function insertQuery(item) {
             console.log(err)
         }
     })
-}
-
-function searchDB(desc) {
-    var q = `SELECT * FROM inventory WHERE description="${desc}"`;
-    console.log(q);
-    return q;
 }
 
 module.exports = app;

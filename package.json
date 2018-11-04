@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/jakerumbles/Warehouse_Inventory.git"
   },
-  "author": "Jake Edwards and John Carvajall",
+  "author": "Jake Edwards, David Hamilton, John Carvajal",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jakerumbles/Warehouse_Inventory/issues"
@@ -26,12 +26,14 @@
     "ejs-lint": "^0.3.0",
     "express": "^4.16.4",
     "faker": "^4.1.0",
+    "knex": "^0.15.2",
     "mysql": "^2.16.0",
     "parse-database-url": "^0.3.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.6.0",
     "pg-format": "^1.0.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "serve": "^8.2.0"
   }
 }
