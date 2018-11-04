@@ -4,8 +4,21 @@
   <div class="form-row">
     <div class="form-group col-md-12">
       <label for="descInput">Description</label>
-      <input type="text" class="form-control" id="descInput" placeholder="Description" name="query[description]">
+      <input type="text" class="form-control" id="descInput" placeholder="Description" name="query[description]" aria-describedby="descriptionHelp">
+      <small id="descriptionHelp" class="form-text text-dark">Search is case sensitive for now and returns any entries LIKE what you type above</small>
     </div>
+  </div>
+  <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputCategory">Category</label>
+        <select id="inputCategory" class="form-control" name="query[category]">
+          <option selected>Any</option>
+          <option>Furniture</option>
+          <option>Definitely Not Furniture</option>
+          <option>Definitely Not Furniture</option>
+          <option>Fire Track</option>
+        </select>
+      </div>
   </div>
   <div class="form-group">
     <label for="inputAddress">Address</label>
@@ -20,13 +33,7 @@
       <label for="inputCity">City</label>
       <input type="text" class="form-control" id="inputCity">
     </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
-    </div>
+
     <div class="form-group col-md-2">
       <label for="inputZip">Zip</label>
       <input type="text" class="form-control" id="inputZip">

@@ -85,24 +85,19 @@ app.get('/search/new', checkAuth, function(req, res) {
 app.post('/search', checkAuth, function(req, res) {
     var query = req.body.query;
     console.log(query);
-    var q = knex('inventory').where('description', 'like', `%${query.description}%`).select().toString();
+    var q = knex('inventory').where('description', 'like', `%${query.description}%`)
+            .andWhere('category', query.category)
+            .select().toString();
     connection.query(q, function(err, results) {
         if(err) {
             console.log(err);
             res.redirect('/');
         } else {
             //console.log(results);
-            res.render('inventory/inventory', {items:results});
+            res.render('inventory/inventory', {items: results});
         }
     })
 });
-
-// Show results of query
-app.get('/search', function(req, res) {
-    res.send(results);
-});
-
-
 
 // --------------
 // AUTH routes
