@@ -20,7 +20,6 @@ app.get('/logout', checkAuth, function(req, res) {
     console.log(req.user.username + " Logs Out");
     req.session = null;
     res.redirect("/");
-
 });
 
 // ----------------
@@ -70,6 +69,23 @@ app.post('/inventory', checkAuth, function(req, res) {
 
     res.redirect("/inventory");
 });
+
+// --------------
+// SEARCH routes
+// --------------
+// Show search form
+app.get('/search', checkAuth, function(req, res) {
+    res.render('search');
+})
+
+// Query the database
+app.post('/search', checkAuth, function(req, res) {
+    var query = req.body.query;
+    console.log(query);
+    var q = searchDB(query.description);
+    res.redirect('/search');
+});
+
 
 
 // --------------
@@ -217,20 +233,6 @@ res.render("user_accounts", {items: results});
 });
 });*/
 
-app.get('/items', function(req, res) {
-    var passedStuff = req.params.description;
-    //console.log(passedStuff);
-    //Query to get the data
-    var q = 'SELECT * FROM item ORDER BY item_id';
-    connection.query(q, function(err, results) {
-        if(err) throw err;
-
-        //Send the rendered page
-        //console.log(results);
-        res.render("items", {items: results});
-    });
-});
-
 app.get('/projects', function(req, res) {
     var passedStuff = req.params.description;
     //console.log(passedStuff);
@@ -261,6 +263,12 @@ function insertQuery(item) {
             console.log(err)
         }
     })
+}
+
+function searchDB(desc) {
+    var q = `SELECT * FROM inventory WHERE description="${desc}"`;
+    console.log(q);
+    return q;
 }
 
 module.exports = app;
