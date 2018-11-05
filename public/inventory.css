@@ -45,3 +45,8 @@ h1 {
     margin-bottom: 0px;
     border-radius: .3rem .3rem 0px 0px;
 }
+
+input,label {
+    display:block;
+    margin: 3px;
+}

@@ -41,15 +41,53 @@ app.get('/inventory', checkAuth, function(req, res) {
 });
 
 // testing really don't know if this will work.
+app.get('/inv-history/:id', checkAuth, function(req, res) {
+    var itemId = req.params.id;
+    knex.select('*').from('inventory_history')
+    .where('inv_id','=',itemId)
+    .then(results => {
+        res.send({results})
+    })
+    .catch(err => console.log(err))
+});
+
 app.get('/inv-items/:id', checkAuth, function(req, res) {
     var itemId = req.params.id;
-    // var q = 'SELECT * FROM inventory_history LIMIT 100';
-    var q = `SELECT * FROM inventory_history WHERE "inv_id"=${itemId}`
+    knex.select('*').from('inventory')
+    .where('inv_id','=',itemId)
+    .then(results => {
+        res.send({results})
+    })
+    .catch(err => console.log(err))
+});
 
-    connection.query(q, function(err, results) {
-        if(err) throw err;
-        res.send({items: results});
-    });
+app.put('/inv-items/:id', checkAuth, function(req, res) {
+    var itemId = req.params.id;
+
+    let itemData = {
+        description: res.req.body.description,
+        category: res.req.body.category,
+        storage_location: res.req.body.storage_input,
+    }
+
+    if(res.req.body.present){
+        itemData.present = 'yes';
+    } else {
+        itemData.present = 'no';
+    }
+
+    if(res.req.body.reserved){
+        itemData.reserved = 'yes';
+    } else {
+        itemData.reserved = 'no';
+    }
+
+    knex('inventory')
+    .where('inv_id','=',itemId)
+    .update(itemData)
+    .then(res.redirect(303, '/inventory'))
+
+    // console.log(itemData);
 });
 
 

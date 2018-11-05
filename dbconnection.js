@@ -27,41 +27,27 @@ const connection = new Client({
 });
 
 module.exports.itemHistoryInsert = function(item, username){
-    var itemq = 'SELECT last_value,log_cnt FROM inventory_inv_id_seq';
-    var histq = 'INSERT INTO inventory_history(inv_id, description, category, date_modified, storage_location, history)' +
-    'VALUES('
-
-    connection.query(itemq, function(err, results) {
-        if(results){
-            var itemid;
-            //console.log(results.rows[0].last_value, results.rows[0].log_cnt);
-
-            if(results.rows[0].last_value == 1 && results.rows[0].log_cnt == 0){
-                itemid = Number(results.rows[0].last_value);
-            } else {
-                itemid = Number(results.rows[0].last_value) + 1;
-            }
-
-            histq += itemid + ',';
-            histq += '\'' + item.description + '\', ';
-            histq += '\'' + item.category + '\', ';
-            histq += 'NOW(), ';
-            histq += item.storage_location + ', ';
-            histq += '\'' + username.trim() + ' Created Item\'';
-            histq += ');';
-            connection.query(histq, function(err, results){
-                if(err){
-                    console.log(err);
-                    //next();
-                } else {
-                    console.log("inventory post route... now adding new item history to DB");
-                }
-            });
+    knex.select('last_value','log_cnt').from('inventory_inv_id_seq')
+    .then(results => {
+        let itemid = -1;
+        if(results[0].last_value === '1' && results[0].log_cnt === '0'){
+            itemid = Number(results[0].last_value);
         } else {
-            console.log(err);
-            //next();
+            itemid = Number(results[0].last_value) + 1;
         }
-    });
+        const data = {
+            inv_id: itemid,
+            description: item.description,
+            category: item.category,
+            date_modified: 'NOW()',
+            storage_location: item.storage_location,
+            history: `${username.trim()} created item.`
+        }
+        knex('inventory_history')
+        .insert(data)
+        .catch(err => console.log(err, 'Error inserting into history db.'))
+    })
+    .catch(err => console.log(err, 'Error receiving most recent item id.'))
 }
 
 connection.connect();

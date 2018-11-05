@@ -69,11 +69,36 @@
                 <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
                 <h3>Item Details</h3>
             </div>
-            <div class="modal-body">
+            <div>
+                <div style="float:left;margin:3px">
+                    <label for="description">Description</label>
+                    <input type="text" id="description-input" name="description" value="">
+                </div>
+                <div style="float:left;margin:3px">
+                    <label for="category">Category</label>
+                    <input type="text" id="category-input" name="category" value="">
+                </div>
+                <div style="float:left;margin:3px">
+                    <label for="storage_location">Storage Location</label>
+                    <input type="text" id="storage-input" name="storage_location" value="">
+                </div>
+                <div style="float:right;margin:3px">
+                    <label for="present">Present</label>
+                    <input type="checkbox" id="present-input" name="present" value="">
+                </div>
+                <div style="float:right;margin:3px">
+                    <label for="reserved">Reserved</label>
+                    <input type="checkbox" id="reserved-input" name="reserved" value="">
+                </div>
+            </div>
+            <div class="modal-body collapse" id="history-table">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" onclick="myFun()" class="btn btn-primary">Yes</button>
+                <input type="hidden" id="modal-inv-id" name="" value=""/>
+                <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
+                <button type="button" onclick="changeBtnText()" class="btn btn-primary"
+                data-toggle="collapse" data-target="#history-table"
+                id="show-hide-history-btn">Show History</button>
             </div>
         </div>
     </div>
@@ -83,15 +108,18 @@
 <script type="text/javascript">
 
 var getData = async function(id){
-    const url = `/inv-items/${id}`;
+    const url = `/inv-history/${id}`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
-    if (data.items.rowCount < 1){
+    // console.log(data.results[0]);
+    if (data.results.length < 1){
         document.querySelector('#hiddenvalue').value = "No Item History."
     }else {
-        const rows = data.items.rows
+        const rows = data.results
         let tbl = document.querySelector('.inv-his-table')
         if(tbl) tbl.remove();
+
+        loadDataOnForms(id);
 
         tbl = document.createElement('TABLE');
         tbl.classList.add('inv-his-table')
@@ -127,6 +155,59 @@ var getData = async function(id){
     }
 }
 
+const changeBtnText = () => {
+    let btnText = document.querySelector('#show-hide-history-btn').textContent;
+    if(btnText === 'Show History'){
+        document.querySelector('#show-hide-history-btn').textContent = 'Hide History';
+    } else {
+        document.querySelector('#show-hide-history-btn').textContent = 'Show History';
+    }
+}
+
+const loadDataOnForms = async function(id){
+    const url = `/inv-items/${id}`;
+    const resp = await fetch(url, {credentials: 'include'})
+    const data = await resp.json()
+    console.log(data.results);
+    if (data.results.length < 1){
+        document.getElementById('description-input').value = 'Error';
+    } else {
+        rows = data.results;
+        document.getElementById('description-input').value = rows[0].description;
+        document.getElementById('category-input').value = rows[0].category;
+        document.getElementById('storage-input').value = rows[0].storage_location;
+
+        if(rows[0].present==='yes')
+        document.getElementById('present-input').checked = true
+
+        if(rows[0].reserved==='yes')
+        document.getElementById('reserved-input').checked = true
+    }
+}
+
+const updateItem = async function(){
+    const data_id = document.querySelector('#modal-inv-id').value;
+    const url = `/inv-items/${data_id}`;
+    const data = {
+        description: document.getElementById('description-input').value,
+        category: document.getElementById('category-input').value,
+        storage_input: document.getElementById('storage-input').value,
+        present: document.getElementById('present-input').checked,
+        reserved: document.getElementById('reserved-input').checked,
+    }
+    console.log(url, " ", data);
+    const resp = fetch(url, {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    })
+    .then(location.reload())
+
+}
+
 $(document).ready(function() {
 
     $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
@@ -136,6 +217,7 @@ $(document).ready(function() {
 
         if (typeof $(this).data('id') !== 'undefined') {
             data_id = $(this).data('id');
+            document.querySelector('#modal-inv-id').value = data_id;
         }
 
         if (typeof $(this).data('description') !== 'undefined') {
