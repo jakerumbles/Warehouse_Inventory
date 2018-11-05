@@ -32,12 +32,12 @@ app.get('/logout', checkAuth, function(req, res) {
 //Inventory Page
 app.get('/inventory', checkAuth, function(req, res) {
     var passedStuff = req.params.description;
-    var q = 'SELECT * FROM inventory LIMIT 100';
+    // var q = 'SELECT * FROM inventory LIMIT 100';
 
-    connection.query(q, function(err, results) {
-        if(err) throw err;
+    knex.select('*').from('inventory')
+    .then(results => {
         res.render("inventory/inventory", {items: results});
-    });
+    })
 });
 
 // testing really don't know if this will work.
@@ -65,11 +65,6 @@ app.post('/inventory', checkAuth, function(req, res) {
     console.log("inventory post route...now adding new item to DB");
     itemHistoryInsert(item, req.user.username);
     insertQuery(item);
-    //console.log(q);
-    // connection.query(q, function(err, results) {
-    //     if(err) throw err;
-    // });
-
     res.redirect("/inventory");
 });
 
@@ -80,9 +75,10 @@ app.post('/inventory', checkAuth, function(req, res) {
 app.get('/search/new', checkAuth, function(req, res) {
     knex.select('category').from('inventory')
     .then(categories => {
-        // console.log(categories[0].category);
-        categories.forEach(cat => console.log(cat.category))
         res.render('search', {categories: categories})
+    })
+    .catch(err => {
+        console.log(err)
     })
 });
 
@@ -90,18 +86,28 @@ app.get('/search/new', checkAuth, function(req, res) {
 app.post('/search', checkAuth, function(req, res) {
     var query = req.body.query;
     console.log(query);
-    var q = knex('inventory').where('description', 'like', `%${query.description}%`)
-            .andWhere('category', query.category)
-            .select().toString();
-    connection.query(q, function(err, results) {
-        if(err) {
-            console.log(err);
-            res.redirect('/');
-        } else {
-            //console.log(results);
+    if(query.category === 'Any'){
+        var q = knex.select('*').from('inventory')
+        .where('description', 'like', `%${query.description}%`)
+        .then(results => {
+            console.log(results)
             res.render('inventory/inventory', {items: results});
-        }
-    })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }else{;
+        knex.select('*').from('inventory')
+        .where('description', 'like', `%${query.description}%`)
+        .andWhere('category', query.category)
+        .then(results => {
+            res.render('inventory/inventory', {items: results})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
 });
 
 // --------------
