@@ -44,14 +44,24 @@
                 <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
                 <h3>Project Details</h3>
             </div>
-            <div>
-                <div style="float:left;margin:3px">
-                    <label for="name">Name</label>
-                    <input type="text" id="name-input" name="name" value="">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12" style="float:left;margin:3px">
+                        <label for="name-input">Name</label>
+                        <input class="form-control" type="text" id="name-input" name="name" value="">
+                    </div>
                 </div>
-                <div style="float:left;margin:3px">
-                    <label for="manager">Manager</label>
-                    <input type="text" id="manager-input" name="manager" value="">
+                <div class="form-group">
+                    <div class="col-sm-12" style="float:left;margin:3px">
+                        <label for="inputManager">Manager</label>
+                        <select id="inputManager" class="form-control" name="manager">
+                          <% if(managers) { %>
+                              <% for(var i=0; i<managers.length;i++) { %>
+                              <option><%= managers[i].manager %></option>
+                              <% } %>
+                          <% } %>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="modal-body collapse" id="history-table">
