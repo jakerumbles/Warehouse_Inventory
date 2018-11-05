@@ -1,43 +1,73 @@
-<% include ../partials/header %>
+<% include partials/header %>
 
+<link rel="stylesheet" href="./inventory.css">
+
+<div class="container">
     <h1>Warehouse Inventory</h1>
+    <div class="row jumbotron text-white">
+        <div class="inv-container col-sm col-md-8 col-lg-12 col-xl-12">
+            <p>
+                <table class="table table-condensed table-responsive">
+                    <!-- <caption>Condensed Table Layout</caption> -->
+                    <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Name</th>
+                            <th>Manager ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < projects.length; i++) { %>
+                        <tr>
+                            <td><%= projects[i].proj_id %></td>
+                            <td><%= projects[i].name %></td>
+                            <td><%= projects[i].manager_id %></td>
+                            <td>
+                                <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=projects[i].proj_id%>>Edit</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </p>
+            <div class="btn-container">
+                <a class="btn btn-primary btn-lg" href="/projects/new" role="button" id="newProjectButton">New Project</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <table border="1">
-      <!-- Header row -->
-      <tr>
-        <th>Item ID</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Date Recieved</th>
-        <th>Storage Location</th>
-        <th>Present</th>
-        <th>Reserved</th>
-      </tr>
-      <% for(var i = 0; i < items.rowCount; i++) { %>
-          <tr>
-            <td><%= items.rows[i].inv_id %></td>
-            <td><%= items.rows[i].description %></td>
-            <td><%= items.rows[i].category %></td>
-            <td><%= items.rows[i].date_recieved %></td>
-            <td><%= items.rows[i].storage_location %></td>
+<div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
+    <div class="modal-dialog modal-lg container row" role="document">
+        <div class="modal-content inv-container col-sm col-md col-lg col-xl">
+            <div class="modal-header">
+                <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
+                <h3>Project Details</h3>
+            </div>
+            <div>
+                <div style="float:left;margin:3px">
+                    <label for="name">Name</label>
+                    <input type="text" id="name-input" name="name" value="">
+                </div>
+                <div style="float:left;margin:3px">
+                    <label for="manager">Manager</label>
+                    <input type="text" id="manager-input" name="manager" value="">
+                </div>
+            </div>
+            <div class="modal-body collapse" id="history-table">
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="modal-inv-id" name="" value=""/>
+                <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
+                <button type="button" onclick="changeBtnText()" class="btn btn-primary"
+                data-toggle="collapse" data-target="#history-table"
+                id="show-hide-history-btn">Show History</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <!-- PRESENT -->
-            <td><% if(items.rows[i].present === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
 
-            <!-- RESERVED -->
-            <td><% if(items.rows[i].reserved === 'no') { %>
-                    <input type="checkbox">
-                <% } else { %>
-                    <input type="checkbox" checked>
-                <% } %>
-            </td>
-          </tr>
-      <% } %>
-    </table>
+<script type="text/javascript" src="./javascript/projects.js"></script>
 
 <% include partials/footer %>

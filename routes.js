@@ -8,8 +8,6 @@ const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
 const knex = require('./dbconnection').knex;
 
-
-
 //ROUTES
 //Home
 app.get('/', function(req, res) {
@@ -141,7 +139,7 @@ app.post('/search', checkAuth, function(req, res) {
         .catch(err => {
             console.log(err)
         })
-    }else{;
+    }else{
         knex.select('*').from('inventory')
         .where('description', 'like', `%${query.description}%`)
         .andWhere('category', query.category)
@@ -243,16 +241,42 @@ app.post('/signup', async function(req, res){
 
 app.get('/projects', function(req, res) {
     var passedStuff = req.params.description;
-    //console.log(passedStuff);
-    //Query to get the data
-    var q = 'SELECT * FROM project ORDER BY project_id';
-    connection.query(q, function(err, results) {
-        if(err) throw err;
+    knex('project')
+    .select('*')
+    .where('manager_id','=',req.user.id)
+    .then(results =>{
+        res.render('projects', {projects: results})
+    })
+});
 
-        //Send the rendered page
-        //console.log(results);
-        res.render("projects", {items: results});
-    });
+app.get('/projects/new', function(req,res){
+    res.render("newProject");
+});
+
+app.get('/projects/:id/inventory', checkAuth, function(req, res) {
+    var itemId = req.params.id;
+    knex.select('*').from('project')
+    .where('proj_id','=',itemId)
+    .then(results => {
+        res.send({results})
+    })
+    .catch(err => console.log(err))
+});
+
+app.post('/projects', checkAuth, function(req,res){
+    let data = {
+        manager_id: req.user.id,
+        name: req.body.name
+    }
+    // console.log(data);
+    // console.log(req.body.name);
+
+    knex('project')
+    .insert(data)
+    .then(result => {
+        console.log(result);
+        res.redirect('/projects')
+    })
 });
 
 //Query generator functions

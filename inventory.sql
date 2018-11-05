@@ -30,3 +30,15 @@ CREATE TABLE inventory_history(
     history VARCHAR(100),
     PRIMARY KEY(hist_id)
 );
+CREATE TABLE project(
+    proj_id SERIAL,
+    manager_id uuid NOT NULL,
+    name VARCHAR(25) NOT NULL,
+    PRIMARY KEY(proj_id)
+);
+CREATE TABLE project_items(
+    proj_id INTEGER NOT NULL,
+    inv_id INTEGER NOT NULL,
+    reserved INTEGER DEFAULT 0,
+    PRIMARY KEY(proj_id,inv_id)
+);
