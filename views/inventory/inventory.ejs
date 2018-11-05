@@ -72,29 +72,48 @@
                 <h3>Item Details</h3>
             </div>
             <div>
-                <div style="float:left;margin:3px">
-                    <label for="description">Description</label>
-                    <input type="text" id="description-input" name="description" value="">
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <div class="" style="float:left;margin:3px">
+                            <label for="description-input">Description</label>
+                            <input class="form-control" type="text" id="description-input" name="description" value="">
+                        </div>
+                    </div>
                 </div>
-                <div style="float:left;margin:3px">
-                    <label for="category">Category</label>
-                    <input type="text" id="category-input" name="category" value="">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12" style="float:left;margin:3px">
+                            <label for="category">Category</label>
+                            <input class="form-control" type="text" id="category-input" name="category" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12" style="float:left;margin:3px">
+                            <label for="storage_location">Storage Location</label>
+                            <input class="form-control" type="text" id="storage-input" name="storage_location" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12" style="float:left;margin:3px">
+                            <label for="quantity">Quantity</label>
+                            <input class="form-control" type="text" id="quantity-input" name="quantity" value="">
+                        </div>
+                    </div>
                 </div>
-                <div style="float:left;margin:3px">
-                    <label for="storage_location">Storage Location</label>
-                    <input type="text" id="storage-input" name="storage_location" value="">
-                </div>
-                <div style="float:left;margin:3px">
-                    <label for="quantity">Quantity</label>
-                    <input type="text" id="quantity-input" name="quantity" value="">
-                </div>
-                <div style="float:right;margin:3px">
-                    <label for="present">Present</label>
-                    <input type="checkbox" id="present-input" name="present" value="">
-                </div>
-                <div style="float:right;margin:3px">
-                    <label for="reserved">Reserved</label>
-                    <input type="checkbox" id="reserved-input" name="reserved" value="">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-6 style="float:right;margin:3px">
+                            <label for="present">Present</label>
+                            <input type="checkbox" id="present-input" name="present" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6 style="float:right;margin:3px">
+                            <label for="reserved">Reserved</label>
+                            <input type="checkbox" id="reserved-input" name="reserved" value="">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-body collapse" id="history-table">
