@@ -6,7 +6,6 @@ const itemHistoryInsert = require('./dbconnection').itemHistoryInsert;
 const app = express.Router();
 const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
-var format = require('pg-format');
 const knex = require('./dbconnection').knex;
 
 
@@ -68,7 +67,8 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
     let itemData = {
         description: res.req.body.description,
         category: res.req.body.category,
-        storage_location: res.req.body.storage_input,
+        storage_location: res.req.body.storage,
+        quantity: res.req.body.quantity
     }
 
     if(res.req.body.present){

@@ -32,10 +32,11 @@ module.exports.itemHistoryInsert = function(item, username,histText){
         description: item[0].description,
         category: item[0].category,
         date_modified: 'NOW()',
+        quantity: item[0].quantity,
         storage_location: item[0].storage_location,
         history: `${username.trim()} ${histText}.`
     }
-    
+
     knex('inventory_history')
     .insert(data)
     .catch(err => console.log(err, 'Error inserting into history db.'))

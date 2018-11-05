@@ -47,7 +47,7 @@ passport.use('local', new LocalStrategy({
         const client = await pool.connect()
         try {
             await client.query('BEGIN')
-            var currentAccountsData = await JSON.stringify(client.query('SELECT id, "firstName", "email", "password" FROM "users" WHERE "email"=$1', [username], function(err, result) {
+            var currentAccountsData = await JSON.stringify(client.query('SELECT id, "firstName", "email", "password","access" FROM "users" WHERE "email"=$1', [username], function(err, result) {
                 //console.log(result);
                 if (err) {
                     console.log('error with client query');
@@ -63,7 +63,8 @@ passport.use('local', new LocalStrategy({
                         } else if (check) {
                             return done(null, [{
                                 id: result.rows[0].id,
-                                username: result.rows[0].email
+                                username: result.rows[0].email,
+								access: result.rows[0].access
                             }]);
                         } else {
                             console.log('null false')

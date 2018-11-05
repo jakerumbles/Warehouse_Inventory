@@ -16,6 +16,7 @@
                             <th>Category</th>
                             <th>Date Recieved</th>
                             <th>Storage Location</th>
+                            <th>Quantity</th>
                             <th>Present</th>
                             <th>Reserved</th>
                             <th>Edit</th>
@@ -29,6 +30,7 @@
                             <td><%= items[i].category %></td>
                             <td><%= items[i].date_recieved %></td>
                             <td><%= items[i].storage_location %></td>
+                            <td><%= items[i].quantity %></td>
 
                             <!-- PRESENT -->
                             <td>
@@ -82,6 +84,10 @@
                     <label for="storage_location">Storage Location</label>
                     <input type="text" id="storage-input" name="storage_location" value="">
                 </div>
+                <div style="float:left;margin:3px">
+                    <label for="quantity">Quantity</label>
+                    <input type="text" id="quantity-input" name="quantity" value="">
+                </div>
                 <div style="float:right;margin:3px">
                     <label for="present">Present</label>
                     <input type="checkbox" id="present-input" name="present" value="">
@@ -112,15 +118,19 @@ var getData = async function(id){
     const url = `/inv-history/${id}`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
-    // console.log(data.results[0]);
+    const rows = data.results
+    let tbl = document.querySelector('.inv-his-table')
+    if(tbl) tbl.remove();
+    let errH3 = document.querySelector('#error-h3')
+    if(errH3) errH3.remove();
     if (data.results.length < 1){
-        document.querySelector('#hiddenvalue').value = "No Item History."
+        // document.querySelector('#hiddenvalue').value = "No Item History."
+        var modalBod = document.querySelector('.modal-body')
+        errH3 = document.createElement('H3');
+        errH3.id = 'error-h3';
+        errH3.textContent = 'ERROR FETCHING TABLE';
+        modalBod.appendChild(errH3);
     }else {
-        const rows = data.results
-        let tbl = document.querySelector('.inv-his-table')
-        if(tbl) tbl.remove();
-
-        loadDataOnForms(id);
 
         tbl = document.createElement('TABLE');
         tbl.classList.add('inv-his-table')
@@ -177,6 +187,7 @@ const loadDataOnForms = async function(id){
         document.getElementById('description-input').value = rows[0].description;
         document.getElementById('category-input').value = rows[0].category;
         document.getElementById('storage-input').value = rows[0].storage_location;
+        document.getElementById('quantity-input').value = rows[0].quantity;
 
         if(rows[0].present==='yes')
         document.getElementById('present-input').checked = true
@@ -193,7 +204,8 @@ const updateItem = async function(){
     const data = {
         description: document.getElementById('description-input').value,
         category: document.getElementById('category-input').value,
-        storage_input: document.getElementById('storage-input').value,
+        storage: document.getElementById('storage-input').value,
+        quantity: document.getElementById('quantity-input').value,
         present: document.getElementById('present-input').checked,
         reserved: document.getElementById('reserved-input').checked,
     }
@@ -226,6 +238,9 @@ $(document).ready(function() {
         if (typeof $(this).data('description') !== 'undefined') {
             data_desc = $(this).data('description');
         }
+
+        loadDataOnForms(data_id);
+
         getData(data_id);
     })
 });
