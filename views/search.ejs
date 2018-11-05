@@ -13,10 +13,16 @@
         <label for="inputCategory">Category</label>
         <select id="inputCategory" class="form-control" name="query[category]">
           <option selected>Any</option>
+          <% if(categories) { %>
+              <% for(var i=0; i<categories.length;i++) { %>
+              <option><%= categories[i].category %></option>
+              <% } %>
+          <% } else {%>
           <option>Furniture</option>
           <option>Definitely Not Furniture</option>
           <option>Definitely Not Furniture</option>
           <option>Fire Track</option>
+          <% } %>
         </select>
       </div>
   </div>

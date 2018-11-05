@@ -78,7 +78,12 @@ app.post('/inventory', checkAuth, function(req, res) {
 // --------------
 // Show search form
 app.get('/search/new', checkAuth, function(req, res) {
-    res.render('search');
+    knex.select('category').from('inventory')
+    .then(categories => {
+        // console.log(categories[0].category);
+        categories.forEach(cat => console.log(cat.category))
+        res.render('search', {categories: categories})
+    })
 });
 
 // Query the database

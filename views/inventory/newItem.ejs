@@ -5,20 +5,20 @@
   <form action="/inventory" method="post">
     <div class="form-group">
       <label for="descriptionInput">Description</label>
-      <input type="search" class="form-control" id="descriptionInput" name="item[description]" aria-describedby="emailHelp" placeholder="Enter description">
+      <input type="search" class="form-control" id="descriptionInput" name="item[description]" required aria-describedby="emailHelp" placeholder="Enter description">
       <small id="emailHelp" class="form-text text-muted">Describe the item(i.e 2x4 or microwave)</small>
     </div>
     <div class="form-group">
       <label for="categoryInput">Category</label>
-      <input type="search" class="form-control" id="categoryInput" name="item[category]" placeholder="furniture">
+      <input type="search" class="form-control" id="categoryInput" name="item[category]" required placeholder="furniture">
     </div>
     <div class="form-group">
       <label for="dateRevievedInput">Date Revieved</label>
-      <input type="date" class="form-control" id="dateRevievedInput" name="item[dateRecieved]" placeholder="furniture">
+      <input type="date" class="form-control" id="dateRevievedInput" name="item[dateRecieved]" required placeholder="furniture">
     </div>
     <div class="form-group">
       <label for="storageLocationInput">Storage Location</label>
-      <input type="number" class="form-control" id="storageLocationInput" name="item[storage_location]" placeholder="furniture">
+      <input type="number" class="form-control" id="storageLocationInput" name="item[storage_location]" required placeholder="0000">
     </div>
     <div class="form-group form-check">
       <input type="checkbox" class="form-check-input" id="presentCheck" name="item[present]">
