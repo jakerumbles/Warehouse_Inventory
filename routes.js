@@ -239,6 +239,11 @@ app.post('/signup', async function(req, res){
     })
 });
 
+
+// -----------------------------
+// PROJECT Routes
+// -----------------------------
+// Show list of all projects
 app.get('/projects', function(req, res) {
     var passedStuff = req.params.description;
     knex('project')
@@ -253,10 +258,12 @@ app.get('/projects', function(req, res) {
     })
 });
 
+// New project form
 app.get('/projects/new', function(req,res){
     res.render("newProject");
 });
 
+// Shows inventory(reserved items) for specific project
 app.get('/projects/:id/items', checkAuth, function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('project_items')
@@ -268,8 +275,7 @@ app.get('/projects/:id/items', checkAuth, function(req, res) {
 });
 
 app.get('/projects/:id/', checkAuth, function(req, res) {
-    var projID = req.params.id;
-    knex.select('*').from('project')
+    var projID = req.params.id;    knex.select('*').from('project')
     .where('proj_id','=',projID)
     .then(results => {
         res.send({results})
@@ -277,6 +283,7 @@ app.get('/projects/:id/', checkAuth, function(req, res) {
     .catch(err => console.log(err))
 });
 
+// Add new project to database and redirect to list of all projects
 app.put('/projects/:id',checkAuth,function(req,res){
     let projID = req.params.id;
 
