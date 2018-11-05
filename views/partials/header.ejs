@@ -58,12 +58,6 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <% if(!currentUser) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signup">Sign Up</a>
-                </li>
                 <% } else { %>
                     <li class="nav-item">
                         <a class="nav-link" href="/account">Signed In As <%= currentUser.username %></a>
