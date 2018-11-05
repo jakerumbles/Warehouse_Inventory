@@ -33,6 +33,7 @@ app.get('/inventory', checkAuth, function(req, res) {
 
     knex.select('*').from('inventory')
     .orderBy('inv_id','asc')
+    .where('remove','=','false')
     .then(results => {
         res.render("inventory/inventory", {items: results});
     })
@@ -66,7 +67,8 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
         description: res.req.body.description,
         category: res.req.body.category,
         storage_location: res.req.body.storage,
-        quantity: res.req.body.quantity
+        quantity: res.req.body.quantity,
+        remove: res.req.body.remove
     }
 
     if(res.req.body.present){
@@ -132,6 +134,7 @@ app.post('/search', checkAuth, function(req, res) {
     if(query.category === 'Any'){
         var q = knex.select('*').from('inventory')
         .where('description', 'like', `%${query.description}%`)
+        .andWhere('remove','=','false')
         .orderBy('inv_id', 'asc')
         .then(results => {
             res.render('inventory/inventory', {items: results});
@@ -143,6 +146,7 @@ app.post('/search', checkAuth, function(req, res) {
         knex.select('*').from('inventory')
         .where('description', 'like', `%${query.description}%`)
         .andWhere('category', query.category)
+        .andWhere('remove','=','false')
         .orderBy('inv_id','asc')
         .then(results => {
             res.render('inventory/inventory', {items: results})
@@ -270,6 +274,7 @@ app.get('/projects/:id/items', checkAuth, function(req, res) {
     knex('project_items')
     .join('inventory','project_items.inv_id','=','inventory.inv_id')
     .where('project_items.proj_id','=',projID)
+    .andWhere('inventory.remove','=','false')
     // .select('inventory.description','inventory.category','inventory.quantity',
     // 'inventory.quantity','project_items.reserved')
     .then(results => {

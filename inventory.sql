@@ -7,6 +7,7 @@ CREATE TABLE inventory(
     quantity INTEGER DEFAULT 0,
     present VARCHAR(5) NOT NULL,
     reserved VARCHAR(5) DEFAULT 'false',
+    remove BOOLEAN DEFAULT 'false',
     PRIMARY KEY(inv_id)
 );
 CREATE TABLE "users"(

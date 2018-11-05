@@ -81,7 +81,7 @@ const loadDataOnForms = async function(id){
     }
 }
 
-const updateItem = async function(){
+const updateItem = async function(args){
     //this function sends data obj to api to update db
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/inv-items/${data_id}`;
@@ -92,6 +92,9 @@ const updateItem = async function(){
         quantity: document.getElementById('quantity-input').value,
         present: document.getElementById('present-input').checked,
         reserved: document.getElementById('reserved-input').checked,
+    }
+    if(args === 'remove'){
+        data.remove = true;
     }
     const resp = fetch(url, {
         method: "PUT",
