@@ -253,6 +253,7 @@ app.get('/projects', function(req, res) {
         knex('users')
         .select('id')
         .then(uResults => {
+            console.log(uResults);
             res.render('projects', {projects: pResults,id:req.user.id,managers:uResults})
         })
     })

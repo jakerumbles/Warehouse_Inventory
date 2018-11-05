@@ -69,7 +69,7 @@ const loadDataOnForms = async function(id){
     } else {
         rows = data.results;
         document.getElementById('name-input').value = rows[0].name;
-        document.getElementById('manager-input').value = rows[0].manager_id;
+        //document.getElementById('manager-input').value = rows[0].manager_id;
     }
 }
 
@@ -79,9 +79,9 @@ const updateItem = async function(){
     const url = `/projects/${data_id}`;
     const data = {
         name: document.getElementById('name-input').value,
-        manager: document.getElementById('manager-input').value,
+        manager: document.getElementById('inputManager').value,
     }
-    
+
     console.log(data);
 
     const resp = fetch(url, {
