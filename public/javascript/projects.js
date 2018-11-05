@@ -1,6 +1,6 @@
 var getData = async function(id){
     //really ugly function to create a table of inventory history
-    const url = `/inv-history/${id}`;
+    const url = `/projects/${id}/items`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     const rows = data.results
@@ -61,7 +61,7 @@ const changeBtnText = () => {
 }
 
 const loadDataOnForms = async function(id){
-    const url = `/projects/${id}/inventory`;
+    const url = `/projects/${id}/`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     if (data.results.length < 1){
@@ -78,9 +78,12 @@ const updateItem = async function(){
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/projects/${data_id}`;
     const data = {
-        description: document.getElementById('name-input').value,
-        category: document.getElementById('manager-input').value,
+        name: document.getElementById('name-input').value,
+        manager: document.getElementById('manager-input').value,
     }
+    
+    console.log(data);
+
     const resp = fetch(url, {
         method: "PUT",
         credentials: 'include',
@@ -90,7 +93,7 @@ const updateItem = async function(){
         body: JSON.stringify(data),
     })
     .then(fetched =>{
-        location.reload()
+        // location.reload()
     })
 
 }

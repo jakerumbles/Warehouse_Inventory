@@ -40,9 +40,9 @@ app.get('/inventory', checkAuth, function(req, res) {
 
 // testing really don't know if this will work.
 app.get('/inv-history/:id', checkAuth, function(req, res) {
-    var itemId = req.params.id;
+    var projID = req.params.id;
     knex.select('*').from('inventory_history')
-    .where('inv_id','=',itemId)
+    .where('inv_id','=',projID)
     .then(results => {
         res.send({results})
     })
@@ -50,9 +50,9 @@ app.get('/inv-history/:id', checkAuth, function(req, res) {
 });
 
 app.get('/inv-items/:id', checkAuth, function(req, res) {
-    var itemId = req.params.id;
+    var projID = req.params.id;
     knex.select('*').from('inventory')
-    .where('inv_id','=',itemId)
+    .where('inv_id','=',projID)
     .then(results => {
         res.send({results})
     })
@@ -60,9 +60,9 @@ app.get('/inv-items/:id', checkAuth, function(req, res) {
 });
 
 app.put('/inv-items/:id', checkAuth, function(req, res) {
-    var itemId = req.params.id;
+    var projID = req.params.id;
 
-    let itemData = {
+    let projData = {
         description: res.req.body.description,
         category: res.req.body.category,
         storage_location: res.req.body.storage,
@@ -70,22 +70,22 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
     }
 
     if(res.req.body.present){
-        itemData.present = 'yes';
+        projData.present = 'yes';
     } else {
-        itemData.present = 'no';
+        projData.present = 'no';
     }
 
     if(res.req.body.reserved){
-        itemData.reserved = 'yes';
+        projData.reserved = 'yes';
     } else {
-        itemData.reserved = 'no';
+        projData.reserved = 'no';
     }
 
-    // console.log(itemData);
+    // console.log(projData);
 
     knex('inventory')
-    .where('inv_id','=',itemId)
-    .update(itemData)
+    .where('inv_id','=',projID)
+    .update(projData)
     .returning('*')
     .then(result => {
         // console.log(result);
@@ -93,7 +93,7 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
         res.redirect(303, '/inventory')
     })
 
-    // console.log(itemData);
+    // console.log(projData);
 });
 
 
@@ -243,9 +243,13 @@ app.get('/projects', function(req, res) {
     var passedStuff = req.params.description;
     knex('project')
     .select('*')
-    .where('manager_id','=',req.user.id)
-    .then(results =>{
-        res.render('projects', {projects: results})
+    .orderBy('proj_id','asc')
+    .then(pResults =>{
+        knex('users')
+        .select('id')
+        .then(uResults => {
+            res.render('projects', {projects: pResults,id:req.user.id,managers:uResults})
+        })
     })
 });
 
@@ -253,15 +257,46 @@ app.get('/projects/new', function(req,res){
     res.render("newProject");
 });
 
-app.get('/projects/:id/inventory', checkAuth, function(req, res) {
-    var itemId = req.params.id;
-    knex.select('*').from('project')
-    .where('proj_id','=',itemId)
+app.get('/projects/:id/items', checkAuth, function(req, res) {
+    var projID = req.params.id;
+    knex.select('*').from('project_items')
+    .where('proj_id','=',projID)
     .then(results => {
         res.send({results})
     })
     .catch(err => console.log(err))
 });
+
+app.get('/projects/:id/', checkAuth, function(req, res) {
+    var projID = req.params.id;
+    knex.select('*').from('project')
+    .where('proj_id','=',projID)
+    .then(results => {
+        res.send({results})
+    })
+    .catch(err => console.log(err))
+});
+
+app.put('/projects/:id',checkAuth,function(req,res){
+    let projID = req.params.id;
+
+    let projData = {
+        manager_id: res.req.body.manager,
+        name: res.req.body.name
+    }
+
+    console.log(projData);
+
+    knex('project')
+    .where('proj_id','=',projID)
+    .update(projData)
+    .returning('*')
+    .then(result => {
+        // console.log(result);
+        res.redirect(303, '/inventory')
+    })
+    .catch(err => console.log(err, 'Error updating project.'))
+})
 
 app.post('/projects', checkAuth, function(req,res){
     let data = {
