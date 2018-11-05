@@ -26,28 +26,19 @@ const connection = new Client({
     ssl: true,
 });
 
-module.exports.itemHistoryInsert = function(item, username){
-    knex.select('last_value','log_cnt').from('inventory_inv_id_seq')
-    .then(results => {
-        let itemid = -1;
-        if(results[0].last_value === '1' && results[0].log_cnt === '0'){
-            itemid = Number(results[0].last_value);
-        } else {
-            itemid = Number(results[0].last_value) + 1;
-        }
-        const data = {
-            inv_id: itemid,
-            description: item.description,
-            category: item.category,
-            date_modified: 'NOW()',
-            storage_location: item.storage_location,
-            history: `${username.trim()} created item.`
-        }
-        knex('inventory_history')
-        .insert(data)
-        .catch(err => console.log(err, 'Error inserting into history db.'))
-    })
-    .catch(err => console.log(err, 'Error receiving most recent item id.'))
+module.exports.itemHistoryInsert = function(item, username,histText){
+    const data = {
+        inv_id: item[0].inv_id,
+        description: item[0].description,
+        category: item[0].category,
+        date_modified: 'NOW()',
+        storage_location: item[0].storage_location,
+        history: `${username.trim()} ${histText}.`
+    }
+    
+    knex('inventory_history')
+    .insert(data)
+    .catch(err => console.log(err, 'Error inserting into history db.'))
 }
 
 connection.connect();

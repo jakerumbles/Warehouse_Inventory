@@ -108,6 +108,7 @@
 <script type="text/javascript">
 
 var getData = async function(id){
+    //really ugly function to create a table of inventory history
     const url = `/inv-history/${id}`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
@@ -186,6 +187,7 @@ const loadDataOnForms = async function(id){
 }
 
 const updateItem = async function(){
+    //this function sends data obj to api to update db
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/inv-items/${data_id}`;
     const data = {
@@ -195,7 +197,6 @@ const updateItem = async function(){
         present: document.getElementById('present-input').checked,
         reserved: document.getElementById('reserved-input').checked,
     }
-    console.log(url, " ", data);
     const resp = fetch(url, {
         method: "PUT",
         credentials: 'include',
@@ -204,7 +205,9 @@ const updateItem = async function(){
         },
         body: JSON.stringify(data),
     })
-    .then(location.reload())
+    .then(fetched =>{
+        location.reload()
+    })
 
 }
 

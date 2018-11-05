@@ -35,6 +35,7 @@ app.get('/inventory', checkAuth, function(req, res) {
     // var q = 'SELECT * FROM inventory LIMIT 100';
 
     knex.select('*').from('inventory')
+    .orderBy('inv_id','asc')
     .then(results => {
         res.render("inventory/inventory", {items: results});
     })
@@ -82,10 +83,17 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
         itemData.reserved = 'no';
     }
 
+    // console.log(itemData);
+
     knex('inventory')
     .where('inv_id','=',itemId)
     .update(itemData)
-    .then(res.redirect(303, '/inventory'))
+    .returning('*')
+    .then(result => {
+        // console.log(result);
+        itemHistoryInsert(result, req.user.username,'modified item');
+        res.redirect(303, '/inventory')
+    })
 
     // console.log(itemData);
 });
@@ -101,8 +109,7 @@ app.get('/inventory/new', checkAuth, function(req, res) {
 app.post('/inventory', checkAuth, function(req, res) {
     var item = req.body.item;
     console.log("inventory post route...now adding new item to DB");
-    itemHistoryInsert(item, req.user.username);
-    insertQuery(item);
+    insertQuery(item,req.user.username);
     res.redirect("/inventory");
 });
 
@@ -112,6 +119,7 @@ app.post('/inventory', checkAuth, function(req, res) {
 // Show search form
 app.get('/search/new', checkAuth, function(req, res) {
     knex.select('category').from('inventory')
+    .distinct('category')
     .then(categories => {
         res.render('search', {categories: categories})
     })
@@ -123,12 +131,11 @@ app.get('/search/new', checkAuth, function(req, res) {
 // Query the database
 app.post('/search', checkAuth, function(req, res) {
     var query = req.body.query;
-    console.log(query);
     if(query.category === 'Any'){
         var q = knex.select('*').from('inventory')
         .where('description', 'like', `%${query.description}%`)
+        .orderBy('inv_id', 'asc')
         .then(results => {
-            console.log(results)
             res.render('inventory/inventory', {items: results});
         })
         .catch(err => {
@@ -138,6 +145,7 @@ app.post('/search', checkAuth, function(req, res) {
         knex.select('*').from('inventory')
         .where('description', 'like', `%${query.description}%`)
         .andWhere('category', query.category)
+        .orderBy('inv_id','asc')
         .then(results => {
             res.render('inventory/inventory', {items: results})
         })
@@ -161,18 +169,6 @@ app.get('/login', function(req, res, next){
     }
 });
 
-/*
-app.get('/login', passport.authenticate('local', {failureRedirect: '/login'}),function(req, res, next){
-res.redirect('/');
-});*/
-
-//Testing
-/*
-app.get('/login', checkAuth,function(req, res, next){
-res.redirect('/');
-});
-*/
-
 function checkAuth(req, res, next){
     if(req.isAuthenticated()){
         next();
@@ -180,15 +176,6 @@ function checkAuth(req, res, next){
         res.redirect('/login');
     }
 }
-
-
-//passport.authenticate works here for some reason but not others
-//Submit Login Page
-// app.post('/login', passport.authenticate('local', {
-//   successRedirect: 'users/account',
-//   failureRedirect: '/login',
-//   });
-// });
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/account',
@@ -206,7 +193,6 @@ app.get('/user_accounts', function(req, res) {
             if(err) throw err;
 
             //Send the rendered page
-            //console.log(results);
             res.render("users/user_accounts", {items: results});
         });
     } else {
@@ -226,72 +212,34 @@ app.get('/signup', function(req, res, next){
 app.get('/account', checkAuth, function(req, res, next){
     var q = 'SELECT * FROM users WHERE "id"=$1';
     connection.query(q, [req.user.id], function(err, results) {
-        //console.log("q", [req.user.id], q);
-        //console.log("results", results);
         res.render("users/account", {info: results});
     });
 });
 
 app.post('/signup', async function(req, res){
-    try{
-        const dbclient = await pool.connect()
-        await dbclient.query('BEGIN')
-        await bcrypt.hash(req.body.password, null, null, async function(err,hash){
-            await JSON.stringify(dbclient.query('SELECT id FROM "users" WHERE "email"=$1',
-            [req.body.username], function(err, result){
-                if(result.rows[0]){
-                    res.redirect('/signup');
-                }
-                else{
-                    dbclient.query('INSERT INTO users (id, "firstName", "lastName", email, password) VALUES ($1, $2, $3, $4, $5)',
-                    [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, hash],
-                    function(err, result){
-                        if(err){
-                            console.log(err);
-                        }
-                        else{
-                            dbclient.query('COMMIT')
-                            //console.log(result)
-                            res.redirect('/login');
-                            return;
-                        }
-                    });
-                }
-            }));
-        });
-        dbclient.release();
-
+    const data = {
+        id: uuidv4(),
+        email: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
     }
-    catch(e){throw(e)}
+    await bcrypt.hash(req.body.password, null, null, async function(err,hash){
+        knex('users')
+        .select('id')
+        .where('email','=',data.email)
+        .then(result => {
+            if(result[0]){
+                res.redirect('/signup')
+            } else {
+                data.password = hash;
+                knex('users')
+                .insert(data)
+                .then(res.redirect('/login'))
+                .catch(err => console.log(err, 'Error creatign new user'))
+            }
+        })
+    })
 });
-
-//The inventory page where the database will be shown
-/*
-app.get('/inventory', passport.authenticate('local', {failureRedirect: '/'}),function(req, res, next){
-var passedStuff = req.params.description;
-var q = 'SELECT * FROM inventory LIMIT 100';
-connection.query(q, function(err,results){
-if(err) throw err;
-res.render("inventory", {items: results});
-});
-});*/
-
-
-
-/*
-app.get('/user_accounts',
-passport.authenticate('local', {failureRedirect: '/'}),
-function(req, res) {
-var passedStuff = req.params.description;
-//Query to get the data
-var q = 'SELECT * FROM user_account ORDER BY user_id';
-connection.query(q, function(err, results) {
-if(err) throw err;
-//Send the rendered page
-//console.log(results);
-res.render("user_accounts", {items: results});
-});
-});*/
 
 app.get('/projects', function(req, res) {
     var passedStuff = req.params.description;
@@ -309,20 +257,27 @@ app.get('/projects', function(req, res) {
 
 //Query generator functions
 //Generates a query for inserting a new item
-function insertQuery(item) {
+function insertQuery(item,user) {
     present = (item.present === 'on') ? 'yes' : 'no';
     reserved = (item.reserved === 'on') ? 'yes' : 'no';
-    const qvalues = [item.description, item.category, 'NOW()',
-    item.storage_location,present,reserved];
 
-    const q = 'INSERT INTO inventory(description,category,date_recieved,'
-    +'storage_location,present,reserved) VALUES (%L) RETURNING *';
-    const sqlStatement = format(q, qvalues);
-    connection.query(sqlStatement,(err,res) =>{
-        if(err){
-            console.log(err)
-        }
+    let data = {
+        description: item.description,
+        category: item.category,
+        date_recieved: 'NOW()',
+        storage_location: item.storage_location,
+        present: present,
+        reserved: reserved
+    }
+
+    knex('inventory')
+    .insert(data)
+    .returning('*')
+    .then(result => {
+        // console.log(result);
+        itemHistoryInsert(result, user,'created item')
     })
+    .catch(err => console.log(err, 'Error in item creation'))
 }
 
 module.exports = app;
