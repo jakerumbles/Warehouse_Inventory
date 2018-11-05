@@ -62,7 +62,6 @@
                         <label for="inputManager">Manager</label>
                         <select id="inputManager" class="form-control" name="manager">
                           <% if(managers) { %>
-                              <% console.log(managers); %>
                               <% for(var i=0; i<managers.length;i++) { %>
                               <option><%= managers[i].id %></option>
                               <% } %>

@@ -253,7 +253,6 @@ app.get('/projects', function(req, res) {
         knex('users')
         .select('id')
         .then(uResults => {
-            console.log(uResults);
             res.render('projects', {projects: pResults,id:req.user.id,managers:uResults})
         })
     })
@@ -267,12 +266,16 @@ app.get('/projects/new', function(req,res){
 // Shows inventory(reserved items) for specific project
 app.get('/projects/:id/items', checkAuth, function(req, res) {
     var projID = req.params.id;
-    knex.select('*').from('project_items')
-    .where('proj_id','=',projID)
+    console.log(projID);
+    knex('project_items')
+    .join('inventory','project_items.inv_id','=','inventory.inv_id')
+    .where('project_items.proj_id','=',projID)
+    // .select('inventory.description','inventory.category','inventory.quantity',
+    // 'inventory.quantity','project_items.reserved')
     .then(results => {
-        res.send({results})
+        console.log(results);
+        res.send({results});
     })
-    .catch(err => console.log(err))
 });
 
 app.get('/projects/:id/', checkAuth, function(req, res) {

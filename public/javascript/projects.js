@@ -4,7 +4,7 @@ var getData = async function(id){
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     const rows = data.results
-    let tbl = document.querySelector('.inv-his-table')
+    let tbl = document.querySelector('#projectItemTable')
     if(tbl) tbl.remove();
     let errH3 = document.querySelector('#error-h3')
     if(errH3) errH3.remove();
@@ -16,13 +16,10 @@ var getData = async function(id){
         errH3.textContent = 'ERROR FETCHING TABLE';
         modalBod.appendChild(errH3);
     }else {
-
+        var containerDiv = document.createElement('DIV')
         tbl = document.createElement('TABLE');
-        tbl.classList.add('inv-his-table')
+        tbl.id = "projectItemTable"
         tbl.classList.add('table')
-        tbl.classList.add('table-condensed')
-        tbl.classList.add('table-responsive')
-        tbl.border = '5px';
         var thead = document.createElement('THEAD')
         tbl.appendChild(thead)
         var tabTr = document.createElement('TR')
@@ -39,7 +36,7 @@ var getData = async function(id){
             var tabTr = document.createElement('TR');
             tabBod.appendChild(tabTr);
             for(var key in row){
-                var tabTh = document.createElement('TH')
+                var tabTh = document.createElement('TD')
                 tabTh.textContent = row[key]
                 tabTr.appendChild(tabTh)
                 // document.querySelector('#hiddenvalue').value += key;
@@ -47,7 +44,12 @@ var getData = async function(id){
             }
         })
         var modalBod = document.querySelector('.modal-body')
-        modalBod.appendChild(tbl)
+        containerDiv.appendChild(tbl)
+        containerDiv.classList.add('table')
+        containerDiv.classList.add('table-hover')
+        containerDiv.classList.add('table-responsive-sm')
+        containerDiv.classList.add('table-condensed')
+        modalBod.appendChild(containerDiv)
     }
 }
 
