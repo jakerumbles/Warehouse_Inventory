@@ -4,6 +4,16 @@
     <canvas id="lineChart" width="400" height="400"></canvas>
 </div>
 
+<script type="text/javascript">
+    let categories = <%- JSON.stringify(categories) %>;
+    // console.log(categories);
+    labelsArray = categories.map(v => {
+        return v.category;
+    });
 
+    valuesArray = categories.map(v => {
+        return v.count;
+    });
+</script>
 
 <% include ./partials/footer %>

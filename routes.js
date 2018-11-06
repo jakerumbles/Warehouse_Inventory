@@ -35,12 +35,12 @@ app.get('/inventory', checkAuth, function(req, res) {
     .orderBy('inv_id','asc')
     .where('remove','=','false')
     .then(results => {
-        res.render("inventory/inventory", {items: results});
+        res.render("inventory/inventory", {items: results,reserving:false});
     })
 });
 
 // testing really don't know if this will work.
-app.get('/inv-history/:id', checkAuth, function(req, res) {
+app.get('/api/inventory/:id/history', checkAuth, function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('inventory_history')
     .where('inv_id','=',projID)
@@ -50,7 +50,7 @@ app.get('/inv-history/:id', checkAuth, function(req, res) {
     .catch(err => console.log(err))
 });
 
-app.get('/inv-items/:id', checkAuth, function(req, res) {
+app.get('/api/inventory/:id', checkAuth, function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('inventory')
     .where('inv_id','=',projID)
@@ -60,7 +60,7 @@ app.get('/inv-items/:id', checkAuth, function(req, res) {
     .catch(err => console.log(err))
 });
 
-app.put('/inv-items/:id', checkAuth, function(req, res) {
+app.put('/api/inventory/:id', checkAuth, function(req, res) {
     var itemID = req.params.id;
 
     let itemData = {
@@ -98,7 +98,6 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
             .update(itemData)
             .returning('*')
             .then(result => {
-                // console.log(result);
                 itemHistoryInsert(result, req.user.username,'modified item');
                 res.send({response: "Good"})
             })
@@ -149,7 +148,7 @@ app.post('/search', checkAuth, function(req, res) {
         .andWhere('remove','=','false')
         .orderBy('inv_id', 'asc')
         .then(results => {
-            res.render('inventory/inventory', {items: results});
+            res.render('inventory/inventory', {items: results,reserving:false});
         })
         .catch(err => {
             console.log(err)
@@ -161,7 +160,7 @@ app.post('/search', checkAuth, function(req, res) {
         .andWhere('remove','=','false')
         .orderBy('inv_id','asc')
         .then(results => {
-            res.render('inventory/inventory', {items: results})
+            res.render('inventory/inventory', {items: results,reserving:false})
         })
         .catch(err => {
             console.log(err)
@@ -280,9 +279,8 @@ app.get('/projects/new', function(req,res){
 });
 
 // Shows inventory(reserved items) for specific project
-app.get('/projects/:id/items', checkAuth, function(req, res) {
+app.get('/api/projects/:id/items', checkAuth, function(req, res) {
     var projID = req.params.id;
-    console.log(projID);
     knex('project_items')
     .join('inventory','project_items.inv_id','=','inventory.inv_id')
     .where('project_items.proj_id','=',projID)
@@ -290,13 +288,13 @@ app.get('/projects/:id/items', checkAuth, function(req, res) {
     // .select('inventory.description','inventory.category','inventory.quantity',
     // 'inventory.quantity','project_items.reserved')
     .then(results => {
-        console.log(results);
         res.send({results});
     })
 });
 
-app.get('/projects/:id/', checkAuth, function(req, res) {
-    var projID = req.params.id;    knex.select('*').from('project')
+app.get('/api/projects/:id/', checkAuth, function(req, res) {
+    var projID = req.params.id;
+    knex.select('*').from('project')
     .where('proj_id','=',projID)
     .then(results => {
         res.send({results})
@@ -305,7 +303,7 @@ app.get('/projects/:id/', checkAuth, function(req, res) {
 });
 
 // Add new project to database and redirect to list of all projects
-app.put('/projects/:id',checkAuth,function(req,res){
+app.put('/api/projects/:id',checkAuth,function(req,res){
     let projID = req.params.id;
 
     let projData = {
@@ -313,17 +311,19 @@ app.put('/projects/:id',checkAuth,function(req,res){
         name: res.req.body.name
     }
 
-    console.log(projData);
-
     knex('project')
     .where('proj_id','=',projID)
     .update(projData)
     .returning('*')
     .then(result => {
         // console.log(result);
-        res.redirect(303, '/inventory')
+        // res.redirect(303, '/inventory')
+        res.send({response:'Good'})
     })
-    .catch(err => console.log(err, 'Error updating project.'))
+    .catch(err => {
+        console.log(err, 'Error updating project.')
+        res.status(500).send({error: 'Error updating project information.'})
+    })
 })
 
 app.post('/projects', checkAuth, function(req,res){
@@ -346,7 +346,27 @@ app.post('/projects', checkAuth, function(req,res){
 // STATISTICS
 // ------------------
 app.get('/statistics', checkAuth, function(req, res) {
-    res.render('statistics');
+    // res.render('statistics');
+    knex('inventory')
+    .count('category')
+    .select('category')
+    .groupBy('category')
+    .then(results =>{
+        res.render('statistics', {categories:results})
+    })
+    // SELECT category, count(*) FROM inventory
+    // GROUP BY category;
+});
+
+// allows reservation of items for a specific project
+app.get('/projects/reserve',checkAuth,function(req,res){
+    knex.select('*').from('inventory')
+    .orderBy('inv_id','asc')
+    .where('remove','=','false')
+    .then(results => {
+        res.render("reserve", {items: results});
+    })
+    // res.render("inventory/inventory",{items:null});
 });
 
 //Query generator functions
