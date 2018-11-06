@@ -8,6 +8,7 @@ CREATE TABLE inventory(
     present VARCHAR(5) NOT NULL,
     reserved VARCHAR(5) DEFAULT 'false',
     remove BOOLEAN DEFAULT 'false',
+    available INTEGER DEFAULT 0,
     PRIMARY KEY(inv_id)
 );
 CREATE TABLE "users"(

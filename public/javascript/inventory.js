@@ -72,6 +72,7 @@ const loadDataOnForms = async function(id){
         document.getElementById('category-input').value = rows[0].category;
         document.getElementById('storage-input').value = rows[0].storage_location;
         document.getElementById('quantity-input').value = rows[0].quantity;
+        document.getElementById('available-input').value = rows[0].available;
 
         if(rows[0].present==='yes')
         document.getElementById('present-input').checked = true
@@ -100,13 +101,24 @@ const updateItem = async function(args){
         method: "PUT",
         credentials: 'include',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
         body: JSON.stringify(data),
     })
     .then(fetched =>{
-        location.reload()
+        // console.log(fetched.text())
+        fetched.json()
+        .then(responseData =>{
+            if(responseData.error){
+                console.log(responseData.error)
+            }
+            else{
+                location.reload()
+            }
+        })
     })
+    .catch(err => console.log('Error: ',err))
 
 }
 
