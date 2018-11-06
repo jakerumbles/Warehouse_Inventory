@@ -350,6 +350,7 @@ app.get('/statistics', checkAuth, function(req, res) {
     knex('inventory')
     .count('category')
     .select('category')
+    .where('remove','=',false)
     .groupBy('category')
     .then(results =>{
         res.render('statistics', {categories:results})
