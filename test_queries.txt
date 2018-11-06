@@ -1,0 +1,4 @@
+
+//Get number of items per category for line chart
+SELECT category, count(*) FROM inventory
+GROUP BY category;

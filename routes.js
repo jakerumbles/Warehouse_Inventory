@@ -330,6 +330,13 @@ app.post('/projects', checkAuth, function(req,res){
     })
 });
 
+// ------------------
+// STATISTICS
+// ------------------
+app.get('/statistics', checkAuth, function(req, res) {
+    res.render('statistics');
+});
+
 //Query generator functions
 //Generates a query for inserting a new item
 function insertQuery(item,user) {
