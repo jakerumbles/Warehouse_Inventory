@@ -1,6 +1,6 @@
 var getData = async function(id){
     //really ugly function to create a table of inventory history
-    const url = `/projects/${id}/items`;
+    const url = `/api/projects/${id}/items`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     const rows = data.results
@@ -63,7 +63,7 @@ const changeBtnText = () => {
 }
 
 const loadDataOnForms = async function(id){
-    const url = `/projects/${id}/`;
+    const url = `/api/projects/${id}/`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     if (data.results.length < 1){
@@ -78,7 +78,7 @@ const loadDataOnForms = async function(id){
 const updateItem = async function(){
     //this function sends data obj to api to update db
     const data_id = document.querySelector('#modal-inv-id').value;
-    const url = `/projects/${data_id}`;
+    const url = `/api/projects/${data_id}`;
     const data = {
         name: document.getElementById('name-input').value,
         manager: document.getElementById('inputManager').value,
@@ -95,8 +95,17 @@ const updateItem = async function(){
         body: JSON.stringify(data),
     })
     .then(fetched =>{
-        // location.reload()
+        fetched.json()
+        .then(responseData =>{
+            if(responseData.error){
+                console.log(responseData.error)
+            }
+            else{
+                location.reload()
+            }
+        })
     })
+    .catch(err => console.log('Error: ',err))
 
 }
 

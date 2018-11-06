@@ -1,6 +1,6 @@
-<% include ../partials/header %>
+<% include ./partials/header %>
 
-<link rel="stylesheet" href="./inventory.css">
+<link rel="stylesheet" href="../inventory.css">
 
 <div class="container">
     <h1>Warehouse Inventory</h1>
@@ -51,11 +51,9 @@
                             <td>
                                 <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=items[i].inv_id%>>Edit</button>
                             </td>
-                            <% if(reserving) { %>
                             <td>
                                 <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#reserveItem" data-id=<%=items[i].inv_id%>>Reserve</button>
                             </td>
-                            <% } %>
                         </tr>
                         <% } %>
                     </tbody>
@@ -67,7 +65,35 @@
     </div>
 </div>
 
-<% if(reserving) { %>
+<!-- This is the reserve item modal -->
+<div class="modal fade" id="reserveItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
+    <div class="modal-dialog modal-md container row" role="document">
+        <div class="modal-content inv-container col-sm col-md col-lg col-xl">
+            <div class="modal-header">
+                <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
+                <h3>Reserve Item</h3>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="form-group col-sm-auto">
+                        <label for="description-input">Description</label>
+                        <input class="form-control" type="text" id="description-input" name="description" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body collapse" id="history-table">
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="modal-inv-id" name="" value=""/>
+                <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
+                <button type="button" onclick="changeBtnText()" class="btn btn-primary"
+                data-toggle="collapse" data-target="#history-table"
+                id="show-hide-history-btn">Show History</button>
+                <button type="button" onclick="updateItem('remove')" class="btn btn-danger">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
     <div class="modal-dialog modal-lg container row" role="document">
@@ -133,73 +159,7 @@
     </div>
 </div>
 
-<% } %>
 
-<div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">
-    <div class="modal-dialog modal-lg container row" role="document">
-        <div class="modal-content inv-container col-sm col-md col-lg col-xl">
-            <div class="modal-header">
-                <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
-                <h3>Item Details</h3>
-            </div>
-            <div>
-                <div class="row">
-                    <div class="form-group col-sm-4">
-                        <div class="" style="float:left;margin:3px">
-                            <label for="description-input">Description</label>
-                            <input class="form-control" type="text" id="description-input" name="description" value="">
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label for="quantity">Quantity</label>
-                        <input class="form-control" type="text" id="quantity-input" name="quantity" value="">
-                    </div>
-                    <div class="form-group col-sm-3" style="float:left;margin:3px">
-                        <div class="" style="float:left;margin:3px">
-                            <label for="available-input">Available</label>
-                            <input class="form-control" type="text" disabled id="available-input" name="available" value="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-sm-12" style="float:left;margin:3px">
-                            <label for="category">Category</label>
-                            <input class="form-control" type="text" id="category-input" name="category" value="">
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-left: 15px">
-                        <div class="col-sm-12" style="float:left;margin:3px">
-                            <label for="storage_location">Storage Location</label>
-                            <input class="form-control" type="text" id="storage-input" name="storage_location" value="">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div style="float:right;margin:3px">
-                            <label for="present">Present</label>
-                            <input type="checkbox" id="present-input" name="present" value="">
-                        </div>
-                        <div style="float:right;margin:3px">
-                            <label for="reserved">Reserved</label>
-                            <input type="checkbox" id="reserved-input" name="reserved" value="">
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-body collapse" id="history-table">
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" id="modal-inv-id" name="" value=""/>
-                <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
-                <button type="button" onclick="changeBtnText()" class="btn btn-primary"
-                data-toggle="collapse" data-target="#history-table"
-                id="show-hide-history-btn">Show History</button>
-                <button type="button" onclick="updateItem('remove')" class="btn btn-danger">Remove</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script type="text/javascript" src="../javascript/inventory.js"></script>
 
-
-<script type="text/javascript" src="./javascript/inventory.js"></script>
-
-<% include ../partials/footer %>
+<% include ./partials/footer %>
