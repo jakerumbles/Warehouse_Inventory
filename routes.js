@@ -61,9 +61,9 @@ app.get('/inv-items/:id', checkAuth, function(req, res) {
 });
 
 app.put('/inv-items/:id', checkAuth, function(req, res) {
-    var projID = req.params.id;
+    var itemID = req.params.id;
 
-    let projData = {
+    let itemData = {
         description: res.req.body.description,
         category: res.req.body.category,
         storage_location: res.req.body.storage,
@@ -72,30 +72,42 @@ app.put('/inv-items/:id', checkAuth, function(req, res) {
     }
 
     if(res.req.body.present){
-        projData.present = 'yes';
+        itemData.present = 'yes';
     } else {
-        projData.present = 'no';
+        itemData.present = 'no';
     }
 
     if(res.req.body.reserved){
-        projData.reserved = 'yes';
+        itemData.reserved = 'yes';
     } else {
-        projData.reserved = 'no';
+        itemData.reserved = 'no';
     }
 
     // console.log(projData);
 
-    knex('inventory')
-    .where('inv_id','=',projID)
-    .update(projData)
-    .returning('*')
-    .then(result => {
-        // console.log(result);
-        itemHistoryInsert(result, req.user.username,'modified item');
-        res.redirect(303, '/inventory')
+    knex('project_items')
+    // .select('reserved')
+    .sum('reserved')
+    .where('inv_id','=',itemID)
+    .then(result =>{
+
+        if(result[0].sum <= itemData.quantity){
+            itemData.available = itemData.quantity - result[0].sum;
+            knex('inventory')
+            .where('inv_id','=',itemID)
+            .update(itemData)
+            .returning('*')
+            .then(result => {
+                // console.log(result);
+                itemHistoryInsert(result, req.user.username,'modified item');
+                res.send({response: "Good"})
+            })
+        } else {
+            res.status(500).send({error: 'Quantity is less than available.'})
+        }
+
     })
 
-    // console.log(projData);
 });
 
 
