@@ -1,6 +1,6 @@
 <% include ./partials/header %>
 
-<link rel="stylesheet" href="../inventory.css">
+<link rel="stylesheet" href="../../inventory.css">
 
 <div class="container">
     <h1>Warehouse Inventory</h1>
@@ -76,8 +76,8 @@
             <div>
                 <div class="row">
                     <div class="form-group col-sm-auto">
-                        <label for="description-input">Description</label>
-                        <input class="form-control" type="text" id="description-input" name="description" value="">
+                        <label for="reserve-input">Reserve</label>
+                        <input class="form-control" type="text" id="reserve-input" name="reserve" value="">
                     </div>
                 </div>
             </div>
@@ -85,11 +85,8 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="modal-inv-id" name="" value=""/>
-                <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
-                <button type="button" onclick="changeBtnText()" class="btn btn-primary"
-                data-toggle="collapse" data-target="#history-table"
-                id="show-hide-history-btn">Show History</button>
-                <button type="button" onclick="updateItem('remove')" class="btn btn-danger">Remove</button>
+                <button type="button" onclick="reserveItem()" 
+                class="btn btn-primary" data-dismiss="modal">Reserve</button>
             </div>
         </div>
     </div>
@@ -159,7 +156,12 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    projectID = <%= projectID %>
+    console.log(projectID);
+</script>
 
-<script type="text/javascript" src="../javascript/inventory.js"></script>
+<script type="text/javascript" src="../../javascript/inventory.js"></script>
+<script type="text/javascript" src="../../javascript/reserve.js"></script>
 
 <% include ./partials/footer %>

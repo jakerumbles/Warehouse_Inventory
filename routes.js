@@ -7,6 +7,7 @@ const app = express.Router();
 const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
 const knex = require('./dbconnection').knex;
+const reserveItem = require('./reserveHelper').reserveItem;
 
 //ROUTES
 //Home
@@ -62,7 +63,7 @@ app.get('/api/inventory/:id', checkAuth, function(req, res) {
 
 app.put('/api/inventory/:id', checkAuth, function(req, res) {
     var itemID = req.params.id;
-
+    // console.log(itemID);
     let itemData = {
         description: res.req.body.description,
         category: res.req.body.category,
@@ -90,7 +91,7 @@ app.put('/api/inventory/:id', checkAuth, function(req, res) {
     .sum('reserved')
     .where('inv_id','=',itemID)
     .then(result =>{
-
+        // console.log(result);
         if(result[0].sum <= itemData.quantity){
             itemData.available = itemData.quantity - result[0].sum;
             knex('inventory')
@@ -360,15 +361,50 @@ app.get('/statistics', checkAuth, function(req, res) {
 });
 
 // allows reservation of items for a specific project
-app.get('/projects/reserve',checkAuth,function(req,res){
-    knex.select('*').from('inventory')
-    .orderBy('inv_id','asc')
-    .where('remove','=','false')
-    .then(results => {
-        res.render("reserve", {items: results});
+app.get('/projects/:id/reserve',checkAuth,function(req,res){
+    // knex.select('*').from('inventory')
+    // .orderBy('inv_id','asc')
+    // .where('remove','=','false')
+    // .then(results => {
+    //     res.render("reserve", {items: results,projectID: req.params.id});
+    // })
+    knex('project')
+    .select('proj_id')
+    .where('proj_id','=',req.params.id)
+    .then(result => {
+        if(result.length > 0){
+            knex.select('*').from('inventory')
+            .orderBy('inv_id','asc')
+            .where('remove','=','false')
+            .then(results => {
+                res.render("reserve", {items: results,projectID: req.params.id});
+            })
+        } else {
+            res.statusMessage = `Project ID: ${req.params.id} not found.`
+            // res.status(404).end();
+            res.send(404,`Project ID: ${req.params.id} not found.`)
+        }
     })
-    // res.render("inventory/inventory",{items:null});
+    .catch(err =>{
+        console.log('Error: ',err);
+        res.redirect('/');
+    })
 });
+
+app.put('/api/projects/:pid/reserve/:iid',checkAuth,function(req,res){
+    // console.log('ProjectID: ',req.params.pid);
+    // console.log('ItemID: ',req.params.iid);
+    // console.log('ReserveAmt: ',res.req.body.reserve);
+
+    const reserveItemIfPossible = reserveItem(req.params.pid,
+        req.params.iid,res.req.body.reserve)
+
+    if(reserveItemIfPossible)
+        res.send({response:'Good'})
+    else
+        res.status(500).send({error:'Something went wrong.'})
+
+})
 
 //Query generator functions
 //Generates a query for inserting a new item
