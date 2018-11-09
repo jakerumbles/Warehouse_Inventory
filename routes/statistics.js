@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
+const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 
 // ------------------
