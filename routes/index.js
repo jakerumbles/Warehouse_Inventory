@@ -5,7 +5,9 @@ const knex = require('../dbconnection').knex;
 
 //Home
 router.get('/', function(req, res) {
-    res.render("home");
+    res.render("home",{
+        message: req.session.message
+    });
     console.log("you visited the home page");
 });
 

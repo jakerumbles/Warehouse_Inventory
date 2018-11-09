@@ -7,7 +7,7 @@ const knex = require('../dbconnection').knex;
 // SEARCH routes
 // --------------
 // Show search form
-router.get('/new', checkAuth, function(req, res) {
+router.get('/search/new', checkAuth, function(req, res) {
     knex.select('category').from('inventory')
     .distinct('category')
     .then(categories => {
@@ -19,7 +19,7 @@ router.get('/new', checkAuth, function(req, res) {
 });
 
 // Query the database
-router.post('/', checkAuth, function(req, res) {
+router.post('/search', checkAuth, function(req, res) {
     var query = req.body.query;
     if(query.category === 'Any'){
         var q = knex.select('*').from('inventory')

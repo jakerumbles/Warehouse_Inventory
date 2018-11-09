@@ -89,6 +89,10 @@
 <!-- MAIN CONTENT -->
 <div class="jumbotron">
 
+    <% if(message){ %>
+        <h5 class="error-message"><%= message %></h5>
+    <% } %>
+
     <h1 class="display-4">Welcome to idkDB</h1>
 
     <p class="lead">Created by David Hamilton, Jake Edwards, and John Carvajal</p>

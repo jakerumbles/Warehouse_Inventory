@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const checkAuth = require('../helpers').checkAuth;
+const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const insertQuery = require('../dbconnection').insertQuery;
 
@@ -9,7 +10,7 @@ const insertQuery = require('../dbconnection').insertQuery;
 // ----------------
 
 //Inventory Page
-router.get('/', checkAuth, function(req, res) {
+router.get('/inventory', checkAuth, checkAccess, function(req, res) {
     var passedStuff = req.params.description;
     // var q = 'SELECT * FROM inventory LIMIT 100';
 
@@ -22,13 +23,13 @@ router.get('/', checkAuth, function(req, res) {
 });
 
 //New Item page
-router.get('/new', checkAuth, function(req, res) {
+router.get('/inventory/new', checkAuth, checkAccess,function(req, res) {
     res.render("inventory/newItem");
     console.log("you visited the new item page");
 });
 
 //Add new item to DB
-router.post('/', checkAuth, function(req, res) {
+router.post('/inventory', checkAuth, checkAccess,function(req, res) {
     var item = req.body.item;
     console.log("inventory post route...now adding new item to DB");
     insertQuery(item,req.user.username);

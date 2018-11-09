@@ -6,7 +6,7 @@ const knex = require('../dbconnection').knex;
 // ------------------
 // STATISTICS
 // ------------------
-router.get('/', checkAuth, function(req, res) {
+router.get('/statistics', checkAuth, checkAccess,function(req, res) {
     // res.render('statistics');
     knex('inventory')
     .count('category')

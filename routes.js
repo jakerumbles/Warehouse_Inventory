@@ -19,27 +19,27 @@ router.use('/', index);
 
 //inventory routes
 const inventory = require('./routes/inventory');
-router.use('/inventory', inventory);
+router.use('/', inventory);
 
 //api routes
 const api = require('./routes/api');
-router.use('/api', api);
+router.use('/', api);
 
 //search routes
 const search = require('./routes/search');
-router.use('/search', search);
+router.use('/', search);
 
 //projects routes
 const projects = require('./routes/projects');
-router.use('/projects', projects);
+router.use('/', projects);
 
 //statistics routes
 const statistics = require('./routes/statistics');
-router.use('/statistics', statistics);
+router.use('/', statistics);
 
 //auth routes
 const auth = require('./routes/auth');
-router.use('/auth', auth);
+router.use('/', auth);
 
 router.use(function(req,res,next){
     let err = new Error('Error 404: Page Not Found')

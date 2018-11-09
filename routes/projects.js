@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
+const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 
 // -----------------------------
 // PROJECT Routes
 // -----------------------------
 // Show list of all projects
-router.get('/', function(req, res) {
+router.get('/projects', checkAuth,checkAccess,function(req, res) {
     var passedStuff = req.params.description;
     knex('project')
     .select('*')
@@ -22,11 +23,11 @@ router.get('/', function(req, res) {
 });
 
 // New project form
-router.get('/new', function(req,res){
+router.get('/projects/new', checkAuth,checkAccess,function(req,res){
     res.render("newProject");
 });
 
-router.post('/', checkAuth, function(req,res){
+router.post('/projects', checkAuth,checkAccess, function(req,res){
     let data = {
         manager_id: req.user.id,
         name: req.body.name
@@ -43,7 +44,7 @@ router.post('/', checkAuth, function(req,res){
 });
 
 // allows reservation of items for a specific project
-router.get('/:id/reserve',checkAuth,function(req,res){
+router.get('/projects/:id/reserve',checkAuth,checkAccess,function(req,res){
     // knex.select('*').from('inventory')
     // .orderBy('inv_id','asc')
     // .where('remove','=','false')

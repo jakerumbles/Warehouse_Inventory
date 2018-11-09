@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
+const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const passport = require('passport');
 const connection = require('../dbconnection').connection;
@@ -11,20 +12,20 @@ const bcrypt = require('bcrypt-nodejs');
 // AUTH routes
 // --------------
 
-router.post('/login', passport.authenticate('local', {
+router.post('/auth/login', passport.authenticate('local', {
     successRedirect: '/auth/account',
     failureRedirect: '/login'
 }));
 
 // Logout
-router.get('/logout', checkAuth, function(req, res) {
+router.get('/auth/logout', checkAuth, function(req, res) {
     console.log(req.user.username + " Logs Out");
     req.session = null;
     res.redirect("/");
 });
 
 //Users Table. TODO: take at least some data out of production
-router.get('/user_accounts', checkAuth, function(req, res) {
+router.get('/auth/user_accounts', checkAuth, checkAccess, function(req, res) {
 
     if(req.isAuthenticated()){
         var passedStuff = req.params.description;
@@ -41,14 +42,14 @@ router.get('/user_accounts', checkAuth, function(req, res) {
     }
 });
 
-router.get('/account', checkAuth, function(req, res, next){
+router.get('/auth/account', checkAuth,function(req, res, next){
     var q = 'SELECT * FROM users WHERE "id"=$1';
     connection.query(q, [req.user.id], function(err, results) {
         res.render("users/account", {info: results});
     });
 });
 
-router.post('/signup', async function(req, res){
+router.post('/auth/signup', async function(req, res){
     const data = {
         id: uuidv4(),
         email: req.body.username,

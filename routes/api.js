@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
+const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const reserveItem = require('../helpers').reserveItem;
 
-// testing really don't know if this will work.
-router.get('/inventory/:id/history', checkAuth, function(req, res) {
+// Get item history
+router.get('/api/inventory/:id/history', checkAuth, checkAccess,function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('inventory_history')
     .where('inv_id','=',projID)
@@ -15,7 +16,8 @@ router.get('/inventory/:id/history', checkAuth, function(req, res) {
     .catch(err => console.log(err))
 });
 
-router.get('/inventory/:id', checkAuth, function(req, res) {
+// Get item info
+router.get('/api/inventory/:id', checkAuth, function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('inventory')
     .where('inv_id','=',projID)
@@ -25,7 +27,8 @@ router.get('/inventory/:id', checkAuth, function(req, res) {
     .catch(err => console.log(err))
 });
 
-router.put('/inventory/:id', checkAuth, function(req, res) {
+// Update item info
+router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
     var itemID = req.params.id;
     // console.log(itemID);
     let itemData = {
@@ -75,7 +78,7 @@ router.put('/inventory/:id', checkAuth, function(req, res) {
 });
 
 // Shows inventory(reserved items) for specific project
-router.get('/projects/:id/items', checkAuth, function(req, res) {
+router.get('/api/projects/:id/items', checkAuth, checkAccess, function(req, res) {
     var projID = req.params.id;
     knex('project_items')
     .join('inventory','project_items.inv_id','=','inventory.inv_id')
@@ -88,7 +91,8 @@ router.get('/projects/:id/items', checkAuth, function(req, res) {
     })
 });
 
-router.get('/projects/:id/', checkAuth, function(req, res) {
+// Get project information
+router.get('/api/projects/:id/', checkAuth, checkAccess, function(req, res) {
     var projID = req.params.id;
     knex.select('*').from('project')
     .where('proj_id','=',projID)
@@ -99,7 +103,7 @@ router.get('/projects/:id/', checkAuth, function(req, res) {
 });
 
 // Add new project to database and redirect to list of all projects
-router.put('/projects/:id',checkAuth,function(req,res){
+router.put('/api/projects/:id',checkAuth,checkAccess,function(req,res){
     let projID = req.params.id;
 
     let projData = {
@@ -122,7 +126,8 @@ router.put('/projects/:id',checkAuth,function(req,res){
     })
 })
 
-router.put('/projects/:pid/reserve/:iid',checkAuth,function(req,res){
+//Reserve specific item qty for a specific project
+router.put('/api/projects/:pid/reserve/:iid',checkAuth,function(req,res){
     // console.log('ProjectID: ',req.params.pid);
     // console.log('ItemID: ',req.params.iid);
     // console.log('ReserveAmt: ',res.req.body.reserve);

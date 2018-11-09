@@ -12,8 +12,80 @@
     4: Basic User - can only view
 
 */
-
 const knex = require('./dbconnection').knex;
+
+const restrictedRoutes = [
+    // INVENTORY ROUTES
+    {route: '/inventory', access: 4, response: 'redirect'},
+    //probably have to change where it POSTS
+    {route: '/inventory/new', access: 3, response: 'redirect'},
+
+    //testing to see if only admiN
+    {route: '/auth/user_accounts',access: 0, response: 'redirect'},
+
+    // PROJECT ROUTES
+    {route: '/projects', access: 2, response: 'redirect'},
+    {route: '/projects/new', access: 2, response: 'redirect'},
+    {route: '/projects/:id/reserve', access: 2, response: 'redirect'},
+
+    // STATISTICS ROUTES
+    {route: '/statistics', access: 4, response: 'redirect'},
+
+    // API ROUTES
+    {route: '/api/inventory/:id/history', access: 4, response: 'json'},
+    {route: '/api/inventory/:id',access: 3, response: 'json'},
+    {route: '/api/projects/:id/items',access: 2, response: 'json'},
+    {route: '/api/projects/:id/',access: 2, response: 'json'},
+    {route: '/api/projects/:id',access: 2, response: 'json'},
+    {route: '/api/projects/:pid/reserve/:iid',access: 2, response: 'json'},
+
+
+
+]
+
+module.exports.checkAccess = (req,res,next) => {
+    //might want to use lodash for this 'npm lodash'
+
+    console.log('access',req.user.access);
+    // console.log('url',req.originalUrl);
+    console.log('path',req.route.path);
+
+    // const routeToCheck = req.route.path;
+    const routeToCheck = req.route.path;
+
+    routeAccessArray = restrictedRoutes.map(route => {
+        return Object.values(route);
+    })
+    found = false;
+    for(var i = 0; i < routeAccessArray.length;i++){
+        // console.log(routeAccessArray[i][0]);
+        if(routeAccessArray[i][0] === routeToCheck){
+            console.log('required',routeAccessArray[i][1]);
+            if(routeAccessArray[i][1] >= req.user.access){
+                found = true;
+                next();
+            } else {
+                if(routeAccessArray[i][2] === 'json'){
+                    res.status(403)
+                    res.send({error: 'Unauthorized. Please contact an administrator.'})
+                    return;
+                }
+                else{
+                    req.session.message = 'Unauthorized. Please contact an administrator.';
+                    res.redirect('/login');
+                    return;
+                }
+            }
+        }
+    }
+    return;
+    // if(!found){
+    //     req.session.message = 'Unauthorised. Please refer to an administrator.';
+    //     res.redirect('/login');
+    //     return;
+    // }
+
+}
 
 module.exports.reserveItem = async function(pid,iid,reserveAmt){
     const item = await knex('project_items')
