@@ -16,25 +16,6 @@
 
 <body>
     <div class="container">
-        <!-- <ul class="nav nav-pills">
-        <li class="nav-item">
-        <a id="home-button" class="nav-link active" href="/"><i class="fas fa-home"></i></a>
-    </li>
-    <% if(currentUser) { %>
-    <li class="nav-item">
-    <a class="nav-link" href="/inventory">Inventory</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/user_accounts">Users</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/logout">Log Out</a>
-</li>
-<li><a href="#">Signed In As <%= currentUser.username %></a></li>
-<% } %>
-</ul> -->
-
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
@@ -50,7 +31,7 @@
                 <a class="nav-link" href="/search/new">Search <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/account">User Account</a>
+                <a class="nav-link" href="/auth/account">User Account</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/projects">Projects</a>
@@ -63,10 +44,10 @@
             <% if(!currentUser) { %>
                 <% } else { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/account">Signed In As <%= currentUser.username %></a>
+                        <a class="nav-link" href="/auth/account">Signed In As <%= currentUser.username %></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/auth/logout">Logout</a>
                     </li>
                     <% } %>
                 </ul>

@@ -26,7 +26,7 @@ const connection = new Client({
     ssl: true,
 });
 
-module.exports.itemHistoryInsert = function(item, username,histText){
+itemHistoryInsert = function(item, username,histText){
     const data = {
         inv_id: item[0].inv_id,
         description: item[0].description,
@@ -42,9 +42,31 @@ module.exports.itemHistoryInsert = function(item, username,histText){
     .catch(err => console.log(err, 'Error inserting into history db.'))
 }
 
+module.exports.insertQuery = function(item,user) {
+    present = (item.present === 'on') ? 'yes' : 'no';
+    reserved = (item.reserved === 'on') ? 'yes' : 'no';
+
+    let data = {
+        description: item.description,
+        category: item.category,
+        date_recieved: 'NOW()',
+        storage_location: item.storage_location,
+        present: present,
+        reserved: reserved
+    }
+
+    knex('inventory')
+    .insert(data)
+    .returning('*')
+    .then(result => {
+        // console.log(result);
+        itemHistoryInsert(result, user,'created item')
+    })
+    .catch(err => console.log(err, 'Error in item creation'))
+}
+
+
 connection.connect();
-
-
 
 module.exports.connection = connection;
 module.exports.knex = knex;
