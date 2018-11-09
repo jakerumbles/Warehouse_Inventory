@@ -20,8 +20,8 @@
                         <tr>
                             <td><%= projects[i].proj_id %></td>
                             <td><%= projects[i].name %></td>
-                            <td><%= projects[i].manager_id %></td>
-                            <% if(id === projects[i].manager_id) { %>
+                            <td><%= projects[i].email %></td>
+                            <% if(id === projects[i].manager_id || access <= 1) { %>
                             <td>
                                 <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=projects[i].proj_id%>>Edit</button>
                             </td>
@@ -61,7 +61,10 @@
                         <select id="inputManager" class="form-control" name="manager">
                           <% if(managers) { %>
                               <% for(var i=0; i<managers.length;i++) { %>
-                              <option><%= managers[i].id %></option>
+                              <% if(managers[i].id === id) { %>
+                              <option value="<%=managers[i].id%>" selected="selected"><%= managers[i].email %></option>
+                              <% } else %>
+                              <option value="<%=managers[i].id%>"><%= managers[i].email %></option>
                               <% } %>
                           <% } %>
                         </select>

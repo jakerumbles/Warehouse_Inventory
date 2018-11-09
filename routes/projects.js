@@ -11,13 +11,20 @@ const knex = require('../dbconnection').knex;
 router.get('/projects', checkAuth,checkAccess,function(req, res) {
     var passedStuff = req.params.description;
     knex('project')
-    .select('*')
+    .join('users','users.id','=','project.manager_id')
+    .select('project.proj_id','users.id','project.name','users.email')
     .orderBy('proj_id','asc')
     .then(pResults =>{
+        console.log(pResults);
         knex('users')
-        .select('id')
+        .select('email','id')
         .then(uResults => {
-            res.render('projects', {projects: pResults,id:req.user.id,managers:uResults})
+            res.render('projects', {
+                projects: pResults,
+                id:req.user.id,
+                access:req.user.access,
+                managers:uResults
+            })
         })
     })
 });

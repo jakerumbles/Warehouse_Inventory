@@ -10,6 +10,7 @@ const knex = require('../dbconnection').knex;
 router.get('/search/new', checkAuth, function(req, res) {
     knex.select('category').from('inventory')
     .distinct('category')
+    .where('remove','=','false')
     .then(categories => {
         res.render('search', {categories: categories})
     })
@@ -27,7 +28,11 @@ router.post('/search', checkAuth, function(req, res) {
         .andWhere('remove','=','false')
         .orderBy('inv_id', 'asc')
         .then(results => {
-            res.render('inventory/inventory', {items: results,reserving:false});
+            res.render('inventory/inventory', {
+                items: results,
+                reserving:false,
+                access:req.user.access
+            });
         })
         .catch(err => {
             console.log(err)
@@ -39,7 +44,10 @@ router.post('/search', checkAuth, function(req, res) {
         .andWhere('remove','=','false')
         .orderBy('inv_id','asc')
         .then(results => {
-            res.render('inventory/inventory', {items: results,reserving:false})
+            res.render('inventory/inventory', {
+                items: results,reserving:false,
+                access: req.user.access
+            })
         })
         .catch(err => {
             console.log(err)

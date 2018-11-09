@@ -18,7 +18,9 @@
                             <th>Quantity</th>
                             <th>Present</th>
                             <th>Reserved</th>
+                            <% if(access <= 3) { %>
                             <th>Edit</th>
+                            <% } %>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,8 +62,10 @@
                         <% } %>
                     </tbody>
                 </table>
-            <div class="btn-container">
+                <% if(access <= 3) { %>
+                <div class="btn-container">
                 <a class="btn btn-primary btn-lg" href="/inventory/new" role="button" id="newItemButton">New Item</a>
+                <% } %>
             </div>
         </div>
     </div>
@@ -127,7 +131,9 @@
                 <button type="button" onclick="changeBtnText()" class="btn btn-primary"
                 data-toggle="collapse" data-target="#history-table"
                 id="show-hide-history-btn">Show History</button>
+                <% if(access <= 1) { %>
                 <button type="button" onclick="updateItem('remove')" class="btn btn-danger">Remove</button>
+                <% } %>
             </div>
         </div>
     </div>
@@ -142,6 +148,7 @@
                 <button type="btn btn-sm" class="close" data-dismiss="modal">&times;</button>
                 <h3>Item Details</h3>
             </div>
+            <% if(access <= 3) { %>
             <div>
                 <div class="row">
                     <div class="form-group col-sm-4">
@@ -185,15 +192,20 @@
                         </div>
                     </div>
             </div>
+            <% } %>
             <div class="modal-body collapse" id="history-table">
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="modal-inv-id" name="" value=""/>
+                <% if(access <= 3) { %>
                 <button type="button" onclick="updateItem()" class="btn btn-default" data-dismiss="modal">Update</button>
+                <% } %>
                 <button type="button" onclick="changeBtnText()" class="btn btn-primary"
                 data-toggle="collapse" data-target="#history-table"
                 id="show-hide-history-btn">Show History</button>
+                <% if(access <= 1) { %>
                 <button type="button" onclick="updateItem('remove')" class="btn btn-danger">Remove</button>
+                <% } %>
             </div>
         </div>
     </div>

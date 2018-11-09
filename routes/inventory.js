@@ -18,7 +18,10 @@ router.get('/inventory', checkAuth, checkAccess, function(req, res) {
     .orderBy('inv_id','asc')
     .where('remove','=','false')
     .then(results => {
-        res.render("inventory/inventory", {items: results,reserving:false});
+        res.render("inventory/inventory", {
+            items: results,reserving:false,
+            access: req.user.access
+        });
     })
 });
 
