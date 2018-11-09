@@ -106,7 +106,11 @@ module.exports.checkAuth = function(req, res, next){
     }
 }
 module.exports.logger = function(req,res,next){
-    console.log(`User: ${req.user.id} visited "${req.originalUrl}"`);
+    if(req.user){
+        console.log(`User: ${req.user.id} visited "${req.originalUrl}"`);
+    } else {
+        console.log(`Anon User visited "${req.originalUrl}"`);
+    }
     // console.log(req);
     next();
 }
