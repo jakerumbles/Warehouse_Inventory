@@ -1,5 +1,6 @@
 const {Pool, Client} = require('pg');
 const pg = require('pg');
+const dotenv = require('dotenv').config()
 
 // SQL Query builder library for ease of searching
 var knex = require('knex')({
@@ -60,7 +61,7 @@ module.exports.insertQuery = function(item,user) {
     .returning('*')
     .then(result => {
         // console.log(result);
-        itemHistoryInsert(result, user,'created item')
+        module.exports.itemHistoryInsert(result, user,'created item')
     })
     .catch(err => console.log(err, 'Error in item creation'))
 }

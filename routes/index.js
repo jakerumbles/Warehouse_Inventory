@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
     res.render("home",{
         message: req.session.message
     });
-    console.log("you visited the home page");
+    // console.log("you visited the home page");
 });
 
 //Login page

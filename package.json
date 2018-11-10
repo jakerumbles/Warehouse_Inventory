@@ -4,7 +4,7 @@
   "description": "A basic, 3-layer architecture web app for managing the inventory in a warehouse.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "NODE_ENV=development node app.js"
   },
   "repository": {
     "type": "git",

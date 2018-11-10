@@ -3,6 +3,7 @@ const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
 const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
+const logger = require('../logging').logger
 
 // -----------------------------
 // PROJECT Routes
@@ -15,7 +16,7 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
     .select('project.proj_id','users.id','project.name','users.email')
     .orderBy('proj_id','asc')
     .then(pResults =>{
-        console.log(pResults);
+        // console.log(pResults);
         knex('users')
         .select('email','id')
         .then(uResults => {
@@ -45,7 +46,8 @@ router.post('/projects', checkAuth,checkAccess, function(req,res){
     knex('project')
     .insert(data)
     .then(result => {
-        console.log(result);
+        // console.log(result);
+        logger(result);
         res.redirect('/projects')
     })
 });
@@ -76,7 +78,8 @@ router.get('/projects/:id/reserve',checkAuth,checkAccess,function(req,res){
         }
     })
     .catch(err =>{
-        console.log('Error: ',err);
+        // console.log('Error: ',err);
+        logger('Error: ',err);
         res.redirect('/');
     })
 });

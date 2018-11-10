@@ -13,6 +13,8 @@
 
 */
 const knex = require('./dbconnection').knex;
+const dotenv = require('dotenv').config();
+const logger = require('./logging').logger;
 
 const restrictedRoutes = [
     // INVENTORY ROUTES
@@ -47,10 +49,6 @@ const restrictedRoutes = [
 module.exports.checkAccess = (req,res,next) => {
     //might want to use lodash for this 'npm lodash'
 
-    console.log('access',req.user.access);
-    // console.log('url',req.originalUrl);
-    console.log('path',req.route.path);
-
     // const routeToCheck = req.route.path;
     const routeToCheck = req.route.path;
 
@@ -59,9 +57,9 @@ module.exports.checkAccess = (req,res,next) => {
     })
     found = false;
     for(var i = 0; i < routeAccessArray.length;i++){
-        // console.log(routeAccessArray[i][0]);
+        // logger(routeAccessArray[i][0]);
         if(routeAccessArray[i][0] === routeToCheck){
-            console.log('required',routeAccessArray[i][1]);
+            logger('Access required: ', routeAccessArray[i][1])
             if(routeAccessArray[i][1] >= req.user.access){
                 found = true;
                 next();
@@ -127,7 +125,8 @@ async function oldItemReserve(pid,iid,reserveAmt){
         .where('inv_id','=',iid)
         .andWhere('proj_id','=',pid)
         .then(result => {
-            console.log(result[0].reserved)
+            // console.log(result[0].reserved)
+            logger(result[0].reserved);
             return result[0].reserved;
     });
 
@@ -145,9 +144,9 @@ async function oldItemReserve(pid,iid,reserveAmt){
 
     // if the total quantity is more than the total reserved if we allow
     // this reservation, then the db is updated
-    console.log(reservedAfterUpdate);
+    // console.log(reservedAfterUpdate);
+    logger('reservedAfterUpdate',reservedAfterUpdate);
     if(available >= reservedAfterUpdate){
-        console.log('Can update');
         const newReserved = Number(reserveAmt) + Number(reservedForThisProject)
         await knex('project_items')
             .where('proj_id','=',pid)
@@ -161,11 +160,12 @@ async function oldItemReserve(pid,iid,reserveAmt){
             .update({available:(available - reservedAfterUpdate)})
             .returning('*')
             .then(result => {
-                console.log(result);
+                // console.log(result);
+                logger(result);
             })
     // else we do not allow the db to be updated
     } else {
-        console.log('Cannot update');
+        // console.log('Cannot update');
         return false;
     }
 }
@@ -179,10 +179,14 @@ module.exports.checkAuth = function(req, res, next){
     }
 }
 module.exports.logger = function(req,res,next){
-    if(req.user){
-        console.log(`User: ${req.user.id} visited "${req.originalUrl}"`);
-    } else {
-        console.log(`Anon User visited "${req.originalUrl}"`);
+    if(process.env.NODE_ENV === 'development'){
+        if(req.user){
+            // console.log(`User: ${req.user.id} visited "${req.originalUrl}"`);
+            logger(`User: ${req.user.id} visited "${req.originalUrl}"`);
+        } else {
+            // console.log(`Anon User visited "${req.originalUrl}"`);
+            logger(`Anon User visited "${req.originalUrl}"`);
+        }
     }
     // console.log(req);
     next();

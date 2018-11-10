@@ -4,6 +4,7 @@ const checkAuth = require('../helpers').checkAuth;
 const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const insertQuery = require('../dbconnection').insertQuery;
+const logger = require('../logging').logger;
 
 // ----------------
 // INVENTORY routes
@@ -43,13 +44,14 @@ router.get('/inventory/all', checkAuth, checkAccess,function(req, res) {
 //New Item page
 router.get('/inventory/new', checkAuth, checkAccess,function(req, res) {
     res.render("inventory/newItem");
-    console.log("you visited the new item page");
+    // console.log("you visited the new item page");
 });
 
 //Add new item to DB
 router.post('/inventory', checkAuth, checkAccess,function(req, res) {
     var item = req.body.item;
-    console.log("inventory post route...now adding new item to DB");
+    // console.log("inventory post route...now adding new item to DB");
+    logger('/inventory POST: Adding new item to DB')
     insertQuery(item,req.user.username);
     res.redirect("/inventory");
 });
