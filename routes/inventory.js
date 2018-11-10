@@ -25,6 +25,21 @@ router.get('/inventory', checkAuth, checkAccess, function(req, res) {
     })
 });
 
+//Inventory Page
+router.get('/inventory/all', checkAuth, checkAccess,function(req, res) {
+    var passedStuff = req.params.description;
+    // var q = 'SELECT * FROM inventory LIMIT 100';
+
+    knex.select('*').from('inventory')
+    .orderBy('inv_id','asc')
+    .then(results => {
+        res.render("inventory/inventory", {
+            items: results,reserving:false,
+            access: req.user.access
+        });
+    })
+});
+
 //New Item page
 router.get('/inventory/new', checkAuth, checkAccess,function(req, res) {
     res.render("inventory/newItem");

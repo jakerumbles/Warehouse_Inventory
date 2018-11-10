@@ -4,6 +4,7 @@ const checkAuth = require('../helpers').checkAuth;
 const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const reserveItem = require('../helpers').reserveItem;
+const itemHistoryInsert = require('../dbconnection').itemHistoryInsert;
 
 // Get item history
 router.get('/api/inventory/:id/history', checkAuth, checkAccess,function(req, res) {
@@ -58,9 +59,25 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
     .sum('reserved')
     .where('inv_id','=',itemID)
     .then(result =>{
-        // console.log(result);
-        if(result[0].sum <= itemData.quantity){
-            itemData.available = itemData.quantity - result[0].sum;
+        let sum = parseInt(result[0].sum)
+        let quantity = parseInt(itemData.quantity);
+        // console.log(sum,quantity);
+        if(result[0].sum){
+            if(sum <= quantity){
+                itemData.available = quantity - sum;
+                knex('inventory')
+                .where('inv_id','=',itemID)
+                .update(itemData)
+                .returning('*')
+                .then(result => {
+                    itemHistoryInsert(result, req.user.username,'modified item');
+                    res.send({response: "Good"})
+                })
+            } else {
+                res.status(500).send({error: 'Quantity is less than available.'})
+            }
+        } else {
+            itemData.available = quantity;
             knex('inventory')
             .where('inv_id','=',itemID)
             .update(itemData)
@@ -69,8 +86,6 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
                 itemHistoryInsert(result, req.user.username,'modified item');
                 res.send({response: "Good"})
             })
-        } else {
-            res.status(500).send({error: 'Quantity is less than available.'})
         }
 
     })

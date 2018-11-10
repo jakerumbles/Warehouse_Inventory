@@ -19,6 +19,7 @@ const restrictedRoutes = [
     {route: '/inventory', access: 4, response: 'redirect'},
     //probably have to change where it POSTS
     {route: '/inventory/new', access: 3, response: 'redirect'},
+    {route: '/inventory/all', access: 0, response: 'redirect'},
 
     //testing to see if only admiN
     {route: '/auth/user_accounts',access: 0, response: 'redirect'},
@@ -78,7 +79,7 @@ module.exports.checkAccess = (req,res,next) => {
             }
         }
     }
-    return;
+    // return;
     // if(!found){
     //     req.session.message = 'Unauthorised. Please refer to an administrator.';
     //     res.redirect('/login');

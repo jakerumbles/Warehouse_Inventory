@@ -26,7 +26,7 @@ const connection = new Client({
     ssl: true,
 });
 
-itemHistoryInsert = function(item, username,histText){
+module.exports.itemHistoryInsert = function(item, username,histText){
     const data = {
         inv_id: item[0].inv_id,
         description: item[0].description,
