@@ -13,7 +13,6 @@ const logger = require('../logging').logger;
 //Inventory Page
 router.get('/inventory', checkAuth, checkAccess, function(req, res) {
     var passedStuff = req.params.description;
-    // var q = 'SELECT * FROM inventory LIMIT 100';
 
     knex.select('*').from('inventory')
     .orderBy('inv_id','asc')
