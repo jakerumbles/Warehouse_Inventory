@@ -54,3 +54,11 @@ input,label {
 .chart {
     display: inline;
 }
+
+.statsHeader {
+    margin-top: 10px;
+}
+
+#categoryNumbers {
+    margin-bottom: 2rem;
+}

@@ -8,14 +8,30 @@ const knex = require('../dbconnection').knex;
 // STATISTICS
 // ------------------
 router.get('/statistics', checkAuth, checkAccess,function(req, res) {
-    // res.render('statistics');
     knex('inventory')
     .count('category')
     .select('category')
     .where('remove','=',false)
     .groupBy('category')
-    .then(results =>{
-        res.render('statistics', {categories:results})
+    .then(numItemsPerCategory => {
+        knex('inventory')
+        .countDistinct('category')
+        .where('remove', '=', false)
+        .then(totalCategories => {
+            knex('inventory')
+            .sum('quantity')
+            .where('remove', '=', false)
+            .then(quantity => {
+                knex('inventory')
+                .count()
+                .select('date_recieved')
+                .where('remove', '=', false)
+                .groupBy('date_recieved')
+                .then(dates => {
+                    res.render('statistics', {numItemsPerCategory:numItemsPerCategory, totalCategories: totalCategories, quantity: quantity, dates: dates});
+                });
+            });
+        });
     })
     // SELECT category, count(*) FROM inventory
     // GROUP BY category;
