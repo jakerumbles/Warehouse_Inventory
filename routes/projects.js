@@ -11,23 +11,44 @@ const logger = require('../logging').logger
 // Show list of all projects
 router.get('/projects', checkAuth,checkAccess,function(req, res) {
     var passedStuff = req.params.description;
-    knex('project')
-    .join('users','users.id','=','project.manager_id')
-    .select('project.proj_id','users.id','project.name','users.email')
-    .orderBy('proj_id','asc')
-    .then(pResults =>{
-        // console.log(pResults);
-        knex('users')
-        .select('email','id')
-        .then(uResults => {
-            res.render('projects', {
-                projects: pResults,
-                id:req.user.id,
-                access:req.user.access,
-                managers:uResults
+
+    //If user is not an admin type, only show them projects they own
+    if (req.user.access > 2) {
+        knex('project')
+        .join('users','users.id','=','project.manager_id')
+        .select('project.proj_id','users.id','project.name','users.email')
+        .where('users.id', '=', req.user.id)
+        .orderBy('proj_id','asc')
+        .then(pResults =>{
+            // console.log(pResults);
+            knex('users')
+            .select('email','id')
+            .then(uResults => {
+                res.render('projects', {
+                    projects: pResults,
+                    id:req.user.id,
+                    access:req.user.access,
+                    managers:uResults
+                })
             })
         })
-    })
+    } else { //If user is admin type, show all projects
+        knex('admin')
+        .select('*')
+        .then(pResults =>{
+            // console.log(pResults);
+            knex('users')
+            .select('email','id')
+            .then(uResults => {
+                res.render('projects', {
+                    projects: pResults,
+                    id:req.user.id,
+                    access:req.user.access,
+                    managers:uResults
+                })
+            })
+        })
+    }
 });
 
 // New project form

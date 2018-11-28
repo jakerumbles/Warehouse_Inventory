@@ -27,7 +27,7 @@ const restrictedRoutes = [
     {route: '/auth/user_accounts',access: 0, response: 'redirect'},
 
     // PROJECT ROUTES
-    {route: '/projects', access: 2, response: 'redirect'},
+    {route: '/projects', access: 3, response: 'redirect'},
     {route: '/projects/new', access: 2, response: 'redirect'},
     {route: '/projects/:id/reserve', access: 2, response: 'redirect'},
 
