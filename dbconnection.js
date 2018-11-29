@@ -51,6 +51,7 @@ module.exports.insertQuery = function(item,user) {
         description: item.description,
         category: item.category,
         date_recieved: 'NOW()',
+        quantity: item.quantity,
         storage_location: item.storage_location,
         present: present,
         reserved: reserved
