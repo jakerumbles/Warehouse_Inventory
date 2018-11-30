@@ -43,3 +43,8 @@ CREATE TABLE project_items(
     reserved INTEGER DEFAULT 0,
     PRIMARY KEY(proj_id,inv_id)
 );
+CREATE VIEW admin AS
+SELECT project.proj_id, users.id, project.name, users.email
+FROM project
+INNER JOIN users ON users.id = project.manager_id
+ORDER BY proj_id ASC;

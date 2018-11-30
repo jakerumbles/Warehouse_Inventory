@@ -10,12 +10,3 @@ SELECT project.proj_id, users.id, project.name, users.email
 FROM project
 INNER JOIN users ON users.id = project.manager_id
 ORDER BY proj_id ASC;
-
-
-//User view will show only project that user is in charge of
-CREATE VIEW user AS
-SELECT project.proj_id, users.id, project.name, users.email
-FROM project
-WHERE
-INNER JOIN users ON users.id = project.manager_id
-ORDER BY proj_id ASC;
