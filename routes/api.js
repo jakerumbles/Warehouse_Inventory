@@ -40,18 +40,6 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
         remove: res.req.body.remove
     }
 
-    if(res.req.body.present){
-        itemData.present = 'yes';
-    } else {
-        itemData.present = 'no';
-    }
-
-    if(res.req.body.reserved){
-        itemData.reserved = 'yes';
-    } else {
-        itemData.reserved = 'no';
-    }
-
     // console.log(projData);
 
     knex('project_items')

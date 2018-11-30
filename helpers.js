@@ -102,8 +102,50 @@ module.exports.reserveItem = async function(pid,iid,reserveAmt){
 }
 
 async function newItemReserve(pid,iid,reserveAmt){
-    console.log('new');
-    //
+
+    logger("New Item")
+
+    // this function updates the reserved amount for an
+    // item/project combo that does not exist in db
+
+    // this gets the available amount of quantity that can be reserved
+    const available = await knex('inventory')
+        .select('quantity')
+        .where('inv_id','=',iid)
+        .then(result =>{
+            return Number(result[0].quantity)
+    })
+
+    // this is the total reserved by all projects if we were
+    // to allow this reservation
+    const reservedAfterUpdate = Number(reserveAmt);
+
+    // if the total quantity is more than the total reserved were we to allow
+    // this reservation, then the db is updated
+    // console.log(reservedAfterUpdate);
+    // logger('reservedAfterUpdate',reservedAfterUpdate);
+    logger(available, reservedAfterUpdate, (available >= reservedAfterUpdate))
+    if(available >= reservedAfterUpdate){
+        const newReserved = reservedAfterUpdate;
+        await knex('project_items')
+            .where('proj_id','=',pid)
+            .andWhere('inv_id','=',iid)
+            .insert({proj_id: pid,
+                    inv_id: iid,
+                    reserved:newReserved})
+        knex('inventory')
+            .where('inv_id','=',iid)
+            .update({available:(available - reservedAfterUpdate)})
+            .returning('*')
+            .then(result => {
+                // console.log(result);
+                logger(result);
+            })
+    // else we do not allow the db to be updated
+    } else {
+        // console.log('Cannot update');
+        return false;
+    }
 }
 
 async function oldItemReserve(pid,iid,reserveAmt){
@@ -152,9 +194,6 @@ async function oldItemReserve(pid,iid,reserveAmt){
             .where('proj_id','=',pid)
             .andWhere('inv_id','=',iid)
             .update({reserved:newReserved})
-            .then(result =>{
-                return true
-            })
         knex('inventory')
             .where('inv_id','=',iid)
             .update({available:(available - reservedAfterUpdate)})

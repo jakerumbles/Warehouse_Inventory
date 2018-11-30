@@ -125,6 +125,9 @@ $(document).ready(function() {
             data_desc = $(this).data('description');
         }
 
+        var reserveBtn = document.querySelector("#reserveBtn");
+        reserveBtn.href = `/projects/${data_id}/reserve`;
+
         loadDataOnForms(data_id);
 
         getData(data_id);
