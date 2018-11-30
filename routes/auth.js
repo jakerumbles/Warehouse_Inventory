@@ -53,8 +53,8 @@ router.post('/auth/signup', async function(req, res){
     const data = {
         id: uuidv4(),
         email: req.body.username,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
     }
     await bcrypt.hash(req.body.password, null, null, async function(err,hash){
         knex('users')

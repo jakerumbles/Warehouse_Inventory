@@ -11,11 +11,11 @@ CREATE TABLE inventory(
 );
 CREATE TABLE "users"(
     id uuid NOT NULL,
-    firstName VARCHAR(64),
-    lastName VARCHAR(64),
+    firstname VARCHAR(64),
+    lastname VARCHAR(64),
     email VARCHAR(128),
     password VARCHAR(60),
-    access INTEGER DEFAULT 10,
+    access INTEGER DEFAULT 4    ,
     date_created DATE NOT NULL DEFAULT CURRENT_DATE,
     PRIMARY KEY(id)
 );

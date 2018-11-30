@@ -73,12 +73,6 @@ const loadDataOnForms = async function(id){
         document.getElementById('storage-input').value = rows[0].storage_location;
         document.getElementById('quantity-input').value = rows[0].quantity;
         document.getElementById('available-input').value = rows[0].available;
-
-        if(rows[0].present==='yes')
-        document.getElementById('present-input').checked = true
-
-        if(rows[0].reserved==='yes')
-        document.getElementById('reserved-input').checked = true
     }
 }
 
@@ -90,9 +84,7 @@ const updateItem = async function(args){
         description: document.getElementById('description-input').value,
         category: document.getElementById('category-input').value,
         storage: document.getElementById('storage-input').value,
-        quantity: document.getElementById('quantity-input').value,
-        present: document.getElementById('present-input').checked,
-        reserved: document.getElementById('reserved-input').checked,
+        quantity: document.getElementById('quantity-input').value
     }
     if(args === 'remove'){
         data.remove = true;
