@@ -2,7 +2,7 @@ CREATE TABLE inventory(
     inv_id SERIAL,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(25) DEFAULT 'unknown',
-    date_recieved DATE DEFAULT NOW(),
+    date_recieved DATE DEFAULT CURRENT_DATE,
     storage_location VARCHAR(4) NOT NULL,
     quantity INTEGER DEFAULT 0,
     remove BOOLEAN DEFAULT 'false',
@@ -25,7 +25,7 @@ CREATE TABLE inventory_history(
     description VARCHAR(100) NOT NULL,
     category VARCHAR(25) NOT NULL,
     quantity INTEGER NOT NULL,
-    date_modified DATE DEFAULT NOW(),
+    date_modified DATE DEFAULT CURRENT_DATE,
     storage_location VARCHAR(4) NOT NULL,
     history VARCHAR(100),
     PRIMARY KEY(hist_id),
@@ -48,3 +48,20 @@ SELECT project.proj_id, users.id, project.name, users.email
 FROM project
 INNER JOIN users ON users.id = project.manager_id
 ORDER BY proj_id ASC;
+
+CREATE OR REPLACE FUNCTION delete_if_zero()
+    RETURNS TRIGGER AS
+    $$
+    BEGIN
+    IF NEW.quantity = 0 THEN
+        NEW.remove = true;
+    END IF;
+    RETURN NEW;
+    END;
+    $$
+    LANGUAGE plpgsql;
+
+CREATE TRIGGER check_update
+    BEFORE UPDATE ON inventory
+    FOR EACH ROW
+    EXECUTE PROCEDURE delete_if_zero();

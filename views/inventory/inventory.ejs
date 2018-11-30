@@ -27,7 +27,7 @@
                             <td><%= items[i].inv_id %></td>
                             <td><%= items[i].description %></td>
                             <td><%= items[i].category %></td>
-                            <td><%= items[i].date_recieved %></td>
+                            <td><%= new Date(items[i].date_recieved).toLocaleDateString("en-US") %></td>
                             <td><%= items[i].storage_location %></td>
                             <td><%= items[i].quantity %></td>
 
