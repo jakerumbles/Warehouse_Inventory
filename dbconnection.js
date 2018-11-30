@@ -1,6 +1,7 @@
 const {Pool, Client} = require('pg');
 const pg = require('pg');
 const dotenv = require('dotenv').config()
+const logger = require('./logging').logger;
 
 // SQL Query builder library for ease of searching
 var knex = require('knex')({
@@ -44,17 +45,16 @@ module.exports.itemHistoryInsert = function(item, username,histText){
 }
 
 module.exports.insertQuery = function(item,user) {
-    present = (item.present === 'on') ? 'yes' : 'no';
-    reserved = (item.reserved === 'on') ? 'yes' : 'no';
+
+    logger(item);
 
     let data = {
         description: item.description,
         category: item.category,
         date_recieved: 'NOW()',
         quantity: item.quantity,
+        available: item.quantity,
         storage_location: item.storage_location,
-        present: present,
-        reserved: reserved
     }
 
     knex('inventory')

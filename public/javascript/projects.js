@@ -13,7 +13,7 @@ var getData = async function(id){
         var modalBod = document.querySelector('.modal-body')
         errH3 = document.createElement('H3');
         errH3.id = 'error-h3';
-        errH3.textContent = 'ERROR FETCHING TABLE';
+        errH3.textContent = 'This project has no items yet.';
         modalBod.appendChild(errH3);
     }else {
         var containerDiv = document.createElement('DIV')

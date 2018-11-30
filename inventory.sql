@@ -5,8 +5,6 @@ CREATE TABLE inventory(
     date_recieved DATE DEFAULT NOW(),
     storage_location VARCHAR(4) NOT NULL,
     quantity INTEGER DEFAULT 0,
-    present VARCHAR(5) NOT NULL,
-    reserved VARCHAR(5) DEFAULT 'false',
     remove BOOLEAN DEFAULT 'false',
     available INTEGER DEFAULT 0,
     PRIMARY KEY(inv_id)
@@ -30,7 +28,8 @@ CREATE TABLE inventory_history(
     date_modified DATE DEFAULT NOW(),
     storage_location VARCHAR(4) NOT NULL,
     history VARCHAR(100),
-    PRIMARY KEY(hist_id)
+    PRIMARY KEY(hist_id),
+    FOREIGN KEY(inv_id) REFERENCES inventory(inv_id)
 );
 CREATE TABLE project(
     proj_id SERIAL,

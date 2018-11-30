@@ -16,8 +16,6 @@
                             <th>Date Recieved</th>
                             <th>Storage Location</th>
                             <th>Quantity</th>
-                            <th>Present</th>
-                            <th>Reserved</th>
                             <% if(access <= 3) { %>
                             <th>Edit</th>
                             <% } %>
@@ -33,23 +31,6 @@
                             <td><%= items[i].storage_location %></td>
                             <td><%= items[i].quantity %></td>
 
-                            <!-- PRESENT -->
-                            <td>
-                                <% if(items[i].present === 'no') { %>
-                                <input type="checkbox" disabled>
-                                <% } else { %>
-                                <input type="checkbox" checked disabled>
-                                <% } %>
-                            </td>
-
-                            <!-- RESERVED -->
-                            <td>
-                                <% if(items[i].reserved === 'no') { %>
-                                <input type="checkbox" disabled>
-                                <% } else { %>
-                                <input type="checkbox" checked disabled>
-                                <% } %>
-                            </td>
                             <td>
                                 <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=items[i].inv_id%>>Edit</button>
                             </td>
