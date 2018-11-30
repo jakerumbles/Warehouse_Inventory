@@ -16,8 +16,8 @@ CREATE TABLE "users"(
     email VARCHAR(128),
     password VARCHAR(60),
     access INTEGER DEFAULT 10,
-    date_created DATE NOT NULL DEFAULT CURRENT_DATE
-    PRIMARY KEY(item_id)
+    date_created DATE NOT NULL DEFAULT CURRENT_DATE,
+    PRIMARY KEY(id)
 );
 CREATE TABLE inventory_history(
     hist_id SERIAL,
