@@ -103,6 +103,9 @@ const updateItem = async function(args){
         .then(responseData =>{
             if(responseData.error){
                 console.log(responseData.error)
+                let errorLbl = document.querySelector("#error-message");
+                errorLbl.textContent = responseData.error;
+                errorLbl.removeAttribute("hidden")
             }
             else{
                 location.reload()

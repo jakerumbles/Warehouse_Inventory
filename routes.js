@@ -1,13 +1,5 @@
 const express = require('express');
-// const passport = require('passport');
-// const connection = require('./dbconnection').connection;
-// const pool = require('./dbconnection').pool;
-// const itemHistoryInsert = require('./dbconnection').itemHistoryInsert;
 const router = express.Router();
-// const bcrypt = require('bcrypt-nodejs');
-// const uuidv4 = require('uuid/v4');
-// const knex = require('./dbconnection').knex;
-// const reserveItem = require('./reserveHelper').reserveItem;
 
 // middleware for all routes
 router.use('*', require('./helpers').logger);

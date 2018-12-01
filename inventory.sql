@@ -33,13 +33,13 @@ CREATE TABLE inventory_history(
 );
 CREATE TABLE project(
     proj_id SERIAL,
-    manager_id uuid NOT NULL,
+    manager_id uuid NOT NULL REFERENCES users(id),
     name VARCHAR(25) NOT NULL,
     PRIMARY KEY(proj_id)
 );
 CREATE TABLE project_items(
-    proj_id INTEGER NOT NULL,
-    inv_id INTEGER NOT NULL,
+    proj_id INTEGER NOT NULL REFERENCES project(proj_id),
+    inv_id INTEGER NOT NULL REFERENCES inventory(inv_id),
     reserved INTEGER DEFAULT 0,
     PRIMARY KEY(proj_id,inv_id)
 );

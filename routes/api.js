@@ -69,7 +69,7 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
                     res.send({response: "Good"})
                 })
             } else {
-                res.status(500).send({error: 'Quantity is less than available.'})
+                res.status(500).send({error: 'Quantity cannot be less than total reserved.'})
             }
         } else {
             itemData.available = quantity;
