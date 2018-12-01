@@ -5,11 +5,13 @@ const checkAccess = require('../helpers').checkAccess;
 const knex = require('../dbconnection').knex;
 const reserveItem = require('../helpers').reserveItem;
 const itemHistoryInsert = require('../dbconnection').itemHistoryInsert;
+const logger = require('../logging').logger;
 
 // Get item history
 router.get('/api/inventory/:id/history', checkAuth, checkAccess,function(req, res) {
     var projID = req.params.id;
-    knex.select('*').from('inventory_history')
+    knex.select('description', 'category', 'quantity', 'date_modified', 'storage_location', 'history')
+    .from('inventory_history')
     .where('inv_id','=',projID)
     .then(results => {
         res.send({results})
@@ -37,10 +39,15 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
         category: res.req.body.category,
         storage_location: res.req.body.storage,
         quantity: res.req.body.quantity,
+        available: res.req.body.available,
         remove: res.req.body.remove
     }
 
     // console.log(projData);
+
+    // if(itemData.available >= itemData.quantity){
+    //
+    // }
 
     knex('project_items')
     // .select('reserved')
@@ -49,7 +56,7 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
     .then(result =>{
         let sum = parseInt(result[0].sum)
         let quantity = parseInt(itemData.quantity);
-        // console.log(sum,quantity);
+        logger(sum,quantity);
         if(result[0].sum){
             if(sum <= quantity){
                 itemData.available = quantity - sum;
@@ -66,14 +73,18 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
             }
         } else {
             itemData.available = quantity;
-            knex('inventory')
-            .where('inv_id','=',itemID)
-            .update(itemData)
-            .returning('*')
-            .then(result => {
-                itemHistoryInsert(result, req.user.username,'modified item');
-                res.send({response: "Good"})
-            })
+            if(quantity >= 0){
+                knex('inventory')
+                .where('inv_id','=',itemID)
+                .update(itemData)
+                .returning('*')
+                .then(result => {
+                    itemHistoryInsert(result, req.user.username,'modified item');
+                    res.send({response: "Good"})
+                })
+            } else {
+                res.status(500).send({error: 'Quantity cannot be less than 0.'})
+            }
         }
 
     })
@@ -85,6 +96,8 @@ router.get('/api/projects/:id/items', checkAuth, checkAccess, function(req, res)
     var projID = req.params.id;
     knex('project_items')
     .join('inventory','project_items.inv_id','=','inventory.inv_id')
+    .select('description', 'category', 'storage_location',
+    'quantity', 'reserved', 'available')
     .where('project_items.proj_id','=',projID)
     .andWhere('inventory.remove','=','false')
     // .select('inventory.description','inventory.category','inventory.quantity',

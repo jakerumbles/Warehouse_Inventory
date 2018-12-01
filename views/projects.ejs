@@ -61,12 +61,14 @@
                         <select id="inputManager" class="form-control" name="manager">
                           <% if(managers) { %>
                               <% for(var i=0; i<managers.length;i++) { %>
-                              <% if(managers[i].id === id) { %>
-                              <option value="<%=managers[i].id%>" selected="selected"><%= managers[i].email %></option>
-                              <% } else %>
-                              <option value="<%=managers[i].id%>"><%= managers[i].email %></option>
+                                  <% if(managers[i].id === id) { %>
+                                      <option value="<%=managers[i].id%>" selected="selected"><%= managers[i].email %></option>
+                                  <% } else { %>
+                                      <option value="<%=managers[i].id%>"><%= managers[i].email %></option>
+                                  <% } %>
                               <% } %>
                           <% } %>
+
                         </select>
                     </div>
                 </div>

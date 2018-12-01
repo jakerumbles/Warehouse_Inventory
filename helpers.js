@@ -108,6 +108,15 @@ async function newItemReserve(pid,iid,reserveAmt){
     // this function updates the reserved amount for an
     // item/project combo that does not exist in db
 
+
+    const totalReserved = await knex('project_items')
+        .sum('reserved')
+        .where('inv_id','=',iid)
+        .then(result => {
+            // console.log(result[0].sum)
+            return result[0].sum
+    });
+
     // this gets the available amount of quantity that can be reserved
     const available = await knex('inventory')
         .select('quantity')
@@ -118,7 +127,7 @@ async function newItemReserve(pid,iid,reserveAmt){
 
     // this is the total reserved by all projects if we were
     // to allow this reservation
-    const reservedAfterUpdate = Number(reserveAmt);
+    const reservedAfterUpdate = Number(reserveAmt) + Number(totalReserved);
 
     // if the total quantity is more than the total reserved were we to allow
     // this reservation, then the db is updated
@@ -126,13 +135,12 @@ async function newItemReserve(pid,iid,reserveAmt){
     // logger('reservedAfterUpdate',reservedAfterUpdate);
     logger(available, reservedAfterUpdate, (available >= reservedAfterUpdate))
     if(available >= reservedAfterUpdate){
-        const newReserved = reservedAfterUpdate;
         await knex('project_items')
             .where('proj_id','=',pid)
             .andWhere('inv_id','=',iid)
             .insert({proj_id: pid,
                     inv_id: iid,
-                    reserved:newReserved})
+                    reserved:reserveAmt})
         knex('inventory')
             .where('inv_id','=',iid)
             .update({available:(available - reservedAfterUpdate)})
