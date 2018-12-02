@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt-nodejs');
 
 router.post('/auth/login', passport.authenticate('local', {
     successRedirect: '/auth/account',
-    failureRedirect: '/login'
+    failureRedirect: '/'
 }));
 
 // Logout
@@ -67,8 +67,8 @@ router.post('/auth/signup', async function(req, res){
                 data.password = hash;
                 knex('users')
                 .insert(data)
-                .then(res.redirect('/login'))
-                .catch(err => console.log(err, 'Error creatign new user'))
+                .then(res.redirect('/')) //Redirect to homepage after account is created.  User then needs to log in
+                .catch(err => console.log(err, 'Error creating new user'))
             }
         })
     })

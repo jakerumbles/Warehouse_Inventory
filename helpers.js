@@ -71,19 +71,12 @@ module.exports.checkAccess = (req,res,next) => {
                 }
                 else{
                     req.session.message = 'Unauthorized. Please contact an administrator.';
-                    res.redirect('/login');
+                    res.redirect('/');
                     return;
                 }
             }
         }
     }
-    // return;
-    // if(!found){
-    //     req.session.message = 'Unauthorised. Please refer to an administrator.';
-    //     res.redirect('/login');
-    //     return;
-    // }
-
 }
 
 module.exports.reserveItem = async function(pid,iid,reserveAmt){
@@ -222,7 +215,7 @@ module.exports.checkAuth = function(req, res, next){
     if(req.isAuthenticated()){
         next();
     } else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 }
 module.exports.logger = function(req,res,next){
