@@ -6,28 +6,32 @@
 
     <% if(info) { %>
 
-    <table border="1">
-      <!-- Header row -->
-      <tr>
-        <th>ID</th>
-        <th>User Name</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Access Level</th>
-      </tr>
-      <% for(var i = 0; i < info.rowCount; i++) { %>
-          <tr>
-            <td><%= info.rows[i].id %></td>
-            <td><%= info.rows[i].email %></td>
-            <td><%= info.rows[i].firstname %></td>
-            <td><%= info.rows[i].lastname %></td>
-            <td><%= info.rows[i].access %></td>
-          </tr>
-      <% } %>
-    </table>
+    <div class="container">
+        <div class="row jumbotron text-white">
+            <div class="inv-container table table-hover table-responsive-lg">
+                <table>
+                  <!-- Header row -->
+                  <tr>
+                    <th>ID</th>
+                    <th>User Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Access Level</th>
+                  </tr>
+                  <% for(var i = 0; i < info.rowCount; i++) { %>
+                      <tr>
+                        <td><%= info.rows[i].id %></td>
+                        <td><%= info.rows[i].email %></td>
+                        <td><%= info.rows[i].firstname %></td>
+                        <td><%= info.rows[i].lastname %></td>
+                        <td><%= info.rows[i].access %></td>
+                      </tr>
+                  <% } %>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <% } %>
-
-    <a class="btn btn-primary btn-lg" href="/logout" role="button">Log Out</a>
 
 <% include ../partials/footer %>

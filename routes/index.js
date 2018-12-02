@@ -11,16 +11,6 @@ router.get('/', function(req, res) {
     // console.log("you visited the home page");
 });
 
-//Login page
-router.get('/login', function(req, res, next){
-    //Special Case: If user is already logged in, redirect to the home page.
-    if(req.isAuthenticated()){
-        res.redirect('/');
-    } else {
-        res.render('users/login');
-    }
-});
-
 //signup page
 router.get('/signup', function(req, res, next){
     if(req.isAuthenticated()){

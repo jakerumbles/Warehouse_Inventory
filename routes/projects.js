@@ -32,7 +32,7 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
                 })
             })
         })
-    } else { //If user is admin type, show all projects
+    } else { //If user is manager(1) or admin(0) type, show all projects
         knex('admin')
         .select('*')
         .then(pResults =>{

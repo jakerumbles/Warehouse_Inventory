@@ -3,43 +3,49 @@
 <link rel="stylesheet" href="./inventory.css">
 
 <div class="container">
-    <h1>Warehouse Inventory</h1>
+    <h1>Warehouse Projects</h1>
     <h2 hidden style="color:red" id="error-message"></h2>
-    <div class="row jumbotron text-white">
-        <div class="inv-container table table-hover table-condensed table-responsive-sm">
-                <table class="">
-                    <!-- <caption>Condensed Table Layout</caption> -->
-                    <thead>
-                        <tr>
-                            <th>Project ID</th>
-                            <th>Name</th>
-                            <th>Manager ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i = 0; i < projects.length; i++) { %>
-                        <tr>
-                            <td><%= projects[i].proj_id %></td>
-                            <td><%= projects[i].name %></td>
-                            <td><%= projects[i].email %></td>
-                            <% if(id === projects[i].manager_id || access <= 1) { %>
-                            <td>
-                                <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=projects[i].proj_id%>>Edit</button>
-                            </td>
-                            <% } else { %>
-                            <td>
-                                <button type="button" class="showbtn btn btn-disabled">Edit</button>
-                            </td>
+    <% if(access < 3) { %>
+        <div class="row jumbotron text-white">
+            <div class="inv-container table table-hover table-condensed table-responsive-sm">
+                    <table class="">
+                        <!-- <caption>Condensed Table Layout</caption> -->
+                        <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Name</th>
+                                <th>Manager ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < projects.length; i++) { %>
+                            <tr>
+                                <td><%= projects[i].proj_id %></td>
+                                <td><%= projects[i].name %></td>
+                                <td><%= projects[i].email %></td>
+                                <% if(id === projects[i].manager_id || access <= 1) { %>
+                                    <td>
+                                        <button type="button" class="showbtn btn btn-info" data-toggle="modal" data-target="#viewItem" data-id=<%=projects[i].proj_id%>>Edit</button>
+                                    </td>
+                                <% } else { %>
+                                    <% console.log(id) %>
+                                    <% console.log(projects[i].manager_id) %>
+                                    <td>
+                                        <button type="button" class="showbtn btn btn-disabled">Edit</button>
+                                    </td>
+                                <% } %>
+                            </tr>
                             <% } %>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <div class="btn-container">
-                <a class="btn btn-primary btn-lg" href="/projects/new" role="button" id="newProjectButton">New Project</a>
+                        </tbody>
+                    </table>
+                <div class="btn-container">
+                    <a class="btn btn-primary btn-lg" href="/projects/new" role="button" id="newProjectButton">New Project</a>
+                </div>
             </div>
         </div>
-    </div>
+    <% } else { %>
+        <h4 style="color:red" >Unauthorized. Please contact an administrator.</h4>
+    <% } %>
 </div>
 
 <div class="modal fade" id="viewItem" tabindex="-1" role="dialog" aria-labelledby="viewItemLabel">

@@ -3,6 +3,10 @@ h1 {
     text-align: left;
 }
 
+table {
+    width: inherit;
+}
+
 #homeBody {
     padding-top: 20px;
 }
