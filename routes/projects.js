@@ -13,10 +13,10 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
     var passedStuff = req.params.description;
 
     //If user is not an admin type, only show them projects they own
-    if (req.user.access > 2) {
+    if (req.user.access >= 2) {
         knex('project')
         .join('users','users.id','=','project.manager_id')
-        .select('project.proj_id','users.id','project.name','users.email')
+        .select('project.proj_id','users.id','project.name','users.email', 'project.manager_id')
         .where('users.id', '=', req.user.id)
         .orderBy('proj_id','asc')
         .then(pResults =>{
