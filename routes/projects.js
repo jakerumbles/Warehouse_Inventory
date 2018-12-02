@@ -12,8 +12,8 @@ const logger = require('../logging').logger
 router.get('/projects', checkAuth,checkAccess,function(req, res) {
     var passedStuff = req.params.description;
 
-    //If user is not an admin type, only show them projects they own
-    if (req.user.access > 2) {
+    //If user is access level 3 or 4 they can't see any projects
+    if(req.user.access > 1) { //If user is access 2 they can only see a project they own
         knex('project')
         .join('users','users.id','=','project.manager_id')
         .select('project.proj_id','users.id','project.name','users.email')
@@ -32,7 +32,7 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
                 })
             })
         })
-    } else { //If user is admin type, show all projects
+    } else { //If user is manager(1) or admin(0) type, show all projects
         knex('admin')
         .select('*')
         .then(pResults =>{
