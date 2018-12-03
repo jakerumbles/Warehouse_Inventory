@@ -130,7 +130,7 @@ async function newItemReserve(pid,iid,reserveAmt){
             .insert({proj_id: pid,
                     inv_id: iid,
                     reserved:reserveAmt})
-        knex('inventory')
+        await knex('inventory')
             .where('inv_id','=',iid)
             .update({available:(available - reservedAfterUpdate)})
             .returning('*')
@@ -138,6 +138,7 @@ async function newItemReserve(pid,iid,reserveAmt){
                 // console.log(result);
                 logger(result);
             })
+        return true;
     // else we do not allow the db to be updated
     } else {
         // console.log('Cannot update');
@@ -190,7 +191,8 @@ async function oldItemReserve(pid,iid,reserveAmt){
             .where('proj_id','=',pid)
             .andWhere('inv_id','=',iid)
             .update({reserved:newReserved})
-        knex('inventory')
+
+        await knex('inventory')
             .where('inv_id','=',iid)
             .update({available:(available - reservedAfterUpdate)})
             .returning('*')
@@ -198,6 +200,7 @@ async function oldItemReserve(pid,iid,reserveAmt){
                 // console.log(result);
                 logger(result);
             })
+        return true;
     // else we do not allow the db to be updated
     } else {
         // console.log('Cannot update');

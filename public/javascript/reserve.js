@@ -30,7 +30,7 @@ const reserveItem = async function(args){
                 errorLbl.removeAttribute("hidden")
             }
             else{
-                location.reload()
+                //location.reload()
             }
         })
     })

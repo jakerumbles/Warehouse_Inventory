@@ -154,15 +154,17 @@ router.put('/api/projects/:id',checkAuth,checkAccess,async function(req,res){
 })
 
 //Reserve specific item qty for a specific project
-router.put('/api/projects/:pid/reserve/:iid',checkAuth,function(req,res){
+router.put('/api/projects/:pid/reserve/:iid',checkAuth,async function(req,res){
 
-    const reserveItemIfPossible = reserveItem(req.params.pid,
+    const reserveItemIfPossible = await reserveItem(req.params.pid,
         req.params.iid,res.req.body.reserve)
+
+    console.log(reserveItemIfPossible);
 
     if(reserveItemIfPossible)
         res.send({response:'Good'})
     else
-        res.status(500).send({error:'Something went wrong.'})
+        res.status(500).send({error:'Error reserving item.'})
 
 })
 
