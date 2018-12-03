@@ -64,7 +64,8 @@ router.post('/auth/signup', async function(req, res){
         .where('email','=',data.email)
         .then(result => {
             if(result[0]){
-                res.redirect('/signup')
+                req.session.message = "User already exists."
+                res.redirect('/')
             } else {
                 data.password = hash;
                 knex('users')
