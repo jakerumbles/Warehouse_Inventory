@@ -132,7 +132,7 @@ router.put('/api/projects/:id',checkAuth,checkAccess,async function(req,res){
 
     console.log('accessLvl: ', accessLvl);
 
-    if (accessLvl < 2){
+    if (accessLvl <= 2){
         knex('project')
         .where('proj_id','=',projID)
         .update(projData)

@@ -44,10 +44,19 @@ router.get('/auth/user_accounts', checkAuth, checkAccess, function(req, res) {
 
 // account info page
 router.get('/auth/account', checkAuth,function(req, res, next){
-    var q = 'SELECT * FROM users WHERE "id"=$1';
-    connection.query(q, [req.user.id], function(err, results) {
-        res.render("users/account", {info: results});
-    });
+    // var q = 'SELECT * FROM users WHERE "id"=$1';
+    // connection.query(q, [req.user.id], function(err, results) {
+    //     res.render("users/account", {info: results});
+    // });
+
+    console.log('id:', req.user.id);
+
+    knex('users')
+    .select('email', 'firstname', 'lastname', 'access')
+    .where('id', '=', req.user.id)
+    .then(result => {
+        res.render('users/account', {info: result})
+    })
 });
 
 // post for signup

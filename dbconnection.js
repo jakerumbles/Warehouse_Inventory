@@ -62,9 +62,9 @@ module.exports.insertQuery = function(item,user) {
 
     knex('inventory')
     .insert(data)
+    // for some reason, this is needed.
     .returning('*')
     .then(result => {
-        // console.log(result);
         module.exports.itemHistoryInsert(result, user,'created item')
     })
     .catch(err => console.log(err, 'Error in item creation'))
