@@ -114,8 +114,8 @@ router.get('/api/projects/:id/', checkAuth, checkAccess, function(req, res) {
     .catch(err => console.log(err))
 });
 
-// Add new project to database and redirect to list of all projects
-router.put('/api/projects/:id',checkAuth,checkAccess,function(req,res){
+// update project in database and redirect to list of all projects
+router.put('/api/projects/:id',checkAuth,checkAccess,async function(req,res){
     let projID = req.params.id;
 
     let projData = {
@@ -123,19 +123,34 @@ router.put('/api/projects/:id',checkAuth,checkAccess,function(req,res){
         name: res.req.body.name
     }
 
-    knex('project')
-    .where('proj_id','=',projID)
-    .update(projData)
-    .returning('*')
+    const accessLvl = await knex('users')
+    .select('access')
+    .where('id','=',projData.manager_id)
     .then(result => {
-        // console.log(result);
-        // res.redirect(303, '/inventory')
-        res.send({response:'Good'})
+        return Number(result[0].access)
     })
-    .catch(err => {
-        console.log(err, 'Error updating project.')
-        res.status(500).send({error: 'Error updating project information.'})
-    })
+
+    console.log('accessLvl: ', accessLvl);
+
+    if (accessLvl < 2){
+        knex('project')
+        .where('proj_id','=',projID)
+        .update(projData)
+        .returning('*')
+        .then(result => {
+            // console.log(result);
+            // res.redirect(303, '/inventory')
+            res.send({response:'Good'})
+        })
+        .catch(err => {
+            console.log(err, 'Error updating project.')
+            res.status(500).send({error: 'Error updating project information.'})
+        })
+    } else {
+        res.status(500).send({error: 'User does not have access to manage projects.'})
+    }
+
+
 })
 
 //Reserve specific item qty for a specific project

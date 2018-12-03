@@ -23,6 +23,7 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
         .then(pResults =>{
             knex('users')
             .select('email','id')
+            .where('access', '<=', 2)
             .then(uResults => {
                 res.render('projects', {
                     projects: pResults,
@@ -39,6 +40,7 @@ router.get('/projects', checkAuth,checkAccess,function(req, res) {
         .then(pResults =>{
             knex('users')
             .select('email','id')
+            .where('access', '<=', 2)
             .then(uResults => {
                 res.render('projects', {
                     projects: pResults,
