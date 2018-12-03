@@ -43,6 +43,7 @@ To be able to use our database, you must create an account. Click the Sign Up bu
 
 Once you are logged in, you will be taken to the User Account page. The default access level is 4. The privileges for access levels are as follows:
 <br>
+<br>
 <strong>0: Admin</strong> – everything, add/delete users, delete items
 <br>
 <strong>1: Manager</strong> – update all projects, remove and edit items
@@ -52,6 +53,7 @@ Once you are logged in, you will be taken to the User Account page. The default 
 <strong>3: Power User</strong> – can add items, update qty, change item info
 <br>
 <strong>4: Basic User</strong> – can only view inventory
+<br>
 <br>
 Click the hamburger button(only for mobile users) to access the site navigation bar. If you are a Basic User, click Inventory to view the warehouse inventory. If you want to be able to add items, you must contact the system administrator to update your account privileges. Basic users can also access the Search page and Statistics page. When you are finished, click the Logout button.
 
