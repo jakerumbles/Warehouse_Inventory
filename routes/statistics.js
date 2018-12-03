@@ -29,6 +29,7 @@ router.get('/statistics', checkAuth, checkAccess,function(req, res) {
                 .select('date_recieved')
                 .where('remove', '=', false)
                 .groupBy('date_recieved')
+                .limit(20)
                 .orderBy('date_recieved', 'asc')
                 .then(dates => {
                     res.render('statistics', {numItemsPerCategory:numItemsPerCategory, totalCategories: totalCategories, quantity: quantity, dates: dates});

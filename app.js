@@ -14,6 +14,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const config = require('./config');
 const bcrypt = require('bcrypt-nodejs');
 const uuidv4 = require('uuid/v4');
+const seedDB = require('./seed');
 
 //database connection
 const dbconnection = require('./dbconnection')
@@ -31,6 +32,9 @@ app.use(function(req, res, next){
 //routes setup
 const routeConfig = require('./routes');
 app.use(routeConfig);
+
+//Seed the Database
+//seedDB();
 
 //passport stuff
 const passportinit = require('./passport-serialize');

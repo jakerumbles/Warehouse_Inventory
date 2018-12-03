@@ -155,7 +155,7 @@ let lineChart = new Chart(LINE_CHART, {
             {
                 label: "Items Added Per Day",
                 fill: false,
-                lineTension: 0.2,
+                lineTension: 0.1,
                 backgroundColor: colors,
                 borderColor: "rgba(75, 192, 192, 1)",
                 borderCapStyle: 'butt',
