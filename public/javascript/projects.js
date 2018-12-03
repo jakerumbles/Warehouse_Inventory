@@ -1,13 +1,18 @@
 var getData = async function(id){
-    //really ugly function to create a table of inventory history
+    // this function fetches data from the api to create an item table
+    // for the project with proj_id = id.
     const url = `/api/projects/${id}/items`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     const rows = data.results
+
+    // delete existing table if it already exists
     let tbl = document.querySelector('#projectItemTable')
     if(tbl) tbl.remove();
     let errH3 = document.querySelector('#error-h3')
     if(errH3) errH3.remove();
+
+    // if the fetch does not have any results, then we show an error
     if (data.results.length < 1){
         // document.querySelector('#hiddenvalue').value = "No Item History."
         var modalBod = document.querySelector('.modal-body')
@@ -54,6 +59,7 @@ var getData = async function(id){
 }
 
 const changeBtnText = () => {
+    // small QOL fix to change the show items button to hide items
     let btnText = document.querySelector('#show-hide-history-btn').textContent;
     if(btnText === 'Show Items'){
         document.querySelector('#show-hide-history-btn').textContent = 'Hide Items';
@@ -63,6 +69,8 @@ const changeBtnText = () => {
 }
 
 const loadDataOnForms = async function(id){
+    // this function is called to update the forms on the modal.
+    // we use a fetch so that it's always current.
     const url = `/api/projects/${id}/`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
@@ -76,15 +84,13 @@ const loadDataOnForms = async function(id){
 }
 
 const updateItem = async function(){
-    //this function sends data obj to api to update db
+    //this function sends data obj to api to update db for project
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/api/projects/${data_id}`;
     const data = {
         name: document.getElementById('name-input').value,
         manager: document.getElementById('inputManager').value,
     }
-
-    console.log(data);
 
     const resp = fetch(url, {
         method: "PUT",
@@ -115,7 +121,8 @@ const updateItem = async function(){
 $(document).ready(function() {
 
     $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
-
+        // this function runs when the modal is opened.
+        
         var data_id = '';
         var data_desc = '';
 

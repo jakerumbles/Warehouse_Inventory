@@ -29,6 +29,8 @@ const connection = new Client({
 });
 
 module.exports.itemHistoryInsert = function(item, username,histText){
+    // TODO: Triggers?
+    // this function inserts the newly modified item into the history table
     const data = {
         inv_id: item[0].inv_id,
         description: item[0].description,
@@ -45,7 +47,8 @@ module.exports.itemHistoryInsert = function(item, username,histText){
 }
 
 module.exports.insertQuery = function(item,user) {
-
+    // this function inserts a new item into the inventory table, then
+    // calls the function to keep a record of the new item in the history table
     logger(item);
 
     let data = {

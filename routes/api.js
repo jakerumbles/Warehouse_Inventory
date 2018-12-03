@@ -1,3 +1,4 @@
+// imports
 const express = require('express')
 const router = express.Router();
 const checkAuth = require('../helpers').checkAuth;
@@ -43,14 +44,11 @@ router.put('/api/inventory/:id', checkAuth, checkAccess,function(req, res) {
         remove: res.req.body.remove
     }
 
-    // console.log(projData);
 
-    // if(itemData.available >= itemData.quantity){
-    //
-    // }
-
+    // we check to make sure that the quantity to be updated is to be allowed
+    // by grabbing the sum of the reserved items and checking that the new
+    // quantity will not be less than the sum of the reservations
     knex('project_items')
-    // .select('reserved')
     .sum('reserved')
     .where('inv_id','=',itemID)
     .then(result =>{
@@ -100,8 +98,6 @@ router.get('/api/projects/:id/items', checkAuth, checkAccess, function(req, res)
     'quantity', 'reserved', 'available')
     .where('project_items.proj_id','=',projID)
     .andWhere('inventory.remove','=','false')
-    // .select('inventory.description','inventory.category','inventory.quantity',
-    // 'inventory.quantity','project_items.reserved')
     .then(results => {
         res.send({results});
     })
@@ -144,9 +140,6 @@ router.put('/api/projects/:id',checkAuth,checkAccess,function(req,res){
 
 //Reserve specific item qty for a specific project
 router.put('/api/projects/:pid/reserve/:iid',checkAuth,function(req,res){
-    // console.log('ProjectID: ',req.params.pid);
-    // console.log('ItemID: ',req.params.iid);
-    // console.log('ReserveAmt: ',res.req.body.reserve);
 
     const reserveItemIfPossible = reserveItem(req.params.pid,
         req.params.iid,res.req.body.reserve)

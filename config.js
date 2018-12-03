@@ -15,15 +15,12 @@
     app.use(bodyParser.json()); // for parsing application/json
     app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-    //app.use(require('cookie-parser')());
     app.use(cookieParser('keyboard cat'));
-    //app.use(session({secret: 'mySecretKey'}));
     app.use(session({
       secret: 'keyboard cat',
       resave: true,
       saveUninitialized: true,
       cookie: {
-        //secure: true,
         maxAge: 3600000
       }
     }));

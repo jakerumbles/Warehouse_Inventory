@@ -1,13 +1,18 @@
 var getData = async function(id){
-    //really ugly function to create a table of inventory history
+    // this function fetches data from the api to create a history table
+    // for the item with inv_id = id.
     const url = `/api/inventory/${id}/history`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
     const rows = data.results
+
+    // delete existing table if it already exists
     let tbl = document.querySelector('.inv-his-table')
     if(tbl) tbl.remove();
     let errH3 = document.querySelector('#error-h3')
     if(errH3) errH3.remove();
+
+    // if the fetch does not have any results, then we show an error
     if (data.results.length < 1){
         // document.querySelector('#hiddenvalue').value = "No Item History."
         var modalBod = document.querySelector('.modal-body')
@@ -16,7 +21,7 @@ var getData = async function(id){
         errH3.textContent = 'ERROR FETCHING TABLE';
         modalBod.appendChild(errH3);
     }else {
-
+        // creation of table using js dom manipulation
         tbl = document.createElement('TABLE');
         tbl.classList.add('inv-his-table')
         tbl.classList.add('table')
@@ -52,6 +57,7 @@ var getData = async function(id){
 }
 
 const changeBtnText = () => {
+    // small QOL fix to change the show history button to hide history
     let btnText = document.querySelector('#show-hide-history-btn').textContent;
     if(btnText === 'Show History'){
         document.querySelector('#show-hide-history-btn').textContent = 'Hide History';
@@ -61,6 +67,8 @@ const changeBtnText = () => {
 }
 
 const loadDataOnForms = async function(id){
+        // this function is called to update the forms on the modal.
+        // we use a fetch so that it's always current.
     const url = `/api/inventory/${id}`;
     const resp = await fetch(url, {credentials: 'include'})
     const data = await resp.json()
@@ -77,7 +85,7 @@ const loadDataOnForms = async function(id){
 }
 
 const updateItem = async function(args){
-    //this function sends data obj to api to update db
+    //this function sends data obj to api to update db for item
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/api/inventory/${data_id}`;
     const data = {
@@ -119,6 +127,7 @@ const updateItem = async function(args){
 $(document).ready(function() {
 
     $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+        // this function runs when the modal is opened.
 
         var data_id = '';
         var data_desc = '';

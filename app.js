@@ -2,7 +2,7 @@
 Authors: Jake Edwards & David Hamilton & John Carvajal
 Class: CSC 425-001
 Professor: Dr. Sawadpong
-Project:
+Project: HFH Database
 Team: TeamIDK
 */
 

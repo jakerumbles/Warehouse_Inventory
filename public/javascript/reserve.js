@@ -1,6 +1,7 @@
 const reserveItem = async function(args){
-    //this function sends data obj to api to update db
-    // reserving
+    // this function sends data obj to api to update db
+    // reserving item for a project with projectID and data_id as
+    // the primary key
     const data_id = document.querySelector('#modal-inv-id').value;
     const url = `/api/projects/${projectID}/reserve/${data_id}`;
     const data = {
@@ -9,8 +10,6 @@ const reserveItem = async function(args){
     if(args === 'remove'){
         data.remove = true;
     }
-
-    console.log(url);
 
     const resp = fetch(url, {
         method: "PUT",
@@ -31,7 +30,7 @@ const reserveItem = async function(args){
                 errorLbl.removeAttribute("hidden")
             }
             else{
-                //location.reload()
+                location.reload()
             }
         })
     })

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // middleware for all routes
+// this function shows each route and the user requesting it
 router.use('*', require('./helpers').logger);
 
 //ROUTES
@@ -33,12 +34,14 @@ router.use('/', statistics);
 const auth = require('./routes/auth');
 router.use('/', auth);
 
+// error 404 middleware
 router.use(function(req,res,next){
     let err = new Error('Error 404: Page Not Found')
     err.status = 404;
     next(err);
 })
 
+// shows the error page
 router.use(function(err,req,res,next){
     console.error('Oops! Encountered an error\nStack Trace: \n   ',err.stack);
     res.status(err.status || 500);

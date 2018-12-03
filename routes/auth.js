@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt-nodejs');
 // AUTH routes
 // --------------
 
+// post for login
 router.post('/auth/login', passport.authenticate('local', {
     successRedirect: '/auth/account',
     failureRedirect: '/'
@@ -19,7 +20,6 @@ router.post('/auth/login', passport.authenticate('local', {
 
 // Logout
 router.get('/auth/logout', checkAuth, function(req, res) {
-    // console.log(req.user.username + " Logs Out");
     req.session = null;
     res.redirect("/");
 });
@@ -42,6 +42,7 @@ router.get('/auth/user_accounts', checkAuth, checkAccess, function(req, res) {
     }
 });
 
+// account info page
 router.get('/auth/account', checkAuth,function(req, res, next){
     var q = 'SELECT * FROM users WHERE "id"=$1';
     connection.query(q, [req.user.id], function(err, results) {
@@ -49,6 +50,7 @@ router.get('/auth/account', checkAuth,function(req, res, next){
     });
 });
 
+// post for signup
 router.post('/auth/signup', async function(req, res){
     const data = {
         id: uuidv4(),

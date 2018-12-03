@@ -1,6 +1,7 @@
 const passport = require('passport');
 const connection = require('./dbconnection').connection;
 
+// these functions are required by passport-js to store session information
 module.exports = () => {
   passport.serializeUser(function(user, done) {
     //console.log('Called SerializeUser function ', user)

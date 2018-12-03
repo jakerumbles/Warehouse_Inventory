@@ -25,7 +25,7 @@ router.get('/inventory', checkAuth, checkAccess, function(req, res) {
     })
 });
 
-//Inventory Page
+//Inventory Page for all items
 router.get('/inventory/all', checkAuth, checkAccess,function(req, res) {
     var passedStuff = req.params.description;
     // var q = 'SELECT * FROM inventory LIMIT 100';
@@ -43,13 +43,11 @@ router.get('/inventory/all', checkAuth, checkAccess,function(req, res) {
 //New Item page
 router.get('/inventory/new', checkAuth, checkAccess,function(req, res) {
     res.render("inventory/newItem");
-    // console.log("you visited the new item page");
 });
 
 //Add new item to DB
 router.post('/inventory', checkAuth, checkAccess,function(req, res) {
     var item = req.body.item;
-    // console.log("inventory post route...now adding new item to DB");
     logger('/inventory POST: Adding new item to DB')
     insertQuery(item,req.user.username);
     res.redirect("/inventory");

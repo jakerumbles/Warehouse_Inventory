@@ -7,6 +7,8 @@ const knex = require('../dbconnection').knex;
 // ------------------
 // STATISTICS
 // ------------------
+
+// statistics page
 router.get('/statistics', checkAuth, checkAccess,function(req, res) {
     knex('inventory')
     .count('category')
@@ -34,7 +36,5 @@ router.get('/statistics', checkAuth, checkAccess,function(req, res) {
             });
         });
     })
-    // SELECT category, count(*) FROM inventory
-    // GROUP BY category;
 });
 module.exports = router;

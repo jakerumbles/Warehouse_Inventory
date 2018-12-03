@@ -5,8 +5,10 @@ const knex = require('../dbconnection').knex;
 
 //Home
 router.get('/', function(req, res) {
+    let errMessage = req.session.message;
+    req.session.message = '';
     res.render("home",{
-        message: req.session.message
+        message: errMessage
     });
     // console.log("you visited the home page");
 });
