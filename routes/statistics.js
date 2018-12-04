@@ -30,7 +30,7 @@ router.get('/statistics', checkAuth, checkAccess,function(req, res) {
                 .where('remove', '=', false)
                 .groupBy('date_recieved')
                 .limit(20)
-                .orderBy('date_recieved', 'asc')
+                .orderBy('date_recieved', 'desc')
                 .then(dates => {
                     res.render('statistics', {numItemsPerCategory:numItemsPerCategory, totalCategories: totalCategories, quantity: quantity, dates: dates});
                 });
