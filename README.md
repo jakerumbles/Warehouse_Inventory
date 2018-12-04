@@ -64,3 +64,7 @@ To add your first item, click Inventory and then scroll down until you can see t
 To create a project, click on Projects. A key feature of our database is the ability to reserve multiple items for building projects. Click New Project and type the name. Next we’re going to learn how to reserve items. Click the Edit button next to your project name, and then click Reserve Items. You should now be able to see the warehouse inventory. Click reserve and enter the quantity of the item you would like to reserve. To see the items that you already have reserved, click show items. It’s as simple as that!
 
 </p>
+
+<br>
+
+![alt text](https://github.com/jakerumbles/Warehouse_Inventory/blob/master/idkDB_finished_er_diagram.PNG)
