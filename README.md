@@ -67,4 +67,4 @@ To create a project, click on Projects. A key feature of our database is the abi
 
 <br>
 
-![alt text](https://github.com/jakerumbles/Warehouse_Inventory/blob/master/idkDB_finished_er_diagram.PNG)
+![alt text](https://github.com/jakerumbles/Warehouse_Inventory/blob/master/FinalFinishedERdiagramV3.png)
