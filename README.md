@@ -2,7 +2,9 @@
 <h3>Welcome to idkDB</h3>
 
 <p>
-  
+
+link to website: https://csc425project.herokuapp.com/
+
 Project Details:
   
 Habitat for Humanity needs a computer system to improve the utilization of the items in the warehouse. The system
